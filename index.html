@@ -20,10 +20,35 @@
             <button onclick="selectUniversity('NTS')" class="w-full bg-white border-2 border-gray-200 hover:border-black hover:bg-black hover:text-white transition-all font-bold text-lg py-4 px-6 rounded-xl shadow-sm">OR NTS NAT</button>
         </div>
 
-        <div class="mt-12 bg-yellow-100 border border-yellow-300 text-yellow-900 w-full rounded-xl p-5 text-center shadow-sm">
-            <p class="font-bold text-lg mb-2">Unlock All Admission Tests : PKR 500</p>
-            <p class="font-medium">WhatsApp: 03465939277</p>
-            <p class="font-medium">Payment: 03465939277 (Bank NayaPay)</p>
+        <!-- NEW STEP-BY-STEP UNLOCK SECTION -->
+        <div class="mt-12 w-full bg-white border-2 border-indigo-100 rounded-xl p-6 shadow-sm">
+            <h2 class="text-xl font-extrabold mb-5 text-center text-indigo-700">Unlock All Tests</h2>
+            
+            <div class="space-y-4 text-left">
+                <!-- Step 1 -->
+                <div class="flex items-start">
+                    <div class="bg-indigo-600 text-white font-bold rounded-full h-6 w-6 flex items-center justify-center text-xs shrink-0 mt-0.5 mr-3">1</div>
+                    <p class="text-sm font-medium text-gray-700">Send <b>PKR 500</b> to <b>03465939277</b> (Bank NayaPay).</p>
+                </div>
+                
+                <!-- Step 2 -->
+                <div class="flex items-start">
+                    <div class="bg-indigo-600 text-white font-bold rounded-full h-6 w-6 flex items-center justify-center text-xs shrink-0 mt-0.5 mr-3">2</div>
+                    <p class="text-sm font-medium text-gray-700">Send transaction screenshot to <a href="https://wa.me/923465939277" target="_blank" class="text-green-600 font-bold underline hover:text-green-700">WhatsApp (03465939277)</a>.</p>
+                </div>
+                
+                <!-- Step 3 -->
+                <div class="flex items-start">
+                    <div class="bg-indigo-600 text-white font-bold rounded-full h-6 w-6 flex items-center justify-center text-xs shrink-0 mt-0.5 mr-3">3</div>
+                    <p class="text-sm font-medium text-gray-700">Receive your code and enter it below.</p>
+                </div>
+            </div>
+            
+            <!-- Code Input -->
+            <div class="mt-5 flex gap-2">
+                <input type="text" id="unlock-code" placeholder="Enter Unlock Code" class="flex-1 bg-gray-50 border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-indigo-500 font-medium">
+                <button onclick="verifyCode()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded-lg text-sm transition-all shadow-sm">Submit</button>
+            </div>
         </div>
     </div>
 
@@ -99,7 +124,7 @@
                     { id: "nat-ics", name: "Computer Science / ICS: NAT-ICS" },
                     { id: "nat-art", name: "Arts / Gen Science / Commerce: NAT-IGS/IA/ICOM" }
                 ],
-                info: { // Using standard NAT general structure mapped to COMSATS above
+                info: { 
                     time: "120 Minutes",
                     marks: "90 Marks (No negative marking)",
                     breakdown: [
@@ -188,18 +213,16 @@
         function selectType(typeId, typeName) {
             document.getElementById('info-title').innerText = typeName;
             
-            // Fetch info based on data structure
             let infoData;
             if (testData[currentUni].info) {
-                infoData = testData[currentUni].info; // Same info for all (COMSATS/NTS)
+                infoData = testData[currentUni].info; 
             } else {
-                infoData = testData[currentUni].infoMap[typeId]; // Specific info per type (AIR/PIEAS)
+                infoData = testData[currentUni].infoMap[typeId]; 
             }
 
             document.getElementById('info-time').innerText = infoData.time;
             document.getElementById('info-marks').innerText = infoData.marks;
             
-            // Extract minutes for the timer
             testTimeMinutes = parseInt(infoData.time.split(' ')[0]);
 
             const breakdownUl = document.getElementById('info-breakdown');
@@ -239,6 +262,25 @@
                     display.textContent = "TIME UP";
                 }
             }, 1000);
+        }
+
+        // UNLOCK CODE LOGIC
+        function verifyCode() {
+            const codeInput = document.getElementById('unlock-code').value.trim();
+            
+            if(codeInput === "") {
+                alert("Please enter a code first.");
+                return;
+            }
+
+            // Right now this just checks a dummy code. You can change "MOCK2026" to any code you want!
+            if(codeInput.toUpperCase() === "MOCK2026") {
+                alert("Success! All MockLab tests have been unlocked.");
+                document.getElementById('unlock-code').value = ""; // Clear input
+                // Here we will eventually add logic to unlock the actual MCQs.
+            } else {
+                alert("Invalid Code. Please check with the WhatsApp admin.");
+            }
         }
     </script>
 </body>
