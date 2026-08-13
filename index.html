@@ -3,6 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- FORCE BROWSER TO NEVER CACHE THIS PAGE -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+
     <title>MockLab</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
@@ -18,8 +24,9 @@
             The ultimate entry test portal for all universities in Pakistan. Master your preparation for NTS NAT, PIEAS, Air University, Bahria, and more with our premium mock tests.
         </p>
         
+        <!-- BUTTON CHANGED FOR DIAGNOSTIC TEST -->
         <button onclick="showScreen('screen-intro', 'screen-home')" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white transition-all font-extrabold text-xl py-4 px-8 rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-1">
-            Get Started
+            Get Started Now 🚀
         </button>
     </div>
 
@@ -206,16 +213,15 @@
         let testTimeMinutes = 0;
         let timerInterval;
 
-        // BULLETPROOF SHOW SCREEN LOGIC
+        // ERROR-CATCHING SCREEN LOGIC
         function showScreen(hideId, showId) {
-            // Hide old screen completely
-            document.getElementById(hideId).style.display = "none";
-            
-            // Show new screen as flexbox layout
-            document.getElementById(showId).style.display = "flex";
-            
-            // Scroll back to top
-            window.scrollTo(0,0);
+            try {
+                document.getElementById(hideId).style.display = "none";
+                document.getElementById(showId).style.display = "flex";
+                window.scrollTo(0,0);
+            } catch (error) {
+                alert("Oops! Something went wrong switching screens. Error: " + error.message);
+            }
         }
 
         function goBack(showId, hideId) {
@@ -223,46 +229,54 @@
         }
 
         function selectUniversity(uniKey) {
-            currentUni = uniKey;
-            const typeContainer = document.getElementById('type-options');
-            typeContainer.innerHTML = ''; 
+            try {
+                currentUni = uniKey;
+                const typeContainer = document.getElementById('type-options');
+                typeContainer.innerHTML = ''; 
 
-            const options = testData[uniKey].options;
-            options.forEach(opt => {
-                const btn = document.createElement('button');
-                btn.className = "w-full bg-gray-800 border-2 border-gray-700 hover:border-white hover:bg-white hover:text-black transition-all font-bold text-lg py-4 px-6 rounded-xl shadow-sm text-left";
-                btn.innerText = opt.name;
-                btn.onclick = () => selectType(opt.id, opt.name);
-                typeContainer.appendChild(btn);
-            });
+                const options = testData[uniKey].options;
+                options.forEach(opt => {
+                    const btn = document.createElement('button');
+                    btn.className = "w-full bg-gray-800 border-2 border-gray-700 hover:border-white hover:bg-white hover:text-black transition-all font-bold text-lg py-4 px-6 rounded-xl shadow-sm text-left";
+                    btn.innerText = opt.name;
+                    btn.onclick = () => selectType(opt.id, opt.name);
+                    typeContainer.appendChild(btn);
+                });
 
-            showScreen('screen-home', 'screen-type');
+                showScreen('screen-home', 'screen-type');
+            } catch (error) {
+                alert("Error loading university: " + error.message);
+            }
         }
 
         function selectType(typeId, typeName) {
-            document.getElementById('info-title').innerText = typeName;
-            
-            let infoData;
-            if (testData[currentUni].info) {
-                infoData = testData[currentUni].info; 
-            } else {
-                infoData = testData[currentUni].infoMap[typeId]; 
+            try {
+                document.getElementById('info-title').innerText = typeName;
+                
+                let infoData;
+                if (testData[currentUni].info) {
+                    infoData = testData[currentUni].info; 
+                } else {
+                    infoData = testData[currentUni].infoMap[typeId]; 
+                }
+
+                document.getElementById('info-time').innerText = infoData.time;
+                document.getElementById('info-marks').innerText = infoData.marks;
+                
+                testTimeMinutes = parseInt(infoData.time.split(' ')[0]);
+
+                const breakdownUl = document.getElementById('info-breakdown');
+                breakdownUl.innerHTML = '';
+                infoData.breakdown.forEach(item => {
+                    const li = document.createElement('li');
+                    li.innerHTML = `• ${item}`;
+                    breakdownUl.appendChild(li);
+                });
+
+                showScreen('screen-type', 'screen-info');
+            } catch (error) {
+                alert("Error loading test details: " + error.message);
             }
-
-            document.getElementById('info-time').innerText = infoData.time;
-            document.getElementById('info-marks').innerText = infoData.marks;
-            
-            testTimeMinutes = parseInt(infoData.time.split(' ')[0]);
-
-            const breakdownUl = document.getElementById('info-breakdown');
-            breakdownUl.innerHTML = '';
-            infoData.breakdown.forEach(item => {
-                const li = document.createElement('li');
-                li.innerHTML = `• ${item}`;
-                breakdownUl.appendChild(li);
-            });
-
-            showScreen('screen-type', 'screen-info');
         }
 
         function startTest() {
@@ -294,4 +308,21 @@
         }
 
         // UNLOCK CODE LOGIC
-        functio
+        function verifyCode() {
+            const codeInput = document.getElementById('unlock-code').value.trim();
+            
+            if(codeInput === "") {
+                alert("Please enter a code first.");
+                return;
+            }
+
+            if(codeInput.toUpperCase() === "MOCK2026") {
+                alert("Success! All MockLab tests have been unlocked.");
+                document.getElementById('unlock-code').value = ""; 
+            } else {
+                alert("Invalid Code. Please check with the WhatsApp admin.");
+            }
+        }
+    </script>
+</body>
+</html>
