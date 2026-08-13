@@ -8,8 +8,25 @@
 </head>
 <body class="bg-gray-50 text-gray-900 min-h-screen flex flex-col items-center justify-center p-4">
 
+    <!-- SCREEN 0: INTRO / LANDING PAGE -->
+    <div id="screen-intro" class="w-full max-w-lg flex flex-col items-center text-center animation-fade-in">
+        <!-- Logo Image -->
+        <img src="MockLab.png" alt="MockLab Logo" class="w-48 h-auto mb-6 drop-shadow-md">
+        
+        <h1 class="text-5xl font-extrabold mb-4 tracking-tight text-indigo-700">MockLab</h1>
+        <p class="text-lg text-gray-600 mb-10 font-medium px-4">
+            The ultimate entry test portal for all universities in Pakistan. Master your preparation for NTS NAT, PIEAS, Air University, Bahria, and more with our premium mock tests.
+        </p>
+        
+        <button onclick="showScreen('screen-intro', 'screen-home')" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white transition-all font-extrabold text-xl py-4 px-8 rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-1">
+            Get Started
+        </button>
+    </div>
+
     <!-- SCREEN 1: SELECT TEST -->
-    <div id="screen-home" class="w-full max-w-md w-full flex flex-col items-center">
+    <!-- Notice this is now 'hidden' by default -->
+    <div id="screen-home" class="w-full max-w-md w-full hidden flex-col items-center">
+        <button onclick="goBack('screen-intro', 'screen-home')" class="self-start mb-6 text-sm font-bold text-gray-500 hover:text-black">← Back to Home</button>
         <h1 class="text-4xl font-extrabold mb-8 tracking-tight text-center">Select Test</h1>
         
         <div class="w-full space-y-3">
@@ -27,7 +44,7 @@
             <!-- QR CODE IMAGE HERE -->
             <div class="flex flex-col items-center justify-center mb-6">
                 <!-- Change 'qr.jpg' to exactly match the file name you uploaded to GitHub -->
-                <img src="qr.png" alt="NayaPay QR Code" class="w-40 h-40 object-cover rounded-lg border-2 border-indigo-100 shadow-sm mb-2">
+                <img src="qr.jpg" alt="NayaPay QR Code" class="w-40 h-40 object-cover rounded-lg border-2 border-indigo-100 shadow-sm mb-2">
                 <span class="text-xs font-bold text-gray-400 uppercase tracking-wider">Scan to Pay</span>
             </div>
 
@@ -194,6 +211,9 @@
             document.getElementById(hideId).classList.add('hidden');
             document.getElementById(showId).classList.remove('hidden');
             document.getElementById(showId).classList.add('flex');
+            
+            // Scroll to top when changing screens for better mobile experience
+            window.scrollTo(0,0);
         }
 
         function goBack(showId, hideId) {
