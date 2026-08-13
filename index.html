@@ -20,15 +20,22 @@
             <button onclick="selectUniversity('NTS')" class="w-full bg-white border-2 border-gray-200 hover:border-black hover:bg-black hover:text-white transition-all font-bold text-lg py-4 px-6 rounded-xl shadow-sm">OR NTS NAT</button>
         </div>
 
-        <!-- NEW STEP-BY-STEP UNLOCK SECTION -->
+        <!-- NEW STEP-BY-STEP UNLOCK SECTION WITH QR CODE -->
         <div class="mt-12 w-full bg-white border-2 border-indigo-100 rounded-xl p-6 shadow-sm">
             <h2 class="text-xl font-extrabold mb-5 text-center text-indigo-700">Unlock All Tests (Premium)</h2>
             
+            <!-- QR CODE IMAGE HERE -->
+            <div class="flex flex-col items-center justify-center mb-6">
+                <!-- Change 'qr.jpg' to exactly match the file name you uploaded to GitHub -->
+                <img src="qr.png" alt="NayaPay QR Code" class="w-40 h-40 object-cover rounded-lg border-2 border-indigo-100 shadow-sm mb-2">
+                <span class="text-xs font-bold text-gray-400 uppercase tracking-wider">Scan to Pay</span>
+            </div>
+
             <div class="space-y-4 text-left">
                 <!-- Step 1 -->
                 <div class="flex items-start">
                     <div class="bg-indigo-600 text-white font-bold rounded-full h-6 w-6 flex items-center justify-center text-xs shrink-0 mt-0.5 mr-3">1</div>
-                    <p class="text-sm font-medium text-gray-700">Send <b>PKR 500</b> to <b>03465939277</b> (Bank NayaPay).</p>
+                    <p class="text-sm font-medium text-gray-700">Send <b>PKR 500</b> to <b>03465939277</b> (Bank NayaPay) or scan the QR code above.</p>
                 </div>
                 
                 <!-- Step 2 -->
@@ -273,11 +280,9 @@
                 return;
             }
 
-            // Right now this just checks a dummy code. You can change "MOCK2026" to any code you want!
             if(codeInput.toUpperCase() === "MOCK2026") {
                 alert("Success! All MockLab tests have been unlocked.");
-                document.getElementById('unlock-code').value = ""; // Clear input
-                // Here we will eventually add logic to unlock the actual MCQs.
+                document.getElementById('unlock-code').value = ""; 
             } else {
                 alert("Invalid Code. Please check with the WhatsApp admin.");
             }
