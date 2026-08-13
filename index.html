@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MockLab</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 text-gray-900 min-h-screen flex flex-col items-center justify-center p-4">
+
+    <!-- SCREEN 1: SELECT TEST -->
+    <div id="screen-home" class="w-full max-w-md w-full flex flex-col items-center">
+        <h1 class="text-4xl font-extrabold mb-8 tracking-tight text-center">Select Test</h1>
+        
+        <div class="w-full space-y-3">
+            <button onclick="selectUniversity('COMSATS')" class="w-full bg-white border-2 border-gray-200 hover:border-black hover:bg-black hover:text-white transition-all font-bold text-lg py-4 px-6 rounded-xl shadow-sm">COMSATS Admission Test (NTS NAT)</button>
+            <button onclick="selectUniversity('PIEAS')" class="w-full bg-white border-2 border-gray-200 hover:border-black hover:bg-black hover:text-white transition-all font-bold text-lg py-4 px-6 rounded-xl shadow-sm">PIEAS Admission Test</button>
+            <button onclick="selectUniversity('AIR')" class="w-full bg-white border-2 border-gray-200 hover:border-black hover:bg-black hover:text-white transition-all font-bold text-lg py-4 px-6 rounded-xl shadow-sm">Air Admission Test</button>
+            <button onclick="selectUniversity('BAHRIA')" class="w-full bg-white border-2 border-gray-200 hover:border-black hover:bg-black hover:text-white transition-all font-bold text-lg py-4 px-6 rounded-xl shadow-sm">Bahria Admission Test</button>
+            <button onclick="selectUniversity('NTS')" class="w-full bg-white border-2 border-gray-200 hover:border-black hover:bg-black hover:text-white transition-all font-bold text-lg py-4 px-6 rounded-xl shadow-sm">OR NTS NAT</button>
+        </div>
+
+        <div class="mt-12 bg-yellow-100 border border-yellow-300 text-yellow-900 w-full rounded-xl p-5 text-center shadow-sm">
+            <p class="font-bold text-lg mb-2">Unlock All Admission Tests : PKR 500</p>
+            <p class="font-medium">WhatsApp: 03465939277</p>
+            <p class="font-medium">Payment: 03465939277 (Bank NayaPay)</p>
+        </div>
+    </div>
+
+    <!-- SCREEN 2: SELECT TYPE -->
+    <div id="screen-type" class="w-full max-w-md hidden flex-col items-center">
+        <button onclick="goBack('screen-home', 'screen-type')" class="self-start mb-6 text-sm font-bold text-gray-500 hover:text-black">← Back</button>
+        <h1 class="text-3xl font-extrabold mb-8 tracking-tight text-center">Select Test Type</h1>
+        
+        <div id="type-options" class="w-full space-y-3">
+            <!-- Populated via JS -->
+        </div>
+    </div>
+
+    <!-- SCREEN 3: TEST INFO -->
+    <div id="screen-info" class="w-full max-w-md hidden flex-col items-center">
+        <button onclick="goBack('screen-type', 'screen-info')" class="self-start mb-6 text-sm font-bold text-gray-500 hover:text-black">← Back</button>
+        <h1 id="info-title" class="text-3xl font-extrabold mb-6 tracking-tight text-center text-blue-600"></h1>
+        
+        <div class="w-full bg-white border-2 border-gray-200 rounded-xl p-6 shadow-sm mb-8 text-left">
+            <div class="mb-4">
+                <span class="block text-sm font-bold text-gray-400 uppercase tracking-wider">Duration</span>
+                <span id="info-time" class="text-lg font-bold"></span>
+            </div>
+            <div class="mb-4">
+                <span class="block text-sm font-bold text-gray-400 uppercase tracking-wider">Total Marks / MCQs</span>
+                <span id="info-marks" class="text-lg font-bold"></span>
+            </div>
+            <div>
+                <span class="block text-sm font-bold text-gray-400 uppercase tracking-wider mb-2">Subject Breakdown</span>
+                <ul id="info-breakdown" class="list-none space-y-1 text-md font-medium"></ul>
+            </div>
+        </div>
+
+        <button onclick="startTest()" class="w-full bg-blue-600 hover:bg-blue-700 text-white transition-all font-extrabold text-xl py-4 px-6 rounded-xl shadow-lg">START TEST</button>
+    </div>
+
+    <!-- SCREEN 4: ACTIVE TEST -->
+    <div id="screen-test" class="w-full max-w-3xl hidden flex-col">
+        <div class="flex justify-between items-center bg-white border-b-2 border-gray-200 p-4 rounded-t-xl">
+            <h2 class="text-xl font-bold text-gray-800">MockLab Test</h2>
+            <div class="text-2xl font-mono font-bold text-red-600 bg-red-50 py-1 px-3 rounded-lg" id="timer-display">00:00:00</div>
+        </div>
+        <div class="bg-white p-8 rounded-b-xl min-h-[50vh] flex items-center justify-center border-x-2 border-b-2 border-gray-200 shadow-sm">
+            <p class="text-gray-400 font-bold text-xl uppercase tracking-widest">[ MCQs WILL APPEAR HERE ]</p>
+        </div>
+    </div>
+
+    <script>
+        // DATA STRUCTURE
+        const testData = {
+            "COMSATS": {
+                options: [
+                    { id: "nat-ie", name: "Pre-Engineering: NAT-IE" },
+                    { id: "nat-im", name: "Pre-Medical: NAT-IM" },
+                    { id: "nat-ics", name: "Computer Science / ICS: NAT-ICS" },
+                    { id: "nat-art", name: "Arts / Gen Science / Commerce" }
+                ],
+                info: {
+                    time: "120 Minutes",
+                    marks: "90 Marks (No negative marking)",
+                    breakdown: [
+                        "English / Verbal: 20 MCQs",
+                        "Analytical Reasoning: 20 MCQs",
+                        "Quantitative Reasoning: 20 MCQs",
+                        "Subject Portion: 30 MCQs (10 per subject based on group)"
+                    ]
+                }
+            },
+            "NTS": {
+                options: [
+                    { id: "nat-ie", name: "Pre-Engineering: NAT-IE" },
+                    { id: "nat-im", name: "Pre-Medical: NAT-IM" },
+                    { id: "nat-ics", name: "Computer Science / ICS: NAT-ICS" },
+                    { id: "nat-art", name: "Arts / Gen Science / Commerce: NAT-IGS/IA/ICOM" }
+                ],
+                info: { // Using standard NAT general structure mapped to COMSATS above
+                    time: "120 Minutes",
+                    marks: "90 Marks (No negative marking)",
+                    breakdown: [
+                        "English / Verbal: 20 MCQs",
+                        "Analytical Reasoning: 20 MCQs",
+                        "Quantitative Reasoning: 20 MCQs",
+                        "Subject Portion: 30 MCQs (10 per subject based on group)"
+                    ]
+                }
+            },
+            "PIEAS": {
+                options: [
+                    { id: "pieas-eng", name: "Pre-Engineering" },
+                    { id: "pieas-med", name: "Pre-Medical" },
+                    { id: "pieas-ics", name: "ICS (Maths, Physics, CS)" },
+                    { id: "pieas-gen", name: "Science General (with Maths)" }
+                ],
+                infoMap: {
+                    "pieas-eng": { time: "180 Minutes", marks: "100 MCQs", breakdown: ["English: 10", "Maths: 30", "Physics: 30", "Chemistry: 30"] },
+                    "pieas-med": { time: "180 Minutes", marks: "100 MCQs", breakdown: ["English: 10", "Chemistry: 30", "Physics: 30", "Maths (SSC Level): 30"] },
+                    "pieas-ics": { time: "180 Minutes", marks: "100 MCQs", breakdown: ["English: 10", "Maths: 30", "Physics: 30", "Computer Science: 30"] },
+                    "pieas-gen": { time: "180 Minutes", marks: "100 MCQs", breakdown: ["English: 10", "Maths: 60", "Physics (SSC Level): 30"] }
+                }
+            },
+            "AIR": {
+                options: [
+                    { id: "air-eng", name: "Pre-Engineering" },
+                    { id: "air-med", name: "Pre-Medical" },
+                    { id: "air-ics", name: "Computer Science (ICS)" },
+                    { id: "air-com", name: "Commerce (I.Com)" },
+                    { id: "air-gen", name: "General Science" },
+                    { id: "air-art", name: "Arts / Humanities" }
+                ],
+                infoMap: {
+                    "air-eng": { time: "120 Minutes", marks: "100 MCQs", breakdown: ["English: 20%", "Analytical/Logical Reasoning: 25%", "Math/Quantitative: 25%", "Physics: 10%", "Chemistry: 10%", "Mathematics: 10%"] },
+                    "air-med": { time: "120 Minutes", marks: "100 MCQs", breakdown: ["English: 20%", "Analytical/Logical Reasoning: 25%", "Math/Quantitative: 15%", "Physics: 10%", "Chemistry: 10%", "Biology: 20%"] },
+                    "air-ics": { time: "120 Minutes", marks: "100 MCQs", breakdown: ["English: 20%", "Analytical/Logical Reasoning: 25%", "Math/Quantitative: 25%", "Physics: 10%", "Computer Science: 10%", "Mathematics: 10%"] },
+                    "air-com": { time: "120 Minutes", marks: "100 MCQs", breakdown: ["English: 20%", "Analytical/Logical Reasoning: 25%", "Math/Quantitative: 15%", "Principles of Accounting: 14%", "Commerce: 13%", "Economics: 13%"] },
+                    "air-gen": { time: "120 Minutes", marks: "100 MCQs", breakdown: ["English: 20%", "Analytical/Logical Reasoning: 25%", "Math/Quantitative: 25%", "Mathematics: 10%", "Statistics: 10%", "Economics: 10%"] },
+                    "air-art": { time: "120 Minutes", marks: "100 MCQs", breakdown: ["English: 20%", "Analytical/Logical Reasoning: 25%", "Math/Quantitative: 15%", "Islamiat: 10%", "Pakistan Studies: 10%", "General Knowledge & Current Affairs: 20%"] }
+                }
+            },
+            "BAHRIA": {
+                options: [
+                    { id: "bah-cbt", name: "Standard CBT (Mock Format)" }
+                ],
+                info: {
+                    time: "120 Minutes",
+                    marks: "100 MCQs",
+                    breakdown: ["Test details will be updated based on specific group selection."]
+                }
+            }
+        };
+
+        let currentUni = null;
+        let testTimeMinutes = 0;
+        let timerInterval;
+
+        function showScreen(hideId, showId) {
+            document.getElementById(hideId).classList.add('hidden');
+            document.getElementById(showId).classList.remove('hidden');
+            document.getElementById(showId).classList.add('flex');
+        }
+
+        function goBack(showId, hideId) {
+            showScreen(hideId, showId);
+        }
+
+        function selectUniversity(uniKey) {
+            currentUni = uniKey;
+            const typeContainer = document.getElementById('type-options');
+            typeContainer.innerHTML = ''; 
+
+            const options = testData[uniKey].options;
+            options.forEach(opt => {
+                const btn = document.createElement('button');
+                btn.className = "w-full bg-white border-2 border-gray-200 hover:border-black hover:bg-black hover:text-white transition-all font-bold text-lg py-4 px-6 rounded-xl shadow-sm text-left";
+                btn.innerText = opt.name;
+                btn.onclick = () => selectType(opt.id, opt.name);
+                typeContainer.appendChild(btn);
+            });
+
+            showScreen('screen-home', 'screen-type');
+        }
+
+        function selectType(typeId, typeName) {
+            document.getElementById('info-title').innerText = typeName;
+            
+            // Fetch info based on data structure
+            let infoData;
+            if (testData[currentUni].info) {
+                infoData = testData[currentUni].info; // Same info for all (COMSATS/NTS)
+            } else {
+                infoData = testData[currentUni].infoMap[typeId]; // Specific info per type (AIR/PIEAS)
+            }
+
+            document.getElementById('info-time').innerText = infoData.time;
+            document.getElementById('info-marks').innerText = infoData.marks;
+            
+            // Extract minutes for the timer
+            testTimeMinutes = parseInt(infoData.time.split(' ')[0]);
+
+            const breakdownUl = document.getElementById('info-breakdown');
+            breakdownUl.innerHTML = '';
+            infoData.breakdown.forEach(item => {
+                const li = document.createElement('li');
+                li.innerHTML = `• ${item}`;
+                breakdownUl.appendChild(li);
+            });
+
+            showScreen('screen-type', 'screen-info');
+        }
+
+        function startTest() {
+            showScreen('screen-info', 'screen-test');
+            startTimer(testTimeMinutes * 60);
+        }
+
+        function startTimer(durationSeconds) {
+            clearInterval(timerInterval);
+            let timer = durationSeconds;
+            const display = document.getElementById('timer-display');
+            
+            timerInterval = setInterval(function () {
+                let hours = parseInt(timer / 3600, 10);
+                let minutes = parseInt((timer % 3600) / 60, 10);
+                let seconds = parseInt(timer % 60, 10);
+
+                hours = hours < 10 ? "0" + hours : hours;
+                minutes = minutes < 10 ? "0" + minutes : minutes;
+                seconds = seconds < 10 ? "0" + seconds : seconds;
+
+                display.textContent = hours + ":" + minutes + ":" + seconds;
+
+                if (--timer < 0) {
+                    clearInterval(timerInterval);
+                    display.textContent = "TIME UP";
+                }
+            }, 1000);
+        }
+    </script>
+</body>
+</html>
