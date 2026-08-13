@@ -9,7 +9,7 @@
 <body class="bg-gray-900 text-gray-100 min-h-screen flex flex-col items-center justify-center p-4">
 
     <!-- SCREEN 0: INTRO / LANDING PAGE -->
-    <div id="screen-intro" class="w-full max-w-lg flex flex-col items-center text-center animation-fade-in">
+    <div id="screen-intro" class="w-full max-w-lg flex-col items-center text-center" style="display: flex;">
         <!-- Logo Image -->
         <img src="MockLab.png" alt="MockLab Logo" class="w-48 h-auto mb-6 drop-shadow-md">
         
@@ -24,7 +24,7 @@
     </div>
 
     <!-- SCREEN 1: SELECT TEST -->
-    <div id="screen-home" class="w-full max-w-md hidden flex-col items-center">
+    <div id="screen-home" class="w-full max-w-md flex-col items-center" style="display: none;">
         <button onclick="goBack('screen-intro', 'screen-home')" class="self-start mb-6 text-sm font-bold text-gray-400 hover:text-white transition-colors">← Back to Home</button>
         <h1 class="text-4xl font-extrabold mb-8 tracking-tight text-center">Select Test</h1>
         
@@ -76,7 +76,7 @@
     </div>
 
     <!-- SCREEN 2: SELECT TYPE -->
-    <div id="screen-type" class="w-full max-w-md hidden flex-col items-center">
+    <div id="screen-type" class="w-full max-w-md flex-col items-center" style="display: none;">
         <button onclick="goBack('screen-home', 'screen-type')" class="self-start mb-6 text-sm font-bold text-gray-400 hover:text-white transition-colors">← Back</button>
         <h1 class="text-3xl font-extrabold mb-8 tracking-tight text-center">Select Test Type</h1>
         
@@ -86,7 +86,7 @@
     </div>
 
     <!-- SCREEN 3: TEST INFO -->
-    <div id="screen-info" class="w-full max-w-md hidden flex-col items-center">
+    <div id="screen-info" class="w-full max-w-md flex-col items-center" style="display: none;">
         <button onclick="goBack('screen-type', 'screen-info')" class="self-start mb-6 text-sm font-bold text-gray-400 hover:text-white transition-colors">← Back</button>
         <h1 id="info-title" class="text-3xl font-extrabold mb-6 tracking-tight text-center text-indigo-400"></h1>
         
@@ -109,7 +109,7 @@
     </div>
 
     <!-- SCREEN 4: ACTIVE TEST -->
-    <div id="screen-test" class="w-full max-w-3xl hidden flex-col">
+    <div id="screen-test" class="w-full max-w-3xl flex-col" style="display: none;">
         <div class="flex justify-between items-center bg-gray-800 border-b-2 border-gray-700 p-4 rounded-t-xl">
             <h2 class="text-xl font-bold text-gray-100">MockLab Test</h2>
             <div class="text-2xl font-mono font-bold text-red-400 bg-red-900/30 py-1 px-3 rounded-lg border border-red-900/50" id="timer-display">00:00:00</div>
@@ -186,4 +186,112 @@
                     "air-med": { time: "120 Minutes", marks: "100 MCQs", breakdown: ["English: 20%", "Analytical/Logical Reasoning: 25%", "Math/Quantitative: 15%", "Physics: 10%", "Chemistry: 10%", "Biology: 20%"] },
                     "air-ics": { time: "120 Minutes", marks: "100 MCQs", breakdown: ["English: 20%", "Analytical/Logical Reasoning: 25%", "Math/Quantitative: 25%", "Physics: 10%", "Computer Science: 10%", "Mathematics: 10%"] },
                     "air-com": { time: "120 Minutes", marks: "100 MCQs", breakdown: ["English: 20%", "Analytical/Logical Reasoning: 25%", "Math/Quantitative: 15%", "Principles of Accounting: 14%", "Commerce: 13%", "Economics: 13%"] },
-                    "air-gen": { time: "120 Minutes", marks: "100 MCQs", breakdown:
+                    "air-gen": { time: "120 Minutes", marks: "100 MCQs", breakdown: ["English: 20%", "Analytical/Logical Reasoning: 25%", "Math/Quantitative: 25%", "Mathematics: 10%", "Statistics: 10%", "Economics: 10%"] },
+                    "air-art": { time: "120 Minutes", marks: "100 MCQs", breakdown: ["English: 20%", "Analytical/Logical Reasoning: 25%", "Math/Quantitative: 15%", "Islamiat: 10%", "Pakistan Studies: 10%", "General Knowledge & Current Affairs: 20%"] }
+                }
+            },
+            "BAHRIA": {
+                options: [
+                    { id: "bah-cbt", name: "Standard CBT (Mock Format)" }
+                ],
+                info: {
+                    time: "120 Minutes",
+                    marks: "100 MCQs",
+                    breakdown: ["Test details will be updated based on specific group selection."]
+                }
+            }
+        };
+
+        let currentUni = null;
+        let testTimeMinutes = 0;
+        let timerInterval;
+
+        // BULLETPROOF SHOW SCREEN LOGIC
+        function showScreen(hideId, showId) {
+            // Hide old screen completely
+            document.getElementById(hideId).style.display = "none";
+            
+            // Show new screen as flexbox layout
+            document.getElementById(showId).style.display = "flex";
+            
+            // Scroll back to top
+            window.scrollTo(0,0);
+        }
+
+        function goBack(showId, hideId) {
+            showScreen(hideId, showId);
+        }
+
+        function selectUniversity(uniKey) {
+            currentUni = uniKey;
+            const typeContainer = document.getElementById('type-options');
+            typeContainer.innerHTML = ''; 
+
+            const options = testData[uniKey].options;
+            options.forEach(opt => {
+                const btn = document.createElement('button');
+                btn.className = "w-full bg-gray-800 border-2 border-gray-700 hover:border-white hover:bg-white hover:text-black transition-all font-bold text-lg py-4 px-6 rounded-xl shadow-sm text-left";
+                btn.innerText = opt.name;
+                btn.onclick = () => selectType(opt.id, opt.name);
+                typeContainer.appendChild(btn);
+            });
+
+            showScreen('screen-home', 'screen-type');
+        }
+
+        function selectType(typeId, typeName) {
+            document.getElementById('info-title').innerText = typeName;
+            
+            let infoData;
+            if (testData[currentUni].info) {
+                infoData = testData[currentUni].info; 
+            } else {
+                infoData = testData[currentUni].infoMap[typeId]; 
+            }
+
+            document.getElementById('info-time').innerText = infoData.time;
+            document.getElementById('info-marks').innerText = infoData.marks;
+            
+            testTimeMinutes = parseInt(infoData.time.split(' ')[0]);
+
+            const breakdownUl = document.getElementById('info-breakdown');
+            breakdownUl.innerHTML = '';
+            infoData.breakdown.forEach(item => {
+                const li = document.createElement('li');
+                li.innerHTML = `• ${item}`;
+                breakdownUl.appendChild(li);
+            });
+
+            showScreen('screen-type', 'screen-info');
+        }
+
+        function startTest() {
+            showScreen('screen-info', 'screen-test');
+            startTimer(testTimeMinutes * 60);
+        }
+
+        function startTimer(durationSeconds) {
+            clearInterval(timerInterval);
+            let timer = durationSeconds;
+            const display = document.getElementById('timer-display');
+            
+            timerInterval = setInterval(function () {
+                let hours = parseInt(timer / 3600, 10);
+                let minutes = parseInt((timer % 3600) / 60, 10);
+                let seconds = parseInt(timer % 60, 10);
+
+                hours = hours < 10 ? "0" + hours : hours;
+                minutes = minutes < 10 ? "0" + minutes : minutes;
+                seconds = seconds < 10 ? "0" + seconds : seconds;
+
+                display.textContent = hours + ":" + minutes + ":" + seconds;
+
+                if (--timer < 0) {
+                    clearInterval(timerInterval);
+                    display.textContent = "TIME UP";
+                }
+            }, 1000);
+        }
+
+        // UNLOCK CODE LOGIC
+        functio
