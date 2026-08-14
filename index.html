@@ -73,12 +73,14 @@
             The ultimate entry test portal for all universities in Pakistan. Master your preparation for NTS NAT, PIEAS, Air University, and Bahria.
         </p>
         
+        <!-- User Welcome Badge -->
         <div class="bg-gray-800 border border-gray-700 rounded-full px-6 py-2 mb-8 flex items-center gap-3 mx-auto w-max">
             <span class="w-2 h-2 rounded-full bg-green-500"></span>
             <span class="text-sm font-bold text-gray-300">Logged in as <span id="user-display-name" class="text-white">Student</span></span>
             <button onclick="logout()" class="text-xs text-red-400 hover:text-red-300 ml-2 underline">Logout</button>
         </div>
 
+        <!-- SECRET ADMIN BUTTON -->
         <button id="btn-admin" onclick="showAdminPanel()" class="w-full hidden bg-red-700 hover:bg-red-600 text-white transition-all font-extrabold text-xl py-3 px-8 rounded-xl shadow-lg mb-4">
             👑 Secret Admin Dashboard
         </button>
@@ -193,6 +195,16 @@
     </div>
 
     <script>
+        // FAILSAFE: 7 SECONDS MAX LOADING TIME
+        setTimeout(() => {
+            const loadingScreen = document.getElementById('screen-loading');
+            if (loadingScreen.style.display !== 'none') {
+                loadingScreen.style.display = 'none';
+                document.getElementById('screen-auth').style.display = 'flex';
+                console.log("Forced loading screen to hide due to timeout.");
+            }
+        }, 7000);
+
         // ERROR DETECTOR
         window.onload = function() {
             if (typeof testData === 'undefined' || typeof questionBank === 'undefined') {
@@ -208,7 +220,7 @@
         };
 
         // ==========================================
-        // FIREBASE CONFIGURATION
+        // 1. FIREBASE CONFIGURATION
         // ==========================================
         const firebaseConfig = {
             apiKey: "AIzaSyBdP5JcEGJzkgM606BDxsQcNyPQ2nc_cQs",
@@ -229,9 +241,23 @@
 
         // CRASH-PROOF LOGIN CHECK
         auth.onAuthStateChanged((user) => {
+            // ALWAYS hide loading screen immediately when Firebase responds
+            document.getElementById('screen-loading').style.display = 'none';
+            
+            // Reset Button Spinners
+            document.getElementById('btn-login').disabled = false;
+            document.getElementById('btn-login').innerHTML = 'Log In 🚀';
+            document.getElementById('btn-signup').disabled = false;
+            document.getElementById('btn-signup').innerHTML = 'Sign Up 🚀';
+
             if (user) {
                 currentUser = user;
                 
+                // INSTANTLY SHOW THE APP (Don't wait for database to unfreeze)
+                document.getElementById('screen-auth').style.display = 'none';
+                document.getElementById('screen-intro').style.display = 'flex';
+                
+                // Fetch data in background
                 db.collection("users").doc(user.uid).get().then((doc) => {
                     if (doc.exists) {
                         currentUserData = doc.data();
@@ -239,34 +265,15 @@
                         
                         if(user.email === 'alisherahsan@gmail.com') {
                             document.getElementById('btn-admin').classList.remove('hidden');
-                        } else {
-                            document.getElementById('btn-admin').classList.add('hidden');
                         }
                     } else {
                         document.getElementById('user-display-name').innerText = "Student (No DB record)";
                     }
-                    
-                    // FIX: Make sure the login screen hides completely!
-                    document.getElementById('screen-loading').style.display = 'none';
-                    document.getElementById('screen-auth').style.display = 'none';
-                    document.getElementById('screen-intro').style.display = 'flex';
-                    
-                    // Reset Button Spinners
-                    document.getElementById('btn-login').disabled = false;
-                    document.getElementById('btn-login').innerHTML = 'Log In 🚀';
-                    document.getElementById('btn-signup').disabled = false;
-                    document.getElementById('btn-signup').innerHTML = 'Sign Up 🚀';
-
                 }).catch((error) => {
-                    alert("⚠️ Database Connection Error: " + error.message + "\n\nDid you forget to click 'Create Database' in Firebase Firestore?");
-                    document.getElementById('user-display-name').innerText = "Student (DB Error)";
-                    
-                    document.getElementById('screen-loading').style.display = 'none';
-                    document.getElementById('screen-auth').style.display = 'none';
-                    document.getElementById('screen-intro').style.display = 'flex';
+                    console.log("Database fetch failed (usually means Firestore isn't fully created):", error);
+                    document.getElementById('user-display-name').innerText = "Student";
                 });
             } else {
-                document.getElementById('screen-loading').style.display = 'none';
                 document.getElementById('screen-intro').style.display = 'none';
                 document.getElementById('screen-auth').style.display = 'flex';
             }
@@ -312,7 +319,7 @@
                     isPremium: false,
                     dateCreated: firebase.firestore.FieldValue.serverTimestamp()
                 }).catch((dbErr) => {
-                    alert("Account created, but failed to save to Database: " + dbErr.message + "\nMake sure Firestore is in Test Mode!");
+                    console.log("Account created, but database save failed:", dbErr);
                 });
             })
             .catch((error) => {
@@ -548,3 +555,40 @@
         function closeOverview() { document.getElementById('overview-modal').style.display = "none"; }
         function saveAnswer(optionIndex) {
             userAnswers[currentQIndex] = optionIndex;
+            if(reviewStatus[currentQIndex]) reviewStatus[currentQIndex] = false;
+            renderQuestion();
+        }
+        function nextQuestion() { if(currentQIndex < activeQuestions.length - 1) { currentQIndex++; renderQuestion(); } }
+        function prevQuestion() { if(currentQIndex > 0) { currentQIndex--; renderQuestion(); } }
+        function submitTest() {
+            const unanswered = activeQuestions.length - Object.keys(userAnswers).length;
+            if(unanswered > 0) {
+                if(!confirm(`You still have ${unanswered} unanswered questions. Are you sure you want to submit?`)) return;
+            }
+            clearInterval(timerInterval);
+            let score = 0;
+            activeQuestions.forEach((q, index) => { if(userAnswers[index] === q.ans) score++; });
+            document.getElementById('final-score').innerText = `${score} / ${activeQuestions.length}`;
+            let percent = (score / activeQuestions.length) * 100;
+            document.getElementById('score-msg').innerText = percent > 80 ? "Excellent Job! 🚀" : percent > 50 ? "Good Effort! 👍" : "Keep Practicing! 📚";
+            showScreen('screen-test', 'screen-result');
+        }
+        function startTimer(durationSeconds) {
+            clearInterval(timerInterval);
+            let timer = durationSeconds;
+            timerInterval = setInterval(function () {
+                let hours = parseInt(timer / 3600, 10);
+                let minutes = parseInt((timer % 3600) / 60, 10);
+                let seconds = parseInt(timer % 60, 10);
+                document.getElementById('timer-display').textContent = 
+                    (hours < 10 ? "0" + hours : hours) + ":" + (minutes < 10 ? "0" + minutes : minutes) + ":" + (seconds < 10 ? "0" + seconds : seconds);
+                if (--timer < 0) {
+                    clearInterval(timerInterval);
+                    alert("Time is up! Submitting your test.");
+                    submitTest(); 
+                }
+            }, 1000);
+        }
+    </script>
+</body>
+</html>
