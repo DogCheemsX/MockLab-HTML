@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { getAllUsers, updateUserPremiumStatus } from '../../services/userService';
 import { AdminUserRecord } from '../../types/auth';
 import { UserListItem } from '../../components/admin/UserListItem';
 
-interface AdminScreenProps {
-  onBack: () => void;
-}
-
-export const AdminScreen: React.FC<AdminScreenProps> = React.memo(({ onBack }) => {
+export const AdminScreen: React.FC = React.memo(() => {
+  const navigate = useNavigate();
   const [users, setUsers] = useState<AdminUserRecord[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -42,7 +40,7 @@ export const AdminScreen: React.FC<AdminScreenProps> = React.memo(({ onBack }) =
     <div id="screen-admin" className="w-full max-w-4xl flex flex-col items-center">
       <div className="w-full flex justify-between items-center mb-8">
         <button
-          onClick={onBack}
+          onClick={() => navigate('/')}
           className="text-sm font-bold text-gray-400 hover:text-white transition-colors"
         >
           ← Back
