@@ -11,12 +11,14 @@
 
     <title>MockLab</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- LOAD OUR SEPARATE MCQ FILE -->
+    <script src="data.js"></script>
 </head>
 <body class="bg-gray-900 text-gray-100 min-h-screen flex flex-col items-center justify-center p-4">
 
     <!-- SCREEN 0: INTRO / LANDING PAGE -->
     <div id="screen-intro" class="w-full max-w-lg flex-col items-center text-center" style="display: flex;">
-        <!-- Logo Image -->
         <img src="MockLab.png" alt="MockLab Logo" class="w-48 h-auto mb-6 drop-shadow-md">
         
         <h1 class="text-5xl font-extrabold mb-4 tracking-tight text-indigo-400">MockLab</h1>
@@ -45,10 +47,7 @@
         <!-- STEP-BY-STEP UNLOCK SECTION WITH QR CODE -->
         <div class="mt-12 w-full bg-gray-800 border-2 border-indigo-900/50 rounded-xl p-6 shadow-lg">
             <h2 class="text-xl font-extrabold mb-5 text-center text-indigo-400">Unlock All Tests (Premium)</h2>
-            
-            <!-- QR CODE IMAGE HERE -->
             <div class="flex flex-col items-center justify-center mb-6">
-                <!-- White frame for the QR Code -->
                 <div class="bg-white p-3 rounded-2xl shadow-[0_0_15px_rgba(79,70,229,0.3)] border-2 border-indigo-400 mb-3 hover:scale-105 transition-transform duration-300">
                     <img src="qr.png" alt="NayaPay QR Code" class="w-36 h-36 object-contain rounded-lg">
                 </div>
@@ -56,26 +55,20 @@
             </div>
 
             <div class="space-y-4 text-left">
-                <!-- Step 1 -->
                 <div class="flex items-start">
                     <div class="bg-indigo-600 text-white font-bold rounded-full h-6 w-6 flex items-center justify-center text-xs shrink-0 mt-0.5 mr-3">1</div>
                     <p class="text-sm font-medium text-gray-300">Send <b class="text-white">PKR 500</b> to <b class="text-white">03465939277</b> (Bank NayaPay) or scan the QR code above.</p>
                 </div>
-                
-                <!-- Step 2 -->
                 <div class="flex items-start">
                     <div class="bg-indigo-600 text-white font-bold rounded-full h-6 w-6 flex items-center justify-center text-xs shrink-0 mt-0.5 mr-3">2</div>
                     <p class="text-sm font-medium text-gray-300">Send transaction screenshot to <a href="https://wa.me/923465939277" target="_blank" class="text-green-400 font-bold underline hover:text-green-300">WhatsApp (03465939277)</a>.</p>
                 </div>
-                
-                <!-- Step 3 -->
                 <div class="flex items-start">
                     <div class="bg-indigo-600 text-white font-bold rounded-full h-6 w-6 flex items-center justify-center text-xs shrink-0 mt-0.5 mr-3">3</div>
                     <p class="text-sm font-medium text-gray-300">Receive your code and enter it below.</p>
                 </div>
             </div>
             
-            <!-- Code Input -->
             <div class="mt-5 flex gap-2">
                 <input type="text" id="unlock-code" placeholder="Enter Unlock Code" class="flex-1 bg-gray-700 border border-gray-600 text-white placeholder-gray-400 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-indigo-400 focus:ring-1 focus:ring-indigo-400 font-medium transition-all">
                 <button onclick="verifyCode()" class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-2 px-4 rounded-lg text-sm transition-all shadow-sm">Submit</button>
@@ -87,10 +80,7 @@
     <div id="screen-type" class="w-full max-w-md flex-col items-center" style="display: none;">
         <button onclick="goBack('screen-home', 'screen-type')" class="self-start mb-6 text-sm font-bold text-gray-400 hover:text-white transition-colors">← Back</button>
         <h1 class="text-3xl font-extrabold mb-8 tracking-tight text-center">Select Test Type</h1>
-        
-        <div id="type-options" class="w-full space-y-3">
-            <!-- Populated via JS -->
-        </div>
+        <div id="type-options" class="w-full space-y-3"></div>
     </div>
 
     <!-- SCREEN 3: TEST INFO -->
@@ -118,114 +108,46 @@
 
     <!-- SCREEN 4: ACTIVE TEST -->
     <div id="screen-test" class="w-full max-w-3xl flex-col" style="display: none;">
-        <div class="flex justify-between items-center bg-gray-800 border-b-2 border-gray-700 p-4 rounded-t-xl">
+        <div class="flex justify-between items-center bg-gray-800 border-b-2 border-gray-700 p-4 rounded-t-xl shadow-md z-10 relative">
             <h2 class="text-xl font-bold text-gray-100">MockLab Test</h2>
             <div class="text-2xl font-mono font-bold text-red-400 bg-red-900/30 py-1 px-3 rounded-lg border border-red-900/50" id="timer-display">00:00:00</div>
         </div>
-        <div class="bg-gray-800 p-8 rounded-b-xl min-h-[50vh] flex items-center justify-center border-x-2 border-b-2 border-gray-700 shadow-lg">
-            <p class="text-gray-500 font-bold text-xl uppercase tracking-widest">[ MCQs WILL APPEAR HERE ]</p>
+        
+        <!-- TEST QUESTION CONTAINER -->
+        <div id="question-container" class="bg-gray-800 p-6 md:p-10 rounded-b-xl min-h-[50vh] border-x-2 border-b-2 border-gray-700 shadow-lg">
+            <!-- Questions loaded via JS -->
         </div>
+    </div>
+    
+    <!-- SCREEN 5: RESULTS -->
+    <div id="screen-result" class="w-full max-w-md flex-col items-center" style="display: none;">
+        <h1 class="text-4xl font-extrabold mb-4 tracking-tight text-center text-green-400">Test Completed!</h1>
+        <div class="w-full bg-gray-800 border-2 border-gray-700 rounded-xl p-8 shadow-lg mb-8 text-center">
+            <p class="text-gray-400 font-bold uppercase tracking-wider mb-2">Your Score</p>
+            <p id="final-score" class="text-6xl font-extrabold text-white mb-6">0 / 0</p>
+            <p id="score-msg" class="text-lg font-medium text-gray-300"></p>
+        </div>
+        <button onclick="goBack('screen-home', 'screen-result')" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white transition-all font-extrabold text-xl py-4 px-6 rounded-xl shadow-lg">Return Home</button>
     </div>
 
     <script>
-        // DATA STRUCTURE
-        const testData = {
-            "COMSATS": {
-                options: [
-                    { id: "nat-ie", name: "Pre-Engineering: NAT-IE" },
-                    { id: "nat-im", name: "Pre-Medical: NAT-IM" },
-                    { id: "nat-ics", name: "Computer Science / ICS: NAT-ICS" },
-                    { id: "nat-igs", name: "General Science: NAT-IGS" },
-                    { id: "nat-ia", name: "Arts / Humanities: NAT-IA" },
-                    { id: "nat-icom", name: "Commerce: NAT-ICOM" }
-                ],
-                info: {
-                    time: "120 Minutes",
-                    marks: "90 Marks (No negative marking)",
-                    breakdown: [
-                        "English / Verbal: 20 MCQs",
-                        "Analytical Reasoning: 20 MCQs",
-                        "Quantitative Reasoning: 20 MCQs",
-                        "Subject Portion: 30 MCQs (10 per subject based on group)"
-                    ]
-                }
-            },
-            "NTS": {
-                options: [
-                    { id: "nat-ie", name: "Pre-Engineering: NAT-IE" },
-                    { id: "nat-im", name: "Pre-Medical: NAT-IM" },
-                    { id: "nat-ics", name: "Computer Science / ICS: NAT-ICS" },
-                    { id: "nat-igs", name: "General Science: NAT-IGS" },
-                    { id: "nat-ia", name: "Arts / Humanities: NAT-IA" },
-                    { id: "nat-icom", name: "Commerce: NAT-ICOM" }
-                ],
-                info: { 
-                    time: "120 Minutes",
-                    marks: "90 Marks (No negative marking)",
-                    breakdown: [
-                        "English / Verbal: 20 MCQs",
-                        "Analytical Reasoning: 20 MCQs",
-                        "Quantitative Reasoning: 20 MCQs",
-                        "Subject Portion: 30 MCQs (10 per subject based on group)"
-                    ]
-                }
-            },
-            "PIEAS": {
-                options: [
-                    { id: "pieas-eng", name: "Pre-Engineering" },
-                    { id: "pieas-med", name: "Pre-Medical" },
-                    { id: "pieas-ics", name: "ICS (Maths, Physics, CS)" },
-                    { id: "pieas-gen", name: "Science General (with Maths)" }
-                ],
-                infoMap: {
-                    "pieas-eng": { time: "180 Minutes", marks: "100 MCQs", breakdown: ["English: 10", "Maths: 30", "Physics: 30", "Chemistry: 30"] },
-                    "pieas-med": { time: "180 Minutes", marks: "100 MCQs", breakdown: ["English: 10", "Chemistry: 30", "Physics: 30", "Maths (SSC Level): 30"] },
-                    "pieas-ics": { time: "180 Minutes", marks: "100 MCQs", breakdown: ["English: 10", "Maths: 30", "Physics: 30", "Computer Science: 30"] },
-                    "pieas-gen": { time: "180 Minutes", marks: "100 MCQs", breakdown: ["English: 10", "Maths: 60", "Physics (SSC Level): 30"] }
-                }
-            },
-            "AIR": {
-                options: [
-                    { id: "air-eng", name: "Pre-Engineering" },
-                    { id: "air-med", name: "Pre-Medical" },
-                    { id: "air-ics", name: "Computer Science (ICS)" },
-                    { id: "air-com", name: "Commerce (I.Com)" },
-                    { id: "air-gen", name: "General Science" },
-                    { id: "air-art", name: "Arts / Humanities" }
-                ],
-                infoMap: {
-                    "air-eng": { time: "120 Minutes", marks: "100 MCQs", breakdown: ["English: 20%", "Analytical/Logical Reasoning: 25%", "Math/Quantitative: 25%", "Physics: 10%", "Chemistry: 10%", "Mathematics: 10%"] },
-                    "air-med": { time: "120 Minutes", marks: "100 MCQs", breakdown: ["English: 20%", "Analytical/Logical Reasoning: 25%", "Math/Quantitative: 15%", "Physics: 10%", "Chemistry: 10%", "Biology: 20%"] },
-                    "air-ics": { time: "120 Minutes", marks: "100 MCQs", breakdown: ["English: 20%", "Analytical/Logical Reasoning: 25%", "Math/Quantitative: 25%", "Physics: 10%", "Computer Science: 10%", "Mathematics: 10%"] },
-                    "air-com": { time: "120 Minutes", marks: "100 MCQs", breakdown: ["English: 20%", "Analytical/Logical Reasoning: 25%", "Math/Quantitative: 15%", "Principles of Accounting: 14%", "Commerce: 13%", "Economics: 13%"] },
-                    "air-gen": { time: "120 Minutes", marks: "100 MCQs", breakdown: ["English: 20%", "Analytical/Logical Reasoning: 25%", "Math/Quantitative: 25%", "Mathematics: 10%", "Statistics: 10%", "Economics: 10%"] },
-                    "air-art": { time: "120 Minutes", marks: "100 MCQs", breakdown: ["English: 20%", "Analytical/Logical Reasoning: 25%", "Math/Quantitative: 15%", "Islamiat: 10%", "Pakistan Studies: 10%", "General Knowledge & Current Affairs: 20%"] }
-                }
-            },
-            "BAHRIA": {
-                options: [
-                    { id: "bah-cbt", name: "Standard CBT (Mock Format)" }
-                ],
-                info: {
-                    time: "120 Minutes",
-                    marks: "100 MCQs",
-                    breakdown: ["Test details will be updated based on specific group selection."]
-                }
-            }
-        };
-
         let currentUni = null;
+        let currentTestId = null; // Which specific test (e.g. 'nat-igs')
         let testTimeMinutes = 0;
         let timerInterval;
 
-        // ERROR-CATCHING SCREEN LOGIC
+        // TEST TAKING VARIABLES
+        let activeQuestions = [];
+        let currentQIndex = 0;
+        let userAnswers = {};
+
         function showScreen(hideId, showId) {
             try {
                 document.getElementById(hideId).style.display = "none";
                 document.getElementById(showId).style.display = "flex";
                 window.scrollTo(0,0);
             } catch (error) {
-                alert("Oops! Something went wrong switching screens. Error: " + error.message);
+                alert("Error switching screens: " + error.message);
             }
         }
 
@@ -234,61 +156,152 @@
         }
 
         function selectUniversity(uniKey) {
-            try {
-                currentUni = uniKey;
-                const typeContainer = document.getElementById('type-options');
-                typeContainer.innerHTML = ''; 
+            currentUni = uniKey;
+            const typeContainer = document.getElementById('type-options');
+            typeContainer.innerHTML = ''; 
 
-                const options = testData[uniKey].options;
-                options.forEach(opt => {
-                    const btn = document.createElement('button');
-                    btn.className = "w-full bg-gray-800 border-2 border-gray-700 hover:border-white hover:bg-white hover:text-black transition-all font-bold text-lg py-4 px-6 rounded-xl shadow-sm text-left";
-                    btn.innerText = opt.name;
-                    btn.onclick = () => selectType(opt.id, opt.name);
-                    typeContainer.appendChild(btn);
-                });
+            const options = testData[uniKey].options;
+            options.forEach(opt => {
+                const btn = document.createElement('button');
+                btn.className = "w-full bg-gray-800 border-2 border-gray-700 hover:border-white hover:bg-white hover:text-black transition-all font-bold text-lg py-4 px-6 rounded-xl shadow-sm text-left";
+                btn.innerText = opt.name;
+                btn.onclick = () => selectType(opt.id, opt.name);
+                typeContainer.appendChild(btn);
+            });
 
-                showScreen('screen-home', 'screen-type');
-            } catch (error) {
-                alert("Error loading university: " + error.message);
-            }
+            showScreen('screen-home', 'screen-type');
         }
 
         function selectType(typeId, typeName) {
-            try {
-                document.getElementById('info-title').innerText = typeName;
-                
-                let infoData;
-                if (testData[currentUni].info) {
-                    infoData = testData[currentUni].info; 
-                } else {
-                    infoData = testData[currentUni].infoMap[typeId]; 
-                }
+            currentTestId = typeId; // Save this to load questions later
+            document.getElementById('info-title').innerText = typeName;
+            
+            let infoData = testData[currentUni].info || testData[currentUni].infoMap[typeId]; 
+            
+            document.getElementById('info-time').innerText = infoData.time;
+            document.getElementById('info-marks').innerText = infoData.marks;
+            testTimeMinutes = parseInt(infoData.time.split(' ')[0]);
 
-                document.getElementById('info-time').innerText = infoData.time;
-                document.getElementById('info-marks').innerText = infoData.marks;
-                
-                testTimeMinutes = parseInt(infoData.time.split(' ')[0]);
+            const breakdownUl = document.getElementById('info-breakdown');
+            breakdownUl.innerHTML = '';
+            infoData.breakdown.forEach(item => {
+                const li = document.createElement('li');
+                li.innerHTML = `• ${item}`;
+                breakdownUl.appendChild(li);
+            });
 
-                const breakdownUl = document.getElementById('info-breakdown');
-                breakdownUl.innerHTML = '';
-                infoData.breakdown.forEach(item => {
-                    const li = document.createElement('li');
-                    li.innerHTML = `• ${item}`;
-                    breakdownUl.appendChild(li);
-                });
-
-                showScreen('screen-type', 'screen-info');
-            } catch (error) {
-                alert("Error loading test details: " + error.message);
-            }
+            showScreen('screen-type', 'screen-info');
         }
 
+        // =========================================================
+        // TEST ENGINE LOGIC
+        // =========================================================
         function startTest() {
             showScreen('screen-info', 'screen-test');
+            
+            // Fetch questions from our data.js questionBank
+            activeQuestions = questionBank[currentTestId] || [];
+            
+            if(activeQuestions.length === 0) {
+                document.getElementById('question-container').innerHTML = `
+                    <div class="flex h-full items-center justify-center text-center">
+                        <p class="text-xl font-bold text-gray-500 p-10 border-2 border-dashed border-gray-600 rounded-xl">
+                            Questions for ${currentTestId.toUpperCase()} will be added very soon!<br>
+                            <button onclick="goBack('screen-home', 'screen-test')" class="mt-4 text-indigo-400 underline text-sm">Go Back</button>
+                        </p>
+                    </div>`;
+                return;
+            }
+
+            // Reset test variables
+            currentQIndex = 0;
+            userAnswers = {};
+            renderQuestion();
             startTimer(testTimeMinutes * 60);
         }
 
+        function renderQuestion() {
+            const qData = activeQuestions[currentQIndex];
+            
+            let html = `
+                <div class="mb-2 text-sm font-bold text-indigo-400 uppercase tracking-widest">Question ${currentQIndex + 1} of ${activeQuestions.length}</div>
+                <h3 class="text-xl md:text-2xl font-semibold mb-8 text-white leading-relaxed">${qData.q}</h3>
+                <div class="space-y-3">
+            `;
+            
+            qData.options.forEach((opt, idx) => {
+                const isSelected = userAnswers[currentQIndex] === idx ? 'checked' : '';
+                const activeStyle = isSelected ? 'border-indigo-500 bg-indigo-900/30' : 'border-gray-700 bg-gray-800 hover:bg-gray-700';
+                
+                html += `
+                <label class="flex items-center space-x-4 p-4 rounded-xl border-2 ${activeStyle} cursor-pointer transition-all">
+                    <input type="radio" name="option" value="${idx}" class="w-5 h-5 text-indigo-600 focus:ring-indigo-500 bg-gray-900 border-gray-600" ${isSelected} onchange="saveAnswer(${idx})">
+                    <span class="text-gray-200 font-medium text-lg">${opt}</span>
+                </label>`;
+            });
+            html += `</div>`;
+            
+            // Controls
+            html += `<div class="mt-10 flex justify-between items-center border-t border-gray-700 pt-6">`;
+            
+            if(currentQIndex === 0) {
+                html += `<div></div>`; // Empty div for spacing
+            } else {
+                html += `<button onclick="prevQuestion()" class="px-6 py-3 bg-gray-700 text-white rounded-lg font-bold hover:bg-gray-600 transition-colors">← Previous</button>`;
+            }
+
+            if(currentQIndex === activeQuestions.length - 1) {
+                html += `<button onclick="submitTest()" class="px-8 py-3 bg-green-600 text-white rounded-lg font-bold hover:bg-green-500 transition-colors shadow-lg">Submit Test</button>`;
+            } else {
+                html += `<button onclick="nextQuestion()" class="px-8 py-3 bg-indigo-600 text-white rounded-lg font-bold hover:bg-indigo-500 transition-colors shadow-lg">Next →</button>`;
+            }
+            html += `</div>`;
+            
+            document.getElementById('question-container').innerHTML = html;
+        }
+
+        function saveAnswer(optionIndex) {
+            userAnswers[currentQIndex] = optionIndex;
+            renderQuestion(); // Re-render to show selected styling
+        }
+
+        function nextQuestion() {
+            if(currentQIndex < activeQuestions.length - 1) {
+                currentQIndex++;
+                renderQuestion();
+            }
+        }
+
+        function prevQuestion() {
+            if(currentQIndex > 0) {
+                currentQIndex--;
+                renderQuestion();
+            }
+        }
+
+        function submitTest() {
+            clearInterval(timerInterval);
+            let score = 0;
+            
+            // Calculate Score
+            activeQuestions.forEach((q, index) => {
+                if(userAnswers[index] === q.ans) {
+                    score++;
+                }
+            });
+
+            document.getElementById('final-score').innerText = `${score} / ${activeQuestions.length}`;
+            
+            let percent = (score / activeQuestions.length) * 100;
+            let msg = percent > 80 ? "Excellent Job! 🚀" : percent > 50 ? "Good Effort! 👍" : "Keep Practicing! 📚";
+            document.getElementById('score-msg').innerText = msg;
+
+            showScreen('screen-test', 'screen-result');
+        }
+
+        // =========================================================
+        // TIMER LOGIC
+        // =========================================================
         function startTimer(durationSeconds) {
             clearInterval(timerInterval);
             let timer = durationSeconds;
@@ -307,7 +320,8 @@
 
                 if (--timer < 0) {
                     clearInterval(timerInterval);
-                    display.textContent = "TIME UP";
+                    display.textContent = "00:00:00";
+                    submitTest(); // Auto submit when time is up
                 }
             }, 1000);
         }
@@ -315,12 +329,10 @@
         // UNLOCK CODE LOGIC
         function verifyCode() {
             const codeInput = document.getElementById('unlock-code').value.trim();
-            
             if(codeInput === "") {
                 alert("Please enter a code first.");
                 return;
             }
-
             if(codeInput.toUpperCase() === "MOCK2026") {
                 alert("Success! All MockLab tests have been unlocked.");
                 document.getElementById('unlock-code').value = ""; 
