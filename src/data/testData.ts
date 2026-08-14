@@ -1,0 +1,80 @@
+import { TestDataMap } from '../types/test';
+
+export const testData: TestDataMap = {
+  COMSATS: {
+    options: [
+      { id: "nat-ie", name: "Pre-Engineering: NAT-IE" },
+      { id: "nat-im", name: "Pre-Medical: NAT-IM" },
+      { id: "nat-ics", name: "Computer Science / ICS: NAT-ICS" },
+      { id: "nat-igs", name: "General Science: NAT-IGS" },
+      { id: "nat-ia", name: "Arts / Humanities: NAT-IA" },
+      { id: "nat-icom", name: "Commerce: NAT-ICOM" }
+    ],
+    info: {
+      time: "120 Minutes",
+      marks: "90 Marks (No negative marking)",
+      breakdown: [
+        "English / Verbal: 20 MCQs",
+        "Analytical Reasoning: 20 MCQs",
+        "Quantitative Reasoning: 20 MCQs",
+        "Subject Portion: 30 MCQs"
+      ]
+    }
+  },
+  NTS: {
+    options: [
+      { id: "nat-ie", name: "Pre-Engineering: NAT-IE" },
+      { id: "nat-im", name: "Pre-Medical: NAT-IM" },
+      { id: "nat-ics", name: "Computer Science / ICS: NAT-ICS" },
+      { id: "nat-igs", name: "General Science: NAT-IGS" },
+      { id: "nat-ia", name: "Arts / Humanities: NAT-IA" },
+      { id: "nat-icom", name: "Commerce: NAT-ICOM" }
+    ],
+    info: {
+      time: "120 Minutes",
+      marks: "90 Marks (No negative marking)",
+      breakdown: [
+        "English / Verbal: 20 MCQs",
+        "Analytical Reasoning: 20 MCQs",
+        "Quantitative Reasoning: 20 MCQs",
+        "Subject Portion: 30 MCQs"
+      ]
+    }
+  },
+  PIEAS: {
+    options: [
+      { id: "pieas-eng", name: "Pre-Engineering" },
+      { id: "pieas-med", name: "Pre-Medical" },
+      { id: "pieas-ics", name: "ICS (Maths, Physics, CS)" },
+      { id: "pieas-gen", name: "Science General (with Maths)" }
+    ],
+    infoMap: {
+      "pieas-eng": { time: "180 Minutes", marks: "100 MCQs", breakdown: ["English: 10", "Maths: 30", "Physics: 30", "Chemistry: 30"] },
+      "pieas-med": { time: "180 Minutes", marks: "100 MCQs", breakdown: ["English: 10", "Chemistry: 30", "Physics: 30", "Maths (SSC Level): 30"] },
+      "pieas-ics": { time: "180 Minutes", marks: "100 MCQs", breakdown: ["English: 10", "Maths: 30", "Physics: 30", "Computer Science: 30"] },
+      "pieas-gen": { time: "180 Minutes", marks: "100 MCQs", breakdown: ["English: 10", "Maths: 60", "Physics (SSC Level): 30"] }
+    }
+  },
+  AIR: {
+    options: [
+      { id: "air-eng", name: "Pre-Engineering" },
+      { id: "air-med", name: "Pre-Medical" },
+      { id: "air-ics", name: "Computer Science (ICS)" },
+      { id: "air-com", name: "Commerce (I.Com)" },
+      { id: "air-gen", name: "General Science" },
+      { id: "air-art", name: "Arts / Humanities" }
+    ],
+    infoMap: {
+      "air-eng": { time: "120 Minutes", marks: "100 MCQs", breakdown: ["English: 20%", "Analytical/Logical: 25%", "Maths: 25%", "Physics: 10%", "Chemistry: 10%", "Maths: 10%"] },
+      "air-med": { time: "120 Minutes", marks: "100 MCQs", breakdown: ["English: 20%", "Analytical/Logical: 25%", "Maths: 15%", "Physics: 10%", "Chemistry: 10%", "Biology: 20%"] },
+      "air-ics": { time: "120 Minutes", marks: "100 MCQs", breakdown: ["English: 20%", "Analytical/Logical: 25%", "Maths: 25%", "Physics: 10%", "CS: 10%", "Maths: 10%"] },
+      "air-com": { time: "120 Minutes", marks: "100 MCQs", breakdown: ["English: 20%", "Analytical/Logical: 25%", "Maths: 15%", "Accounting: 14%", "Commerce: 13%", "Economics: 13%"] },
+      "air-gen": { time: "120 Minutes", marks: "100 MCQs", breakdown: ["English: 20%", "Analytical/Logical: 25%", "Maths: 25%", "Maths: 10%", "Statistics: 10%", "Economics: 10%"] },
+      "air-art": { time: "120 Minutes", marks: "100 MCQs", breakdown: ["English: 20%", "Analytical/Logical: 25%", "Maths: 15%", "Islamiat: 10%", "Pak Studies: 10%", "GK: 20%"] }
+    }
+  },
+  BAHRIA: {
+    options: [{ id: "bah-cbt", name: "Standard CBT (Mock Format)" }],
+    info: { time: "120 Minutes", marks: "100 MCQs", breakdown: ["Test details will be updated based on specific group selection."] }
+  }
+};
