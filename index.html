@@ -505,4 +505,53 @@
             for(let i = 0; i < activeQuestions.length; i++) {
                 const btn = document.createElement('button');
                 btn.innerText = i + 1;
-                let baseClasses = "w-full aspect-square rounded-lg font-bold flex items-c
+                let baseClasses = "w-full aspect-square rounded-lg font-bold flex items-center justify-center transition-transform hover:scale-110 shadow-sm border ";
+                if (reviewStatus[i]) btn.className = baseClasses + "bg-yellow-500 text-yellow-900 border-yellow-600";
+                else if (userAnswers[i] !== undefined) btn.className = baseClasses + "bg-green-500 text-white border-green-600";
+                else btn.className = baseClasses + "bg-gray-700 text-gray-300 border-gray-600 hover:bg-gray-600";
+                if (i === currentQIndex) btn.classList.add("ring-2", "ring-white", "ring-offset-2", "ring-offset-gray-800");
+                btn.onclick = () => { currentQIndex = i; document.getElementById('overview-modal').style.display = "none"; renderQuestion(); };
+                gridContainer.appendChild(btn);
+            }
+            document.getElementById('overview-modal').style.display = "flex";
+        }
+        function closeOverview() { document.getElementById('overview-modal').style.display = "none"; }
+        function saveAnswer(optionIndex) {
+            userAnswers[currentQIndex] = optionIndex;
+            if(reviewStatus[currentQIndex]) reviewStatus[currentQIndex] = false;
+            renderQuestion();
+        }
+        function nextQuestion() { if(currentQIndex < activeQuestions.length - 1) { currentQIndex++; renderQuestion(); } }
+        function prevQuestion() { if(currentQIndex > 0) { currentQIndex--; renderQuestion(); } }
+        function submitTest() {
+            const unanswered = activeQuestions.length - Object.keys(userAnswers).length;
+            if(unanswered > 0) {
+                if(!confirm(`You still have ${unanswered} unanswered questions. Are you sure you want to submit?`)) return;
+            }
+            clearInterval(timerInterval);
+            let score = 0;
+            activeQuestions.forEach((q, index) => { if(userAnswers[index] === q.ans) score++; });
+            document.getElementById('final-score').innerText = `${score} / ${activeQuestions.length}`;
+            let percent = (score / activeQuestions.length) * 100;
+            document.getElementById('score-msg').innerText = percent > 80 ? "Excellent Job! 🚀" : percent > 50 ? "Good Effort! 👍" : "Keep Practicing! 📚";
+            showScreen('screen-test', 'screen-result');
+        }
+        function startTimer(durationSeconds) {
+            clearInterval(timerInterval);
+            let timer = durationSeconds;
+            timerInterval = setInterval(function () {
+                let hours = parseInt(timer / 3600, 10);
+                let minutes = parseInt((timer % 3600) / 60, 10);
+                let seconds = parseInt(timer % 60, 10);
+                document.getElementById('timer-display').textContent = 
+                    (hours < 10 ? "0" + hours : hours) + ":" + (minutes < 10 ? "0" + minutes : minutes) + ":" + (seconds < 10 ? "0" + seconds : seconds);
+                if (--timer < 0) {
+                    clearInterval(timerInterval);
+                    alert("Time is up! Submitting your test.");
+                    submitTest(); 
+                }
+            }, 1000);
+        }
+    </script>
+</body>
+</html>
