@@ -114,7 +114,7 @@
         </div>
         
         <!-- TEST QUESTION CONTAINER -->
-        <div id="question-container" class="bg-gray-800 p-6 md:p-10 rounded-b-xl min-h-[50vh] border-x-2 border-b-2 border-gray-700 shadow-lg">
+        <div id="question-container" class="bg-gray-800 p-6 md:p-8 rounded-b-xl min-h-[50vh] border-x-2 border-b-2 border-gray-700 shadow-lg">
             <!-- Questions loaded via JS -->
         </div>
     </div>
@@ -132,7 +132,7 @@
 
     <script>
         let currentUni = null;
-        let currentTestId = null; // Which specific test (e.g. 'nat-igs')
+        let currentTestId = null; 
         let testTimeMinutes = 0;
         let timerInterval;
 
@@ -140,6 +140,7 @@
         let activeQuestions = [];
         let currentQIndex = 0;
         let userAnswers = {};
+        let reviewStatus = {}; // Stores which questions are marked for review
 
         function showScreen(hideId, showId) {
             try {
@@ -173,7 +174,7 @@
         }
 
         function selectType(typeId, typeName) {
-            currentTestId = typeId; // Save this to load questions later
+            currentTestId = typeId; 
             document.getElementById('info-title').innerText = typeName;
             
             let infoData = testData[currentUni].info || testData[currentUni].infoMap[typeId]; 
@@ -194,12 +195,11 @@
         }
 
         // =========================================================
-        // TEST ENGINE LOGIC
+        // TEST ENGINE LOGIC (UPDATED WITH REVIEW & JUMP)
         // =========================================================
         function startTest() {
             showScreen('screen-info', 'screen-test');
             
-            // Fetch questions from our data.js questionBank
             activeQuestions = questionBank[currentTestId] || [];
             
             if(activeQuestions.length === 0) {
@@ -216,18 +216,53 @@
             // Reset test variables
             currentQIndex = 0;
             userAnswers = {};
+            reviewStatus = {}; // Reset reviews
             renderQuestion();
             startTimer(testTimeMinutes * 60);
         }
 
         function renderQuestion() {
             const qData = activeQuestions[currentQIndex];
+            const answeredCount = Object.keys(userAnswers).length;
+            const reviewCount = Object.values(reviewStatus).filter(Boolean).length;
+            const isReview = reviewStatus[currentQIndex] || false;
             
+            // 1. TOP NAVIGATION / COUNTERS PANEL
             let html = `
-                <div class="mb-2 text-sm font-bold text-indigo-400 uppercase tracking-widest">Question ${currentQIndex + 1} of ${activeQuestions.length}</div>
-                <h3 class="text-xl md:text-2xl font-semibold mb-8 text-white leading-relaxed">${qData.q}</h3>
-                <div class="space-y-3">
+                <div class="flex flex-col md:flex-row justify-between items-center bg-gray-900 border-b-2 border-gray-700 pb-4 mb-6 rounded-lg p-4 shadow-inner">
+                    
+                    <div class="flex space-x-8 mb-4 md:mb-0">
+                        <div class="text-center">
+                            <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest">Answered</p>
+                            <p class="text-lg font-bold text-green-400">${answeredCount} <span class="text-gray-500 text-sm">/ ${activeQuestions.length}</span></p>
+                        </div>
+                        <div class="text-center">
+                            <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest">Review</p>
+                            <p class="text-lg font-bold text-yellow-400">${reviewCount}</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center space-x-2">
+                        <input type="number" id="jump-input" min="1" max="${activeQuestions.length}" class="w-16 px-2 py-2 rounded-lg bg-gray-800 border border-gray-600 text-white font-bold focus:outline-none focus:border-indigo-500 text-center" placeholder="Q#">
+                        <button onclick="jumpToQuestion()" class="bg-indigo-600 hover:bg-indigo-500 px-3 py-2 rounded-lg font-bold text-white transition-colors shadow-sm text-sm">Jump</button>
+                        <button onclick="jumpToNextSection()" class="bg-gray-700 hover:bg-gray-600 px-3 py-2 rounded-lg font-bold text-gray-200 transition-colors shadow-sm border border-gray-600 text-sm">Next Section &raquo;</button>
+                    </div>
+                </div>
             `;
+
+            // 2. QUESTION HEADER & REVIEW BUTTON
+            html += `
+                <div class="flex justify-between items-center mb-4">
+                    <div class="text-sm font-bold text-indigo-400 uppercase tracking-widest">Question ${currentQIndex + 1} of ${activeQuestions.length}</div>
+                    <button onclick="toggleReview()" class="flex items-center space-x-1 text-sm font-bold px-3 py-1 rounded-full border-2 transition-colors ${isReview ? 'border-yellow-500 text-yellow-400 bg-yellow-900/20' : 'border-gray-600 text-gray-400 hover:text-white hover:border-gray-400'}">
+                        <span>${isReview ? '★ Marked for Review' : '☆ Mark for Review'}</span>
+                    </button>
+                </div>
+            `;
+            
+            // 3. ACTUAL QUESTION & OPTIONS
+            html += `<h3 class="text-xl md:text-2xl font-semibold mb-8 text-white leading-relaxed">${qData.q}</h3>
+                     <div class="space-y-3">`;
             
             qData.options.forEach((opt, idx) => {
                 const isSelected = userAnswers[currentQIndex] === idx ? 'checked' : '';
@@ -241,28 +276,69 @@
             });
             html += `</div>`;
             
-            // Controls
+            // 4. BOTTOM CONTROLS
             html += `<div class="mt-10 flex justify-between items-center border-t border-gray-700 pt-6">`;
             
             if(currentQIndex === 0) {
-                html += `<div></div>`; // Empty div for spacing
+                html += `<div></div>`; // Empty div to keep Next button on the right
             } else {
-                html += `<button onclick="prevQuestion()" class="px-6 py-3 bg-gray-700 text-white rounded-lg font-bold hover:bg-gray-600 transition-colors">← Previous</button>`;
+                html += `<button onclick="prevQuestion()" class="px-6 py-3 bg-gray-700 text-white rounded-lg font-bold hover:bg-gray-600 transition-colors">&larr; Prev</button>`;
             }
 
             if(currentQIndex === activeQuestions.length - 1) {
                 html += `<button onclick="submitTest()" class="px-8 py-3 bg-green-600 text-white rounded-lg font-bold hover:bg-green-500 transition-colors shadow-lg">Submit Test</button>`;
             } else {
-                html += `<button onclick="nextQuestion()" class="px-8 py-3 bg-indigo-600 text-white rounded-lg font-bold hover:bg-indigo-500 transition-colors shadow-lg">Next →</button>`;
+                html += `<button onclick="nextQuestion()" class="px-8 py-3 bg-indigo-600 text-white rounded-lg font-bold hover:bg-indigo-500 transition-colors shadow-lg">Next &rarr;</button>`;
             }
             html += `</div>`;
             
             document.getElementById('question-container').innerHTML = html;
         }
 
+        // --- NEW FEATURES LOGIC ---
+        
+        function toggleReview() {
+            reviewStatus[currentQIndex] = !reviewStatus[currentQIndex];
+            renderQuestion(); // Re-render to update the star button and top counter
+        }
+
+        function jumpToQuestion() {
+            const inputVal = document.getElementById('jump-input').value;
+            const qNum = parseInt(inputVal);
+            
+            if (qNum >= 1 && qNum <= activeQuestions.length) {
+                currentQIndex = qNum - 1; // arrays start at 0
+                renderQuestion();
+            } else {
+                alert(`Please enter a valid question number between 1 and ${activeQuestions.length}`);
+            }
+        }
+
+        function jumpToNextSection() {
+            // Standard NTS sections are 20 questions each. This calculates the start of the *next* chunk of 20.
+            // e.g. If on Q5, it jumps to Q21. If on Q25, jumps to Q41.
+            let nextBoundary = Math.floor(currentQIndex / 20) * 20 + 20;
+            
+            // Prevent jumping past the last question
+            if (nextBoundary >= activeQuestions.length) {
+                nextBoundary = activeQuestions.length - 1; 
+            }
+            
+            currentQIndex = nextBoundary;
+            renderQuestion();
+        }
+
+        // --- ORIGINAL TEST LOGIC ---
+
         function saveAnswer(optionIndex) {
             userAnswers[currentQIndex] = optionIndex;
-            renderQuestion(); // Re-render to show selected styling
+            
+            // Optional: Automatically remove from 'Review' if they answer it
+            if(reviewStatus[currentQIndex]) {
+                reviewStatus[currentQIndex] = false;
+            }
+            
+            renderQuestion();
         }
 
         function nextQuestion() {
@@ -280,10 +356,16 @@
         }
 
         function submitTest() {
+            const unanswered = activeQuestions.length - Object.keys(userAnswers).length;
+            
+            if(unanswered > 0) {
+                const confirmSubmit = confirm(`You still have ${unanswered} unanswered questions. Are you sure you want to submit?`);
+                if(!confirmSubmit) return;
+            }
+
             clearInterval(timerInterval);
             let score = 0;
             
-            // Calculate Score
             activeQuestions.forEach((q, index) => {
                 if(userAnswers[index] === q.ans) {
                     score++;
@@ -321,12 +403,12 @@
                 if (--timer < 0) {
                     clearInterval(timerInterval);
                     display.textContent = "00:00:00";
-                    submitTest(); // Auto submit when time is up
+                    alert("Time is up! Submitting your test automatically.");
+                    submitTest(); 
                 }
             }, 1000);
         }
 
-        // UNLOCK CODE LOGIC
         function verifyCode() {
             const codeInput = document.getElementById('unlock-code').value.trim();
             if(codeInput === "") {
