@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
+
     <!-- FORCE BROWSER TO NEVER CACHE THIS PAGE -->
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
@@ -11,7 +12,7 @@
 
     <title>MockLab</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    
+
     <!-- LOAD OUR SEPARATE MCQ FILE -->
     <script src="data.js?v=22"></script>
 
@@ -20,44 +21,63 @@
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 </head>
+
 <body class="bg-gray-900 text-gray-100 min-h-screen flex flex-col items-center justify-center p-4">
 
     <!-- LOADING SCREEN -->
     <div id="screen-loading" class="w-full flex-col items-center text-center" style="display: flex;">
-        <div class="w-12 h-12 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin mb-4 mx-auto"></div>
+        <div class="w-12 h-12 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin mb-4 mx-auto">
+        </div>
         <p class="text-gray-400 font-bold tracking-widest uppercase">Loading MockLab...</p>
     </div>
 
     <!-- ✨ UPGRADED AUTHENTICATION SCREEN ✨ -->
     <div id="screen-auth" class="w-full max-w-md flex-col items-center relative z-10" style="display: none;">
-        
-        <img src="MockLab.png" alt="MockLab Logo" class="w-48 sm:w-56 h-auto mb-3 drop-shadow-2xl mx-auto transition-transform hover:scale-105">
-        
-        <p class="text-center text-indigo-300 font-bold text-sm sm:text-base mb-8 uppercase tracking-widest px-2 drop-shadow-md">
+
+        <img src="MockLab.png" alt="MockLab Logo"
+            class="w-48 sm:w-56 h-auto mb-3 drop-shadow-2xl mx-auto transition-transform hover:scale-105">
+
+        <p
+            class="text-center text-indigo-300 font-bold text-sm sm:text-base mb-8 uppercase tracking-widest px-2 drop-shadow-md">
             Pakistan's ultimate <br class="sm:hidden"> All in One Entry Test Platform!
         </p>
-        
-        <div class="w-full bg-gray-800/90 backdrop-blur-sm border border-gray-700 rounded-2xl p-8 shadow-[0_0_40px_rgba(79,70,229,0.15)]">
+
+        <div
+            class="w-full bg-gray-800/90 backdrop-blur-sm border border-gray-700 rounded-2xl p-8 shadow-[0_0_40px_rgba(79,70,229,0.15)]">
             <h1 class="text-3xl font-black mb-8 tracking-tight text-white text-center" id="auth-title">Welcome Back</h1>
-            
+
             <!-- Log In Form -->
             <div id="login-form" class="space-y-4">
-                <input type="email" id="li-email" placeholder="Email Address" class="w-full bg-gray-900/60 border border-gray-600 rounded-xl px-4 py-3.5 text-white placeholder-gray-500 focus:border-indigo-500 focus:outline-none transition-all font-medium">
-                <input type="password" id="li-password" placeholder="Password" class="w-full bg-gray-900/60 border border-gray-600 rounded-xl px-4 py-3.5 text-white placeholder-gray-500 focus:border-indigo-500 focus:outline-none transition-all font-medium">
-                
-                <button id="btn-login" onclick="handleLogin()" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-black text-lg py-4 rounded-xl mt-4 transition-all shadow-lg disabled:opacity-50">Log In 🚀</button>
-                <p class="text-center text-sm text-gray-400 mt-6 font-medium">New student? <span onclick="toggleAuth('signup')" class="text-indigo-400 font-bold cursor-pointer hover:underline">Sign Up</span></p>
+                <input type="email" id="li-email" placeholder="Email Address"
+                    class="w-full bg-gray-900/60 border border-gray-600 rounded-xl px-4 py-3.5 text-white placeholder-gray-500 focus:border-indigo-500 focus:outline-none transition-all font-medium">
+                <input type="password" id="li-password" placeholder="Password"
+                    class="w-full bg-gray-900/60 border border-gray-600 rounded-xl px-4 py-3.5 text-white placeholder-gray-500 focus:border-indigo-500 focus:outline-none transition-all font-medium">
+
+                <button id="btn-login" onclick="handleLogin()"
+                    class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-black text-lg py-4 rounded-xl mt-4 transition-all shadow-lg disabled:opacity-50">Log
+                    In 🚀</button>
+                <p class="text-center text-sm text-gray-400 mt-6 font-medium">New student? <span
+                        onclick="toggleAuth('signup')"
+                        class="text-indigo-400 font-bold cursor-pointer hover:underline">Sign Up</span></p>
             </div>
 
             <!-- Sign Up Form -->
             <div id="signup-form" class="space-y-4 hidden">
-                <input type="text" id="su-name" placeholder="Full Name" class="w-full bg-gray-900/60 border border-gray-600 rounded-xl px-4 py-3.5 text-white placeholder-gray-500 focus:border-indigo-500 focus:outline-none transition-all font-medium">
-                <input type="email" id="su-email" placeholder="Email Address" class="w-full bg-gray-900/60 border border-gray-600 rounded-xl px-4 py-3.5 text-white placeholder-gray-500 focus:border-indigo-500 focus:outline-none transition-all font-medium">
-                <input type="text" id="su-whatsapp" placeholder="03XX (WhatsApp Number)" class="w-full bg-gray-900/60 border border-gray-600 rounded-xl px-4 py-3.5 text-white placeholder-gray-500 focus:border-indigo-500 focus:outline-none transition-all font-medium">
-                <input type="password" id="su-password" placeholder="Password (Min 6 characters)" class="w-full bg-gray-900/60 border border-gray-600 rounded-xl px-4 py-3.5 text-white placeholder-gray-500 focus:border-indigo-500 focus:outline-none transition-all font-medium">
-                
-                <button id="btn-signup" onclick="handleSignUp()" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-black text-lg py-4 rounded-xl mt-4 transition-all shadow-lg disabled:opacity-50">Sign Up 🚀</button>
-                <p class="text-center text-sm text-gray-400 mt-6 font-medium">Already have an account? <span onclick="toggleAuth('login')" class="text-indigo-400 font-bold cursor-pointer hover:underline">Log In</span></p>
+                <input type="text" id="su-name" placeholder="Full Name"
+                    class="w-full bg-gray-900/60 border border-gray-600 rounded-xl px-4 py-3.5 text-white placeholder-gray-500 focus:border-indigo-500 focus:outline-none transition-all font-medium">
+                <input type="email" id="su-email" placeholder="Email Address"
+                    class="w-full bg-gray-900/60 border border-gray-600 rounded-xl px-4 py-3.5 text-white placeholder-gray-500 focus:border-indigo-500 focus:outline-none transition-all font-medium">
+                <input type="text" id="su-whatsapp" placeholder="03XX (WhatsApp Number)"
+                    class="w-full bg-gray-900/60 border border-gray-600 rounded-xl px-4 py-3.5 text-white placeholder-gray-500 focus:border-indigo-500 focus:outline-none transition-all font-medium">
+                <input type="password" id="su-password" placeholder="Password (Min 6 characters)"
+                    class="w-full bg-gray-900/60 border border-gray-600 rounded-xl px-4 py-3.5 text-white placeholder-gray-500 focus:border-indigo-500 focus:outline-none transition-all font-medium">
+
+                <button id="btn-signup" onclick="handleSignUp()"
+                    class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-black text-lg py-4 rounded-xl mt-4 transition-all shadow-lg disabled:opacity-50">Sign
+                    Up 🚀</button>
+                <p class="text-center text-sm text-gray-400 mt-6 font-medium">Already have an account? <span
+                        onclick="toggleAuth('login')"
+                        class="text-indigo-400 font-bold cursor-pointer hover:underline">Log In</span></p>
             </div>
         </div>
     </div>
@@ -67,28 +87,34 @@
         <img src="MockLab.png" alt="MockLab Logo" class="w-48 h-auto mb-6 drop-shadow-md mx-auto">
         <h1 class="text-5xl font-extrabold mb-4 tracking-tight text-indigo-400">MockLab</h1>
         <p class="text-lg text-gray-300 mb-6 font-medium px-4">
-            The ultimate entry test portal for all universities in Pakistan. Master your preparation for NTS NAT, PIEAS, Air University, and Bahria.
+            The ultimate entry test portal for all universities in Pakistan. Master your preparation for NTS NAT, PIEAS,
+            Air University, and Bahria.
         </p>
-        
-        <div class="bg-gray-800 border border-gray-700 rounded-full px-6 py-2 mb-8 flex items-center gap-3 mx-auto w-max">
+
+        <div
+            class="bg-gray-800 border border-gray-700 rounded-full px-6 py-2 mb-8 flex items-center gap-3 mx-auto w-max">
             <span class="w-2 h-2 rounded-full bg-green-500"></span>
-            <span class="text-sm font-bold text-gray-300">Logged in as <span id="user-display-name" class="text-white">Student</span></span>
+            <span class="text-sm font-bold text-gray-300">Logged in as <span id="user-display-name"
+                    class="text-white">Student</span></span>
             <button onclick="logout()" class="text-xs text-red-400 hover:text-red-300 ml-2 underline">Logout</button>
         </div>
 
-        <button id="btn-admin" onclick="showAdminPanel()" class="w-full hidden bg-red-700 hover:bg-red-600 text-white transition-all font-extrabold text-xl py-3 px-8 rounded-xl shadow-lg mb-4">
+        <button id="btn-admin" onclick="showAdminPanel()"
+            class="w-full hidden bg-red-700 hover:bg-red-600 text-white transition-all font-extrabold text-xl py-3 px-8 rounded-xl shadow-lg mb-4">
             👑 Secret Admin Dashboard
         </button>
 
-        <button onclick="showScreen('screen-intro', 'screen-home')" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white transition-all font-extrabold text-xl py-4 px-8 rounded-xl shadow-lg hover:-translate-y-1">
-            Enter Portal 🚀
+        <button onclick="showScreen('screen-intro', 'screen-home')"
+            class="w-full bg-indigo-600 hover:bg-indigo-500 text-white transition-all font-extrabold text-xl py-4 px-8 rounded-xl shadow-lg hover:-translate-y-1">
+            Enter Portall 🚀
         </button>
     </div>
 
     <!-- 👑 SCREEN: SECRET ADMIN DASHBOARD 👑 -->
     <div id="screen-admin" class="w-full max-w-4xl flex-col items-center" style="display: none;">
         <div class="w-full flex justify-between items-center mb-8">
-            <button onclick="goBack('screen-intro', 'screen-admin')" class="text-sm font-bold text-gray-400 hover:text-white transition-colors">← Back</button>
+            <button onclick="goBack('screen-intro', 'screen-admin')"
+                class="text-sm font-bold text-gray-400 hover:text-white transition-colors">← Back</button>
             <h1 class="text-3xl font-black text-red-400 tracking-tight">Admin Dashboard</h1>
             <div class="w-10"></div>
         </div>
@@ -100,48 +126,76 @@
 
     <!-- SCREEN 1: SELECT TEST (RESTORED BUTTONS!) -->
     <div id="screen-home" class="w-full max-w-md flex-col items-center" style="display: none;">
-        <button onclick="goBack('screen-intro', 'screen-home')" class="self-start mb-6 text-sm font-bold text-gray-400 hover:text-white transition-colors">← Back to Home</button>
+        <button onclick="goBack('screen-intro', 'screen-home')"
+            class="self-start mb-6 text-sm font-bold text-gray-400 hover:text-white transition-colors">← Back to
+            Home</button>
         <h1 class="text-4xl font-extrabold mb-8 tracking-tight text-center">Select Test</h1>
-        
+
         <div class="w-full space-y-3">
-            <button onclick="selectUniversity('COMSATS')" class="w-full bg-gray-800 border-2 border-gray-700 hover:border-white hover:bg-white hover:text-black transition-all font-bold text-lg py-4 px-6 rounded-xl shadow-sm text-left">COMSATS Admission Test (NTS NAT)</button>
-            <button onclick="selectUniversity('PIEAS')" class="w-full bg-gray-800 border-2 border-gray-700 hover:border-white hover:bg-white hover:text-black transition-all font-bold text-lg py-4 px-6 rounded-xl shadow-sm text-left">PIEAS Admission Test</button>
-            <button onclick="selectUniversity('AIR')" class="w-full bg-gray-800 border-2 border-gray-700 hover:border-white hover:bg-white hover:text-black transition-all font-bold text-lg py-4 px-6 rounded-xl shadow-sm text-left">Air Admission Test</button>
-            <button onclick="selectUniversity('BAHRIA')" class="w-full bg-gray-800 border-2 border-gray-700 hover:border-white hover:bg-white hover:text-black transition-all font-bold text-lg py-4 px-6 rounded-xl shadow-sm text-left">Bahria Admission Test</button>
-            <button onclick="selectUniversity('NTS')" class="w-full bg-gray-800 border-2 border-gray-700 hover:border-white hover:bg-white hover:text-black transition-all font-bold text-lg py-4 px-6 rounded-xl shadow-sm text-left">OR NTS NAT</button>
+            <button onclick="selectUniversity('COMSATS')"
+                class="w-full bg-gray-800 border-2 border-gray-700 hover:border-white hover:bg-white hover:text-black transition-all font-bold text-lg py-4 px-6 rounded-xl shadow-sm text-left">COMSATS
+                Admission Test (NTS NAT)</button>
+            <button onclick="selectUniversity('PIEAS')"
+                class="w-full bg-gray-800 border-2 border-gray-700 hover:border-white hover:bg-white hover:text-black transition-all font-bold text-lg py-4 px-6 rounded-xl shadow-sm text-left">PIEAS
+                Admission Test</button>
+            <button onclick="selectUniversity('AIR')"
+                class="w-full bg-gray-800 border-2 border-gray-700 hover:border-white hover:bg-white hover:text-black transition-all font-bold text-lg py-4 px-6 rounded-xl shadow-sm text-left">Air
+                Admission Test</button>
+            <button onclick="selectUniversity('BAHRIA')"
+                class="w-full bg-gray-800 border-2 border-gray-700 hover:border-white hover:bg-white hover:text-black transition-all font-bold text-lg py-4 px-6 rounded-xl shadow-sm text-left">Bahria
+                Admission Test</button>
+            <button onclick="selectUniversity('NTS')"
+                class="w-full bg-gray-800 border-2 border-gray-700 hover:border-white hover:bg-white hover:text-black transition-all font-bold text-lg py-4 px-6 rounded-xl shadow-sm text-left">OR
+                NTS NAT</button>
         </div>
     </div>
 
     <!-- SCREEN 2: SELECT TYPE -->
     <div id="screen-type" class="w-full max-w-md flex-col items-center" style="display: none;">
-        <button onclick="goBack('screen-home', 'screen-type')" class="self-start mb-6 text-sm font-bold text-gray-400 hover:text-white transition-colors">← Back</button>
+        <button onclick="goBack('screen-home', 'screen-type')"
+            class="self-start mb-6 text-sm font-bold text-gray-400 hover:text-white transition-colors">← Back</button>
         <h1 class="text-3xl font-extrabold mb-8 tracking-tight text-center">Select Test Type</h1>
         <div id="type-options" class="w-full space-y-3"></div>
     </div>
 
     <!-- PREMIUM UNLOCK MODAL -->
-    <div id="premium-modal" class="fixed inset-0 bg-black/90 z-50 flex-col items-center justify-center p-4" style="display: none;">
+    <div id="premium-modal" class="fixed inset-0 bg-black/90 z-50 flex-col items-center justify-center p-4"
+        style="display: none;">
         <div class="bg-gray-800 border-2 border-indigo-500 rounded-xl p-6 w-full max-w-md shadow-2xl relative">
-            <button onclick="document.getElementById('premium-modal').style.display='none'" class="absolute top-4 right-4 text-gray-400 hover:text-white font-bold text-xl">✕</button>
+            <button onclick="document.getElementById('premium-modal').style.display='none'"
+                class="absolute top-4 right-4 text-gray-400 hover:text-white font-bold text-xl">✕</button>
             <h2 class="text-2xl font-black mb-2 text-center text-indigo-400">🔒 Premium Test</h2>
-            <p class="text-center text-gray-300 text-sm mb-6">This test is locked. Upgrade your account to unlock all tests permanently on all your devices!</p>
+            <p class="text-center text-gray-300 text-sm mb-6">This test is locked. Upgrade your account to unlock all
+                tests permanently on all your devices!</p>
             <div class="flex flex-col items-center justify-center mb-6">
-                <div class="bg-white p-3 rounded-2xl shadow-[0_0_15px_rgba(79,70,229,0.3)] border-2 border-indigo-400 mb-3">
+                <div
+                    class="bg-white p-3 rounded-2xl shadow-[0_0_15px_rgba(79,70,229,0.3)] border-2 border-indigo-400 mb-3">
                     <img src="qr.png" alt="NayaPay QR Code" class="w-32 h-32 object-contain rounded-lg">
                 </div>
-                <span class="text-xs font-bold text-indigo-400 uppercase tracking-widest bg-indigo-900/40 px-3 py-1 rounded-full border border-indigo-500/30">Scan to Pay</span>
+                <span
+                    class="text-xs font-bold text-indigo-400 uppercase tracking-widest bg-indigo-900/40 px-3 py-1 rounded-full border border-indigo-500/30">Scan
+                    to Pay</span>
             </div>
             <div class="space-y-4 text-left bg-gray-900 p-4 rounded-lg border border-gray-700">
                 <div class="flex items-start">
-                    <div class="bg-indigo-600 text-white font-bold rounded-full h-6 w-6 flex items-center justify-center text-xs shrink-0 mt-0.5 mr-3">1</div>
-                    <p class="text-sm font-medium text-gray-300">Send <b class="text-white">PKR 500</b> to <b class="text-white">03465939277</b> (Bank NayaPay).</p>
+                    <div
+                        class="bg-indigo-600 text-white font-bold rounded-full h-6 w-6 flex items-center justify-center text-xs shrink-0 mt-0.5 mr-3">
+                        1</div>
+                    <p class="text-sm font-medium text-gray-300">Send <b class="text-white">PKR 500</b> to <b
+                            class="text-white">03465939277</b> (Bank NayaPay).</p>
                 </div>
                 <div class="flex items-start">
-                    <div class="bg-indigo-600 text-white font-bold rounded-full h-6 w-6 flex items-center justify-center text-xs shrink-0 mt-0.5 mr-3">2</div>
-                    <p class="text-sm font-medium text-gray-300">Message your registered email and screenshot to <a href="https://wa.me/923465939277" target="_blank" class="text-green-400 font-bold underline hover:text-green-300">WhatsApp Admin</a>.</p>
+                    <div
+                        class="bg-indigo-600 text-white font-bold rounded-full h-6 w-6 flex items-center justify-center text-xs shrink-0 mt-0.5 mr-3">
+                        2</div>
+                    <p class="text-sm font-medium text-gray-300">Message your registered email and screenshot to <a
+                            href="https://wa.me/923465939277" target="_blank"
+                            class="text-green-400 font-bold underline hover:text-green-300">WhatsApp Admin</a>.</p>
                 </div>
                 <div class="flex items-start">
-                    <div class="bg-indigo-600 text-white font-bold rounded-full h-6 w-6 flex items-center justify-center text-xs shrink-0 mt-0.5 mr-3">3</div>
+                    <div
+                        class="bg-indigo-600 text-white font-bold rounded-full h-6 w-6 flex items-center justify-center text-xs shrink-0 mt-0.5 mr-3">
+                        3</div>
                     <p class="text-sm font-medium text-gray-300">We will instantly activate Premium on your account!</p>
                 </div>
             </div>
@@ -150,25 +204,38 @@
 
     <!-- SCREEN 3: TEST INFO -->
     <div id="screen-info" class="w-full max-w-md flex-col items-center" style="display: none;">
-        <button onclick="goBack('screen-type', 'screen-info')" class="self-start mb-6 text-sm font-bold text-gray-400 hover:text-white transition-colors">← Back</button>
+        <button onclick="goBack('screen-type', 'screen-info')"
+            class="self-start mb-6 text-sm font-bold text-gray-400 hover:text-white transition-colors">← Back</button>
         <h1 id="info-title" class="text-3xl font-extrabold mb-6 tracking-tight text-center text-indigo-400"></h1>
         <div class="w-full bg-gray-800 border-2 border-gray-700 rounded-xl p-6 shadow-lg mb-8 text-left">
-            <div class="mb-4"><span class="block text-sm font-bold text-gray-500 uppercase tracking-wider">Duration</span><span id="info-time" class="text-lg font-bold text-gray-100"></span></div>
-            <div class="mb-4"><span class="block text-sm font-bold text-gray-500 uppercase tracking-wider">Total Marks</span><span id="info-marks" class="text-lg font-bold text-gray-100"></span></div>
-            <div><span class="block text-sm font-bold text-gray-500 uppercase tracking-wider mb-2">Subject Breakdown</span><ul id="info-breakdown" class="list-none space-y-1 text-md font-medium text-gray-300"></ul></div>
+            <div class="mb-4"><span
+                    class="block text-sm font-bold text-gray-500 uppercase tracking-wider">Duration</span><span
+                    id="info-time" class="text-lg font-bold text-gray-100"></span></div>
+            <div class="mb-4"><span class="block text-sm font-bold text-gray-500 uppercase tracking-wider">Total
+                    Marks</span><span id="info-marks" class="text-lg font-bold text-gray-100"></span></div>
+            <div><span class="block text-sm font-bold text-gray-500 uppercase tracking-wider mb-2">Subject
+                    Breakdown</span>
+                <ul id="info-breakdown" class="list-none space-y-1 text-md font-medium text-gray-300"></ul>
+            </div>
         </div>
-        <button onclick="startTest()" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white transition-all font-extrabold text-xl py-4 px-6 rounded-xl shadow-lg w-full">START TEST</button>
+        <button onclick="startTest()"
+            class="w-full bg-indigo-600 hover:bg-indigo-500 text-white transition-all font-extrabold text-xl py-4 px-6 rounded-xl shadow-lg w-full">START
+            TEST</button>
     </div>
 
     <!-- SCREEN 4: ACTIVE TEST -->
     <div id="screen-test" class="w-full max-w-3xl flex-col w-full" style="display: none;">
-        <div class="flex justify-between items-center bg-gray-800 border-b-2 border-gray-700 p-4 rounded-t-xl shadow-md z-10 relative">
+        <div
+            class="flex justify-between items-center bg-gray-800 border-b-2 border-gray-700 p-4 rounded-t-xl shadow-md z-10 relative">
             <h2 class="text-xl font-bold text-gray-100">MockLab Test</h2>
-            <div class="text-2xl font-mono font-bold text-red-400 bg-red-900/30 py-1 px-3 rounded-lg border border-red-900/50" id="timer-display">00:00:00</div>
+            <div class="text-2xl font-mono font-bold text-red-400 bg-red-900/30 py-1 px-3 rounded-lg border border-red-900/50"
+                id="timer-display">00:00:00</div>
         </div>
-        <div id="question-container" class="bg-gray-800 p-6 md:p-8 rounded-b-xl min-h-[50vh] border-x-2 border-b-2 border-gray-700 shadow-lg"></div>
+        <div id="question-container"
+            class="bg-gray-800 p-6 md:p-8 rounded-b-xl min-h-[50vh] border-x-2 border-b-2 border-gray-700 shadow-lg">
+        </div>
     </div>
-    
+
     <!-- SCREEN 5: RESULTS -->
     <div id="screen-result" class="w-full max-w-md flex-col items-center" style="display: none;">
         <h1 class="text-4xl font-extrabold mb-4 tracking-tight text-center text-green-400">Test Completed!</h1>
@@ -177,20 +244,31 @@
             <p id="final-score" class="text-6xl font-extrabold text-white mb-6">0 / 0</p>
             <p id="score-msg" class="text-lg font-medium text-gray-300"></p>
         </div>
-        <button onclick="goBack('screen-home', 'screen-result')" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white transition-all font-extrabold text-xl py-4 px-6 rounded-xl shadow-lg">Return Home</button>
+        <button onclick="goBack('screen-home', 'screen-result')"
+            class="w-full bg-indigo-600 hover:bg-indigo-500 text-white transition-all font-extrabold text-xl py-4 px-6 rounded-xl shadow-lg">Return
+            Home</button>
     </div>
 
     <!-- MODAL: OVERVIEW & REVIEW GRID -->
-    <div id="overview-modal" class="fixed inset-0 bg-black/90 z-50 flex-col items-center justify-center p-4" style="display: none;">
-        <div class="bg-gray-800 rounded-xl p-6 w-full max-w-3xl max-h-[85vh] overflow-y-auto border-2 border-gray-600 shadow-2xl">
+    <div id="overview-modal" class="fixed inset-0 bg-black/90 z-50 flex-col items-center justify-center p-4"
+        style="display: none;">
+        <div
+            class="bg-gray-800 rounded-xl p-6 w-full max-w-3xl max-h-[85vh] overflow-y-auto border-2 border-gray-600 shadow-2xl">
             <div class="flex justify-between items-center mb-6 border-b border-gray-700 pb-4">
                 <h2 class="text-2xl font-bold text-white">Test Overview</h2>
-                <button onclick="closeOverview()" class="text-red-400 font-extrabold hover:text-red-300 text-lg">✕ Close</button>
+                <button onclick="closeOverview()" class="text-red-400 font-extrabold hover:text-red-300 text-lg">✕
+                    Close</button>
             </div>
             <div class="flex flex-wrap gap-4 mb-6 text-xs font-bold uppercase tracking-wider justify-center">
-                <span class="flex items-center gap-1 text-green-400"><div class="w-3 h-3 bg-green-500 rounded-sm"></div> Answered</span>
-                <span class="flex items-center gap-1 text-yellow-400"><div class="w-3 h-3 bg-yellow-500 rounded-sm"></div> Marked for Review</span>
-                <span class="flex items-center gap-1 text-gray-400"><div class="w-3 h-3 bg-gray-600 rounded-sm"></div> Unanswered</span>
+                <span class="flex items-center gap-1 text-green-400">
+                    <div class="w-3 h-3 bg-green-500 rounded-sm"></div> Answered
+                </span>
+                <span class="flex items-center gap-1 text-yellow-400">
+                    <div class="w-3 h-3 bg-yellow-500 rounded-sm"></div> Marked for Review
+                </span>
+                <span class="flex items-center gap-1 text-gray-400">
+                    <div class="w-3 h-3 bg-gray-600 rounded-sm"></div> Unanswered
+                </span>
             </div>
             <div id="overview-grid" class="grid grid-cols-5 sm:grid-cols-8 md:grid-cols-10 gap-3"></div>
         </div>
@@ -207,7 +285,7 @@
             }
         }, 4000);
 
-        window.onload = function() {
+        window.onload = function () {
             if (typeof testData === 'undefined' || typeof questionBank === 'undefined') {
                 document.getElementById('screen-loading').style.display = 'none';
                 document.getElementById('screen-intro').style.display = 'flex';
@@ -243,12 +321,12 @@
         const db = firebase.firestore();
 
         let currentUser = null;
-        let currentUserData = null; 
+        let currentUserData = null;
 
         // CRASH-PROOF LOGIN CHECK
         auth.onAuthStateChanged((user) => {
             document.getElementById('screen-loading').style.display = 'none';
-            
+
             document.getElementById('btn-login').disabled = false;
             document.getElementById('btn-login').innerHTML = 'Log In 🚀';
             document.getElementById('btn-signup').disabled = false;
@@ -256,16 +334,16 @@
 
             if (user) {
                 currentUser = user;
-                
+
                 document.getElementById('screen-auth').style.display = 'none';
                 document.getElementById('screen-intro').style.display = 'flex';
-                
+
                 db.collection("users").doc(user.uid).get().then((doc) => {
                     if (doc.exists) {
                         currentUserData = doc.data();
                         document.getElementById('user-display-name').innerText = currentUserData.name + (currentUserData.isPremium ? " (Premium 👑)" : " (Free Account)");
-                        
-                        if(user.email === 'alisherahsan@gmail.com') {
+
+                        if (user.email === 'alisherahsan@gmail.com') {
                             document.getElementById('btn-admin').classList.remove('hidden');
                         }
                     } else {
@@ -286,7 +364,7 @@
         }
 
         function toggleAuth(type) {
-            if(type === 'login') {
+            if (type === 'login') {
                 document.getElementById('signup-form').classList.add('hidden');
                 document.getElementById('login-form').classList.remove('hidden');
                 document.getElementById('auth-title').innerText = 'Welcome Back';
@@ -304,7 +382,7 @@
             const password = document.getElementById('su-password').value;
             const btn = document.getElementById('btn-signup');
 
-            if(!name || !email || !whatsapp || !password) {
+            if (!name || !email || !whatsapp || !password) {
                 alert("Please fill in all fields!");
                 return;
             }
@@ -313,22 +391,22 @@
             btn.innerHTML = getSpinner() + ` Creating Account...`;
 
             auth.createUserWithEmailAndPassword(email, password)
-            .then((userCredential) => {
-                return db.collection("users").doc(userCredential.user.uid).set({
-                    name: name,
-                    email: email.toLowerCase(),
-                    whatsapp: whatsapp,
-                    isPremium: false,
-                    dateCreated: firebase.firestore.FieldValue.serverTimestamp()
-                }).catch((dbErr) => {
-                    console.log("Account created, but database save failed:", dbErr);
+                .then((userCredential) => {
+                    return db.collection("users").doc(userCredential.user.uid).set({
+                        name: name,
+                        email: email.toLowerCase(),
+                        whatsapp: whatsapp,
+                        isPremium: false,
+                        dateCreated: firebase.firestore.FieldValue.serverTimestamp()
+                    }).catch((dbErr) => {
+                        console.log("Account created, but database save failed:", dbErr);
+                    });
+                })
+                .catch((error) => {
+                    alert("Error: " + error.message);
+                    btn.disabled = false;
+                    btn.innerHTML = `Sign Up 🚀`;
                 });
-            })
-            .catch((error) => {
-                alert("Error: " + error.message);
-                btn.disabled = false;
-                btn.innerHTML = `Sign Up 🚀`;
-            });
         }
 
         function handleLogin() {
@@ -336,7 +414,7 @@
             const password = document.getElementById('li-password').value;
             const btn = document.getElementById('btn-login');
 
-            if(!email || !password) {
+            if (!email || !password) {
                 alert("Please enter email and password!");
                 return;
             }
@@ -345,11 +423,11 @@
             btn.innerHTML = getSpinner() + ` Logging In...`;
 
             auth.signInWithEmailAndPassword(email, password)
-            .catch((error) => {
-                alert("Error: " + error.message);
-                btn.disabled = false;
-                btn.innerHTML = `Log In 🚀`;
-            });
+                .catch((error) => {
+                    alert("Error: " + error.message);
+                    btn.disabled = false;
+                    btn.innerHTML = `Log In 🚀`;
+                });
         }
 
         function logout() {
@@ -372,10 +450,10 @@
         function loadAdminUsers() {
             const container = document.getElementById('admin-users-list');
             container.innerHTML = '<p class="text-gray-400">Loading students...</p>';
-            
+
             db.collection("users").get().then((snapshot) => {
                 container.innerHTML = '';
-                if(snapshot.empty) {
+                if (snapshot.empty) {
                     container.innerHTML = '<p class="text-gray-400">No students found.</p>';
                     return;
                 }
@@ -403,11 +481,11 @@
         }
 
         function togglePremiumStatus(uid, currentStatus) {
-            let newStatus = !currentStatus; 
+            let newStatus = !currentStatus;
             db.collection("users").doc(uid).update({
                 isPremium: newStatus
             }).then(() => {
-                loadAdminUsers(); 
+                loadAdminUsers();
             }).catch(err => alert("Error updating status: " + err.message));
         }
 
@@ -415,25 +493,25 @@
         // TEST UI LOGIC
         // ==========================================
         let currentUni = null;
-        let currentTestId = null; 
+        let currentTestId = null;
         let testTimeMinutes = 0;
         let timerInterval;
         let activeQuestions = [];
         let currentQIndex = 0;
         let userAnswers = {};
-        let reviewStatus = {}; 
+        let reviewStatus = {};
 
         function showScreen(hideId, showId) {
             document.getElementById(hideId).style.display = "none";
             document.getElementById(showId).style.display = "flex";
-            window.scrollTo(0,0);
+            window.scrollTo(0, 0);
         }
         function goBack(showId, hideId) { showScreen(hideId, showId); }
 
         function selectUniversity(uniKey) {
             currentUni = uniKey;
             const typeContainer = document.getElementById('type-options');
-            typeContainer.innerHTML = ''; 
+            typeContainer.innerHTML = '';
             const options = testData[uniKey].options;
             options.forEach(opt => {
                 const btn = document.createElement('button');
@@ -450,9 +528,9 @@
                 document.getElementById('premium-modal').style.display = 'flex';
                 return;
             }
-            currentTestId = typeId; 
+            currentTestId = typeId;
             document.getElementById('info-title').innerText = typeName;
-            let infoData = testData[currentUni].info || testData[currentUni].infoMap[typeId]; 
+            let infoData = testData[currentUni].info || testData[currentUni].infoMap[typeId];
             document.getElementById('info-time').innerText = infoData.time;
             document.getElementById('info-marks').innerText = infoData.marks;
             testTimeMinutes = parseInt(infoData.time.split(' ')[0]);
@@ -470,11 +548,11 @@
         function startTest() {
             showScreen('screen-info', 'screen-test');
             activeQuestions = typeof questionBank !== 'undefined' ? (questionBank[currentTestId] || []) : [];
-            if(activeQuestions.length === 0) return;
+            if (activeQuestions.length === 0) return;
 
             currentQIndex = 0;
             userAnswers = {};
-            reviewStatus = {}; 
+            reviewStatus = {};
             renderQuestion();
             startTimer(testTimeMinutes * 60);
         }
@@ -484,7 +562,7 @@
             const answeredCount = Object.keys(userAnswers).length;
             const reviewCount = Object.values(reviewStatus).filter(Boolean).length;
             const isReview = reviewStatus[currentQIndex] || false;
-            
+
             let html = `
                 <div class="flex flex-col lg:flex-row justify-between items-center bg-gray-900 border-b-2 border-gray-700 pb-4 mb-6 rounded-lg p-4 shadow-inner gap-4">
                     <div class="flex space-x-8">
@@ -520,9 +598,9 @@
                 html += `<label class="flex items-center space-x-4 p-4 rounded-xl border-2 ${activeStyle} cursor-pointer transition-all"><input type="radio" name="option" value="${idx}" class="w-5 h-5 text-indigo-600 focus:ring-indigo-500 bg-gray-900 border-gray-600" ${isSelected} onchange="saveAnswer(${idx})"><span class="text-gray-200 font-medium text-lg">${opt}</span></label>`;
             });
             html += `</div><div class="mt-10 flex justify-between items-center border-t border-gray-700 pt-6">`;
-            if(currentQIndex > 0) html += `<button onclick="prevQuestion()" class="px-6 py-3 bg-gray-700 text-white rounded-lg font-bold hover:bg-gray-600 transition-colors">&larr; Prev</button>`;
-            else html += `<div></div>`; 
-            if(currentQIndex === activeQuestions.length - 1) html += `<button onclick="submitTest()" class="px-8 py-3 bg-green-600 text-white rounded-lg font-bold hover:bg-green-500 transition-colors shadow-lg">Submit Test</button>`;
+            if (currentQIndex > 0) html += `<button onclick="prevQuestion()" class="px-6 py-3 bg-gray-700 text-white rounded-lg font-bold hover:bg-gray-600 transition-colors">&larr; Prev</button>`;
+            else html += `<div></div>`;
+            if (currentQIndex === activeQuestions.length - 1) html += `<button onclick="submitTest()" class="px-8 py-3 bg-green-600 text-white rounded-lg font-bold hover:bg-green-500 transition-colors shadow-lg">Submit Test</button>`;
             else html += `<button onclick="nextQuestion()" class="px-8 py-3 bg-indigo-600 text-white rounded-lg font-bold hover:bg-indigo-500 transition-colors shadow-lg">Next &rarr;</button>`;
             html += `</div>`;
             document.getElementById('question-container').innerHTML = html;
@@ -535,13 +613,13 @@
         }
         function jumpToNextSection() {
             let nextBoundary = Math.floor(currentQIndex / 20) * 20 + 20;
-            if (nextBoundary >= activeQuestions.length) nextBoundary = activeQuestions.length - 1; 
+            if (nextBoundary >= activeQuestions.length) nextBoundary = activeQuestions.length - 1;
             currentQIndex = nextBoundary; renderQuestion();
         }
         function showOverview() {
             const gridContainer = document.getElementById('overview-grid');
             gridContainer.innerHTML = '';
-            for(let i = 0; i < activeQuestions.length; i++) {
+            for (let i = 0; i < activeQuestions.length; i++) {
                 const btn = document.createElement('button');
                 btn.innerText = i + 1;
                 let baseClasses = "w-full aspect-square rounded-lg font-bold flex items-center justify-center transition-transform hover:scale-110 shadow-sm border ";
@@ -557,19 +635,19 @@
         function closeOverview() { document.getElementById('overview-modal').style.display = "none"; }
         function saveAnswer(optionIndex) {
             userAnswers[currentQIndex] = optionIndex;
-            if(reviewStatus[currentQIndex]) reviewStatus[currentQIndex] = false;
+            if (reviewStatus[currentQIndex]) reviewStatus[currentQIndex] = false;
             renderQuestion();
         }
-        function nextQuestion() { if(currentQIndex < activeQuestions.length - 1) { currentQIndex++; renderQuestion(); } }
-        function prevQuestion() { if(currentQIndex > 0) { currentQIndex--; renderQuestion(); } }
+        function nextQuestion() { if (currentQIndex < activeQuestions.length - 1) { currentQIndex++; renderQuestion(); } }
+        function prevQuestion() { if (currentQIndex > 0) { currentQIndex--; renderQuestion(); } }
         function submitTest() {
             const unanswered = activeQuestions.length - Object.keys(userAnswers).length;
-            if(unanswered > 0) {
-                if(!confirm(`You still have ${unanswered} unanswered questions. Are you sure you want to submit?`)) return;
+            if (unanswered > 0) {
+                if (!confirm(`You still have ${unanswered} unanswered questions. Are you sure you want to submit?`)) return;
             }
             clearInterval(timerInterval);
             let score = 0;
-            activeQuestions.forEach((q, index) => { if(userAnswers[index] === q.ans) score++; });
+            activeQuestions.forEach((q, index) => { if (userAnswers[index] === q.ans) score++; });
             document.getElementById('final-score').innerText = `${score} / ${activeQuestions.length}`;
             let percent = (score / activeQuestions.length) * 100;
             document.getElementById('score-msg').innerText = percent > 80 ? "Excellent Job! 🚀" : percent > 50 ? "Good Effort! 👍" : "Keep Practicing! 📚";
@@ -582,15 +660,16 @@
                 let hours = parseInt(timer / 3600, 10);
                 let minutes = parseInt((timer % 3600) / 60, 10);
                 let seconds = parseInt(timer % 60, 10);
-                document.getElementById('timer-display').textContent = 
+                document.getElementById('timer-display').textContent =
                     (hours < 10 ? "0" + hours : hours) + ":" + (minutes < 10 ? "0" + minutes : minutes) + ":" + (seconds < 10 ? "0" + seconds : seconds);
                 if (--timer < 0) {
                     clearInterval(timerInterval);
                     alert("Time is up! Submitting your test.");
-                    submitTest(); 
+                    submitTest();
                 }
             }, 1000);
         }
     </script>
 </body>
+
 </html>
