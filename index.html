@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <!-- FORCE BROWSER TO NEVER CACHE -->
+    <!-- FORCE BROWSER TO NEVER CACHE THIS PAGE -->
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
@@ -13,7 +13,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     
     <!-- LOAD OUR SEPARATE MCQ FILE -->
-    <script src="data.js?v=16"></script>
+    <script src="data.js?v=17"></script>
 
     <!-- FIREBASE LIBRARIES -->
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
@@ -30,11 +30,16 @@
 
     <!-- ✨ UPGRADED AUTHENTICATION SCREEN ✨ -->
     <div id="screen-auth" class="w-full max-w-md flex-col items-center relative z-10" style="display: none;">
+        
+        <!-- Bigger Logo -->
         <img src="MockLab.png" alt="MockLab Logo" class="w-48 sm:w-56 h-auto mb-3 drop-shadow-2xl mx-auto transition-transform hover:scale-105">
+        
+        <!-- Catchy Tagline -->
         <p class="text-center text-indigo-300 font-bold text-sm sm:text-base mb-8 uppercase tracking-widest px-2 drop-shadow-md">
             Pakistan's ultimate <br class="sm:hidden"> All in One Entry Test Platform!
         </p>
         
+        <!-- Enhanced Form Box -->
         <div class="w-full bg-gray-800/90 backdrop-blur-sm border border-gray-700 rounded-2xl p-8 shadow-[0_0_40px_rgba(79,70,229,0.15)]">
             <h1 class="text-3xl font-black mb-8 tracking-tight text-white text-center" id="auth-title">Create Account</h1>
             
@@ -189,10 +194,10 @@
 
     <script>
         // ==========================================
-        // FIREBASE CONFIGURATION (EXACT MATCH!)
+        // 1. FIREBASE CONFIGURATION (EXACT MATCH!)
         // ==========================================
         const firebaseConfig = {
-            apiKey: "AIzaSyBdP5JcEGJzkgM606BDxsQcNyPQ2nc_cQs",
+            apiKey: "AIzaSyBdP5JcEGJzkgM6O6BDxsQcNyPQ2nc_cQs",
             authDomain: "mocklab-5f062.firebaseapp.com",
             projectId: "mocklab-5f062",
             storageBucket: "mocklab-5f062.firebasestorage.app",
@@ -388,24 +393,6 @@
 
         function selectUniversity(uniKey) {
             currentUni = uniKey;
-            const container = document.getElementById('type-options-main');
-            container.innerHTML = ''; 
-            
-            // Build buttons dynamically on home screen now!
-            const options = testData[uniKey].options;
-            options.forEach(opt => {
-                const btn = document.createElement('button');
-                btn.className = "w-full bg-gray-800 border-2 border-gray-700 hover:border-white hover:bg-white hover:text-black transition-all font-bold text-lg py-4 px-6 rounded-xl shadow-sm text-left";
-                btn.innerHTML = (opt.id === 'nat-ie') ? `🔒 ${opt.name}` : opt.name;
-                btn.onclick = () => selectType(opt.id, opt.name);
-                container.appendChild(btn);
-            });
-            showScreen('screen-home', 'screen-home'); // stays on home just loads buttons. Wait, no.
-        }
-        
-        // Wait, overriding above for correct flow
-        function selectUniversity(uniKey) {
-            currentUni = uniKey;
             const typeContainer = document.getElementById('type-options');
             typeContainer.innerHTML = ''; 
             const options = testData[uniKey].options;
@@ -518,53 +505,4 @@
             for(let i = 0; i < activeQuestions.length; i++) {
                 const btn = document.createElement('button');
                 btn.innerText = i + 1;
-                let baseClasses = "w-full aspect-square rounded-lg font-bold flex items-center justify-center transition-transform hover:scale-110 shadow-sm border ";
-                if (reviewStatus[i]) btn.className = baseClasses + "bg-yellow-500 text-yellow-900 border-yellow-600";
-                else if (userAnswers[i] !== undefined) btn.className = baseClasses + "bg-green-500 text-white border-green-600";
-                else btn.className = baseClasses + "bg-gray-700 text-gray-300 border-gray-600 hover:bg-gray-600";
-                if (i === currentQIndex) btn.classList.add("ring-2", "ring-white", "ring-offset-2", "ring-offset-gray-800");
-                btn.onclick = () => { currentQIndex = i; document.getElementById('overview-modal').style.display = "none"; renderQuestion(); };
-                gridContainer.appendChild(btn);
-            }
-            document.getElementById('overview-modal').style.display = "flex";
-        }
-        function closeOverview() { document.getElementById('overview-modal').style.display = "none"; }
-        function saveAnswer(optionIndex) {
-            userAnswers[currentQIndex] = optionIndex;
-            if(reviewStatus[currentQIndex]) reviewStatus[currentQIndex] = false;
-            renderQuestion();
-        }
-        function nextQuestion() { if(currentQIndex < activeQuestions.length - 1) { currentQIndex++; renderQuestion(); } }
-        function prevQuestion() { if(currentQIndex > 0) { currentQIndex--; renderQuestion(); } }
-        function submitTest() {
-            const unanswered = activeQuestions.length - Object.keys(userAnswers).length;
-            if(unanswered > 0) {
-                if(!confirm(`You still have ${unanswered} unanswered questions. Are you sure you want to submit?`)) return;
-            }
-            clearInterval(timerInterval);
-            let score = 0;
-            activeQuestions.forEach((q, index) => { if(userAnswers[index] === q.ans) score++; });
-            document.getElementById('final-score').innerText = `${score} / ${activeQuestions.length}`;
-            let percent = (score / activeQuestions.length) * 100;
-            document.getElementById('score-msg').innerText = percent > 80 ? "Excellent Job! 🚀" : percent > 50 ? "Good Effort! 👍" : "Keep Practicing! 📚";
-            showScreen('screen-test', 'screen-result');
-        }
-        function startTimer(durationSeconds) {
-            clearInterval(timerInterval);
-            let timer = durationSeconds;
-            timerInterval = setInterval(function () {
-                let hours = parseInt(timer / 3600, 10);
-                let minutes = parseInt((timer % 3600) / 60, 10);
-                let seconds = parseInt(timer % 60, 10);
-                document.getElementById('timer-display').textContent = 
-                    (hours < 10 ? "0" + hours : hours) + ":" + (minutes < 10 ? "0" + minutes : minutes) + ":" + (seconds < 10 ? "0" + seconds : seconds);
-                if (--timer < 0) {
-                    clearInterval(timerInterval);
-                    alert("Time is up! Submitting your test.");
-                    submitTest(); 
-                }
-            }, 1000);
-        }
-    </script>
-</body>
-</html>
+                let baseClasses = "w-full aspect-square rounded-lg font-bold flex items-c
