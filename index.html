@@ -13,7 +13,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     
     <!-- LOAD OUR SEPARATE MCQ FILE -->
-    <script src="data.js?v=11"></script>
+    <script src="data.js?v=12"></script>
 
     <!-- FIREBASE LIBRARIES -->
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
@@ -232,10 +232,10 @@
         };
 
         // ==========================================
-        // FIREBASE CONNECTION
+        // 1. FIREBASE CONFIGURATION (YOUR EXACT KEYS)
         // ==========================================
         const firebaseConfig = {
-            apiKey: "AIzaSyBdP5JcEGJzkgM606BDxsQcNyPQ2nc_cQs",
+            apiKey: "AIzaSyBdP5JcEGJzkgM6O6BDxsQcNyPQ2nc_cQs",
             authDomain: "mocklab-5f062.firebaseapp.com",
             projectId: "mocklab-5f062",
             storageBucket: "mocklab-5f062.firebasestorage.app",
@@ -243,6 +243,9 @@
             appId: "1:743250587602:web:5cbbef1fef79f2e39ba20b",
             measurementId: "G-5Q7VMFDG84"
         };
+        // ==========================================
+
+        // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
         const db = firebase.firestore();
