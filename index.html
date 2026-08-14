@@ -13,7 +13,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     
     <!-- LOAD OUR SEPARATE MCQ FILE -->
-    <script src="data.js?v=18"></script>
+    <script src="data.js?v=19"></script>
 
     <!-- FIREBASE LIBRARIES -->
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
@@ -31,15 +31,12 @@
     <!-- ✨ UPGRADED AUTHENTICATION SCREEN ✨ -->
     <div id="screen-auth" class="w-full max-w-md flex-col items-center relative z-10" style="display: none;">
         
-        <!-- Bigger Logo -->
         <img src="MockLab.png" alt="MockLab Logo" class="w-48 sm:w-56 h-auto mb-3 drop-shadow-2xl mx-auto transition-transform hover:scale-105">
         
-        <!-- Catchy Tagline -->
         <p class="text-center text-indigo-300 font-bold text-sm sm:text-base mb-8 uppercase tracking-widest px-2 drop-shadow-md">
             Pakistan's ultimate <br class="sm:hidden"> All in One Entry Test Platform!
         </p>
         
-        <!-- Enhanced Form Box -->
         <div class="w-full bg-gray-800/90 backdrop-blur-sm border border-gray-700 rounded-2xl p-8 shadow-[0_0_40px_rgba(79,70,229,0.15)]">
             <h1 class="text-3xl font-black mb-8 tracking-tight text-white text-center" id="auth-title">Create Account</h1>
             
@@ -73,14 +70,12 @@
             The ultimate entry test portal for all universities in Pakistan. Master your preparation for NTS NAT, PIEAS, Air University, and Bahria.
         </p>
         
-        <!-- User Welcome Badge -->
         <div class="bg-gray-800 border border-gray-700 rounded-full px-6 py-2 mb-8 flex items-center gap-3 mx-auto w-max">
             <span class="w-2 h-2 rounded-full bg-green-500"></span>
             <span class="text-sm font-bold text-gray-300">Logged in as <span id="user-display-name" class="text-white">Student</span></span>
             <button onclick="logout()" class="text-xs text-red-400 hover:text-red-300 ml-2 underline">Logout</button>
         </div>
 
-        <!-- SECRET ADMIN BUTTON -->
         <button id="btn-admin" onclick="showAdminPanel()" class="w-full hidden bg-red-700 hover:bg-red-600 text-white transition-all font-extrabold text-xl py-3 px-8 rounded-xl shadow-lg mb-4">
             👑 Secret Admin Dashboard
         </button>
@@ -195,30 +190,6 @@
     </div>
 
     <script>
-        // FAILSAFE: 7 SECONDS MAX LOADING TIME
-        setTimeout(() => {
-            const loadingScreen = document.getElementById('screen-loading');
-            if (loadingScreen.style.display !== 'none') {
-                loadingScreen.style.display = 'none';
-                document.getElementById('screen-auth').style.display = 'flex';
-                console.log("Forced loading screen to hide due to timeout.");
-            }
-        }, 7000);
-
-        // ERROR DETECTOR
-        window.onload = function() {
-            if (typeof testData === 'undefined' || typeof questionBank === 'undefined') {
-                document.getElementById('screen-loading').style.display = 'none';
-                document.getElementById('screen-intro').style.display = 'flex';
-                document.getElementById('screen-intro').innerHTML = `
-                    <div class="bg-red-100 border-2 border-red-500 text-red-900 p-8 rounded-xl max-w-lg shadow-2xl text-left">
-                        <h2 class="text-3xl font-black mb-4">⚠️ ERROR: data.js is broken!</h2>
-                        <p class="font-medium mb-4 text-lg">The buttons are completely frozen because the website cannot read your MCQs file.</p>
-                    </div>
-                `;
-            }
-        };
-
         // ==========================================
         // 1. FIREBASE CONFIGURATION
         // ==========================================
@@ -241,10 +212,8 @@
 
         // CRASH-PROOF LOGIN CHECK
         auth.onAuthStateChanged((user) => {
-            // ALWAYS hide loading screen immediately when Firebase responds
             document.getElementById('screen-loading').style.display = 'none';
             
-            // Reset Button Spinners
             document.getElementById('btn-login').disabled = false;
             document.getElementById('btn-login').innerHTML = 'Log In 🚀';
             document.getElementById('btn-signup').disabled = false;
@@ -252,12 +221,9 @@
 
             if (user) {
                 currentUser = user;
-                
-                // INSTANTLY SHOW THE APP (Don't wait for database to unfreeze)
                 document.getElementById('screen-auth').style.display = 'none';
                 document.getElementById('screen-intro').style.display = 'flex';
                 
-                // Fetch data in background
                 db.collection("users").doc(user.uid).get().then((doc) => {
                     if (doc.exists) {
                         currentUserData = doc.data();
@@ -452,143 +418,4 @@
             document.getElementById('info-title').innerText = typeName;
             let infoData = testData[currentUni].info || testData[currentUni].infoMap[typeId]; 
             document.getElementById('info-time').innerText = infoData.time;
-            document.getElementById('info-marks').innerText = infoData.marks;
-            testTimeMinutes = parseInt(infoData.time.split(' ')[0]);
-
-            const breakdownUl = document.getElementById('info-breakdown');
-            breakdownUl.innerHTML = '';
-            infoData.breakdown.forEach(item => {
-                const li = document.createElement('li');
-                li.innerHTML = `• ${item}`;
-                breakdownUl.appendChild(li);
-            });
-            showScreen('screen-type', 'screen-info');
-        }
-
-        function startTest() {
-            showScreen('screen-info', 'screen-test');
-            activeQuestions = typeof questionBank !== 'undefined' ? (questionBank[currentTestId] || []) : [];
-            if(activeQuestions.length === 0) return;
-
-            currentQIndex = 0;
-            userAnswers = {};
-            reviewStatus = {}; 
-            renderQuestion();
-            startTimer(testTimeMinutes * 60);
-        }
-
-        function renderQuestion() {
-            const qData = activeQuestions[currentQIndex];
-            const answeredCount = Object.keys(userAnswers).length;
-            const reviewCount = Object.values(reviewStatus).filter(Boolean).length;
-            const isReview = reviewStatus[currentQIndex] || false;
-            
-            let html = `
-                <div class="flex flex-col lg:flex-row justify-between items-center bg-gray-900 border-b-2 border-gray-700 pb-4 mb-6 rounded-lg p-4 shadow-inner gap-4">
-                    <div class="flex space-x-8">
-                        <div class="text-center">
-                            <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest">Answered</p>
-                            <p class="text-lg font-bold text-green-400">${answeredCount} <span class="text-gray-500 text-sm">/ ${activeQuestions.length}</span></p>
-                        </div>
-                        <div class="text-center cursor-pointer hover:opacity-80" onclick="showOverview()">
-                            <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest">Review</p>
-                            <p class="text-lg font-bold text-yellow-400">${reviewCount}</p>
-                        </div>
-                    </div>
-                    <div class="flex flex-wrap justify-center items-center gap-2">
-                        <button onclick="showOverview()" class="bg-indigo-600/20 text-indigo-400 border border-indigo-500 hover:bg-indigo-600 hover:text-white px-4 py-2 rounded-lg font-bold transition-colors shadow-sm text-sm">Grid Overview</button>
-                        <div class="flex items-center">
-                            <input type="number" id="jump-input" min="1" max="${activeQuestions.length}" class="w-14 px-2 py-2 rounded-l-lg bg-gray-800 border border-gray-600 text-white font-bold focus:outline-none focus:border-indigo-500 text-center" placeholder="#">
-                            <button onclick="jumpToQuestion()" class="bg-indigo-600 hover:bg-indigo-500 px-3 py-2 rounded-r-lg font-bold text-white transition-colors shadow-sm text-sm border border-indigo-600">Jump</button>
-                        </div>
-                        <button onclick="jumpToNextSection()" class="bg-gray-700 hover:bg-gray-600 px-3 py-2 rounded-lg font-bold text-gray-200 transition-colors shadow-sm border border-gray-600 text-sm">Next Section &raquo;</button>
-                    </div>
-                </div>
-                <div class="flex justify-between items-center mb-4">
-                    <div class="text-sm font-bold text-indigo-400 uppercase tracking-widest">Question ${currentQIndex + 1} of ${activeQuestions.length}</div>
-                    <button onclick="toggleReview()" class="flex items-center space-x-1 text-sm font-bold px-4 py-2 rounded-full border-2 transition-colors ${isReview ? 'border-yellow-500 text-yellow-400 bg-yellow-900/20 shadow-[0_0_10px_rgba(234,179,8,0.3)]' : 'border-gray-600 text-gray-400 hover:text-white hover:border-gray-400'}">
-                        <span>${isReview ? '★ Marked for Review' : '☆ Mark for Review'}</span>
-                    </button>
-                </div>
-                <h3 class="text-xl md:text-2xl font-semibold mb-8 text-white leading-relaxed">${qData.q}</h3><div class="space-y-3">
-            `;
-            qData.options.forEach((opt, idx) => {
-                const isSelected = userAnswers[currentQIndex] === idx ? 'checked' : '';
-                const activeStyle = isSelected ? 'border-indigo-500 bg-indigo-900/30' : 'border-gray-700 bg-gray-800 hover:bg-gray-700';
-                html += `<label class="flex items-center space-x-4 p-4 rounded-xl border-2 ${activeStyle} cursor-pointer transition-all"><input type="radio" name="option" value="${idx}" class="w-5 h-5 text-indigo-600 focus:ring-indigo-500 bg-gray-900 border-gray-600" ${isSelected} onchange="saveAnswer(${idx})"><span class="text-gray-200 font-medium text-lg">${opt}</span></label>`;
-            });
-            html += `</div><div class="mt-10 flex justify-between items-center border-t border-gray-700 pt-6">`;
-            if(currentQIndex > 0) html += `<button onclick="prevQuestion()" class="px-6 py-3 bg-gray-700 text-white rounded-lg font-bold hover:bg-gray-600 transition-colors">&larr; Prev</button>`;
-            else html += `<div></div>`; 
-            if(currentQIndex === activeQuestions.length - 1) html += `<button onclick="submitTest()" class="px-8 py-3 bg-green-600 text-white rounded-lg font-bold hover:bg-green-500 transition-colors shadow-lg">Submit Test</button>`;
-            else html += `<button onclick="nextQuestion()" class="px-8 py-3 bg-indigo-600 text-white rounded-lg font-bold hover:bg-indigo-500 transition-colors shadow-lg">Next &rarr;</button>`;
-            html += `</div>`;
-            document.getElementById('question-container').innerHTML = html;
-        }
-
-        function toggleReview() { reviewStatus[currentQIndex] = !reviewStatus[currentQIndex]; renderQuestion(); }
-        function jumpToQuestion() {
-            const qNum = parseInt(document.getElementById('jump-input').value);
-            if (qNum >= 1 && qNum <= activeQuestions.length) { currentQIndex = qNum - 1; renderQuestion(); }
-        }
-        function jumpToNextSection() {
-            let nextBoundary = Math.floor(currentQIndex / 20) * 20 + 20;
-            if (nextBoundary >= activeQuestions.length) nextBoundary = activeQuestions.length - 1; 
-            currentQIndex = nextBoundary; renderQuestion();
-        }
-        function showOverview() {
-            const gridContainer = document.getElementById('overview-grid');
-            gridContainer.innerHTML = '';
-            for(let i = 0; i < activeQuestions.length; i++) {
-                const btn = document.createElement('button');
-                btn.innerText = i + 1;
-                let baseClasses = "w-full aspect-square rounded-lg font-bold flex items-center justify-center transition-transform hover:scale-110 shadow-sm border ";
-                if (reviewStatus[i]) btn.className = baseClasses + "bg-yellow-500 text-yellow-900 border-yellow-600";
-                else if (userAnswers[i] !== undefined) btn.className = baseClasses + "bg-green-500 text-white border-green-600";
-                else btn.className = baseClasses + "bg-gray-700 text-gray-300 border-gray-600 hover:bg-gray-600";
-                if (i === currentQIndex) btn.classList.add("ring-2", "ring-white", "ring-offset-2", "ring-offset-gray-800");
-                btn.onclick = () => { currentQIndex = i; document.getElementById('overview-modal').style.display = "none"; renderQuestion(); };
-                gridContainer.appendChild(btn);
-            }
-            document.getElementById('overview-modal').style.display = "flex";
-        }
-        function closeOverview() { document.getElementById('overview-modal').style.display = "none"; }
-        function saveAnswer(optionIndex) {
-            userAnswers[currentQIndex] = optionIndex;
-            if(reviewStatus[currentQIndex]) reviewStatus[currentQIndex] = false;
-            renderQuestion();
-        }
-        function nextQuestion() { if(currentQIndex < activeQuestions.length - 1) { currentQIndex++; renderQuestion(); } }
-        function prevQuestion() { if(currentQIndex > 0) { currentQIndex--; renderQuestion(); } }
-        function submitTest() {
-            const unanswered = activeQuestions.length - Object.keys(userAnswers).length;
-            if(unanswered > 0) {
-                if(!confirm(`You still have ${unanswered} unanswered questions. Are you sure you want to submit?`)) return;
-            }
-            clearInterval(timerInterval);
-            let score = 0;
-            activeQuestions.forEach((q, index) => { if(userAnswers[index] === q.ans) score++; });
-            document.getElementById('final-score').innerText = `${score} / ${activeQuestions.length}`;
-            let percent = (score / activeQuestions.length) * 100;
-            document.getElementById('score-msg').innerText = percent > 80 ? "Excellent Job! 🚀" : percent > 50 ? "Good Effort! 👍" : "Keep Practicing! 📚";
-            showScreen('screen-test', 'screen-result');
-        }
-        function startTimer(durationSeconds) {
-            clearInterval(timerInterval);
-            let timer = durationSeconds;
-            timerInterval = setInterval(function () {
-                let hours = parseInt(timer / 3600, 10);
-                let minutes = parseInt((timer % 3600) / 60, 10);
-                let seconds = parseInt(timer % 60, 10);
-                document.getElementById('timer-display').textContent = 
-                    (hours < 10 ? "0" + hours : hours) + ":" + (minutes < 10 ? "0" + minutes : minutes) + ":" + (seconds < 10 ? "0" + seconds : seconds);
-                if (--timer < 0) {
-                    clearInterval(timerInterval);
-                    alert("Time is up! Submitting your test.");
-                    submitTest(); 
-                }
-            }, 1000);
-        }
-    </script>
-</body>
-</html>
+            document.getElementById('info-m
