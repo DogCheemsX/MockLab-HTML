@@ -13,7 +13,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     
     <!-- LOAD OUR SEPARATE MCQ FILE -->
-    <script src="data.js?v=12"></script>
+    <script src="data.js?v=13"></script>
 
     <!-- FIREBASE LIBRARIES -->
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
@@ -28,28 +28,39 @@
         <p class="text-gray-400 font-bold tracking-widest uppercase">Loading MockLab...</p>
     </div>
 
-    <!-- AUTHENTICATION SCREEN (LOGIN / SIGN UP) -->
-    <div id="screen-auth" class="w-full max-w-md flex-col items-center" style="display: none;">
-        <img src="MockLab.png" alt="MockLab Logo" class="w-32 h-auto mb-6 drop-shadow-md mx-auto">
-        <h1 class="text-3xl font-extrabold mb-8 tracking-tight text-white text-center" id="auth-title">Create Account</h1>
+    <!-- ✨ UPGRADED AUTHENTICATION SCREEN ✨ -->
+    <div id="screen-auth" class="w-full max-w-md flex-col items-center relative z-10" style="display: none;">
         
-        <div class="w-full bg-gray-800 border-2 border-gray-700 rounded-xl p-6 shadow-xl">
+        <!-- Bigger Logo -->
+        <img src="MockLab.png" alt="MockLab Logo" class="w-48 sm:w-56 h-auto mb-3 drop-shadow-2xl mx-auto transition-transform hover:scale-105">
+        
+        <!-- Catchy Tagline -->
+        <p class="text-center text-indigo-300 font-bold text-sm sm:text-base mb-8 uppercase tracking-widest px-2 drop-shadow-md">
+            Pakistan's ultimate <br class="sm:hidden"> All in One Entry Test Platform!
+        </p>
+        
+        <!-- Enhanced Form Box -->
+        <div class="w-full bg-gray-800/90 backdrop-blur-sm border border-gray-700 rounded-2xl p-8 shadow-[0_0_40px_rgba(79,70,229,0.15)]">
+            <h1 class="text-3xl font-black mb-8 tracking-tight text-white text-center" id="auth-title">Create Account</h1>
+            
             <!-- Sign Up Form -->
             <div id="signup-form" class="space-y-4">
-                <input type="text" id="su-name" placeholder="Full Name" class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-3 text-white focus:border-indigo-500 focus:outline-none">
-                <input type="email" id="su-email" placeholder="Email Address" class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-3 text-white focus:border-indigo-500 focus:outline-none">
-                <input type="text" id="su-whatsapp" placeholder="03XX (Whatsapp Number)" class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-3 text-white focus:border-indigo-500 focus:outline-none">
-                <input type="password" id="su-password" placeholder="Password (Min 6 characters)" class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-3 text-white focus:border-indigo-500 focus:outline-none">
-                <button onclick="handleSignUp()" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3 rounded-lg mt-2 transition-colors shadow-lg">Sign Up</button>
-                <p class="text-center text-sm text-gray-400 mt-4">Already have an account? <span onclick="toggleAuth('login')" class="text-indigo-400 cursor-pointer hover:underline">Log In</span></p>
+                <input type="text" id="su-name" placeholder="Full Name" class="w-full bg-gray-900/60 border border-gray-600 rounded-xl px-4 py-3.5 text-white placeholder-gray-500 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/50 focus:outline-none transition-all font-medium">
+                <input type="email" id="su-email" placeholder="Email Address" class="w-full bg-gray-900/60 border border-gray-600 rounded-xl px-4 py-3.5 text-white placeholder-gray-500 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/50 focus:outline-none transition-all font-medium">
+                <input type="text" id="su-whatsapp" placeholder="03XX (WhatsApp Number)" class="w-full bg-gray-900/60 border border-gray-600 rounded-xl px-4 py-3.5 text-white placeholder-gray-500 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/50 focus:outline-none transition-all font-medium">
+                <input type="password" id="su-password" placeholder="Password (Min 6 characters)" class="w-full bg-gray-900/60 border border-gray-600 rounded-xl px-4 py-3.5 text-white placeholder-gray-500 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/50 focus:outline-none transition-all font-medium">
+                
+                <button onclick="handleSignUp()" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-black text-lg py-4 rounded-xl mt-4 transition-all shadow-[0_0_15px_rgba(79,70,229,0.4)] hover:shadow-[0_0_25px_rgba(79,70,229,0.6)] transform hover:-translate-y-0.5">Sign Up 🚀</button>
+                <p class="text-center text-sm text-gray-400 mt-6 font-medium">Already have an account? <span onclick="toggleAuth('login')" class="text-indigo-400 font-bold cursor-pointer hover:text-indigo-300 hover:underline transition-colors">Log In</span></p>
             </div>
 
-            <!-- Log In Form (Hidden by default) -->
+            <!-- Log In Form -->
             <div id="login-form" class="space-y-4 hidden">
-                <input type="email" id="li-email" placeholder="Email Address" class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-3 text-white focus:border-indigo-500 focus:outline-none">
-                <input type="password" id="li-password" placeholder="Password" class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-3 text-white focus:border-indigo-500 focus:outline-none">
-                <button onclick="handleLogin()" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3 rounded-lg mt-2 transition-colors shadow-lg">Log In</button>
-                <p class="text-center text-sm text-gray-400 mt-4">New student? <span onclick="toggleAuth('signup')" class="text-indigo-400 cursor-pointer hover:underline">Sign Up</span></p>
+                <input type="email" id="li-email" placeholder="Email Address" class="w-full bg-gray-900/60 border border-gray-600 rounded-xl px-4 py-3.5 text-white placeholder-gray-500 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/50 focus:outline-none transition-all font-medium">
+                <input type="password" id="li-password" placeholder="Password" class="w-full bg-gray-900/60 border border-gray-600 rounded-xl px-4 py-3.5 text-white placeholder-gray-500 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/50 focus:outline-none transition-all font-medium">
+                
+                <button onclick="handleLogin()" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-black text-lg py-4 rounded-xl mt-4 transition-all shadow-[0_0_15px_rgba(79,70,229,0.4)] hover:shadow-[0_0_25px_rgba(79,70,229,0.6)] transform hover:-translate-y-0.5">Log In 🚀</button>
+                <p class="text-center text-sm text-gray-400 mt-6 font-medium">New student? <span onclick="toggleAuth('signup')" class="text-indigo-400 font-bold cursor-pointer hover:text-indigo-300 hover:underline transition-colors">Sign Up</span></p>
             </div>
         </div>
     </div>
@@ -69,7 +80,7 @@
             <button onclick="logout()" class="text-xs text-red-400 hover:text-red-300 ml-2 underline">Logout</button>
         </div>
 
-        <!-- SECRET ADMIN BUTTON (Hidden by default) -->
+        <!-- SECRET ADMIN BUTTON -->
         <button id="btn-admin" onclick="showAdminPanel()" class="w-full hidden bg-red-700 hover:bg-red-600 text-white transition-all font-extrabold text-xl py-3 px-8 rounded-xl shadow-lg mb-4">
             👑 Secret Admin Dashboard
         </button>
@@ -89,8 +100,6 @@
 
         <div class="w-full bg-gray-800 border-2 border-gray-700 rounded-xl p-6 shadow-xl">
             <h2 class="text-xl font-bold mb-4 text-white">All Registered Students</h2>
-            
-            <!-- User List Container -->
             <div id="admin-users-list" class="space-y-3 max-h-[60vh] overflow-y-auto pr-2">
                 <p class="text-gray-400">Loading students...</p>
             </div>
@@ -232,10 +241,10 @@
         };
 
         // ==========================================
-        // 1. FIREBASE CONFIGURATION (YOUR EXACT KEYS)
+        // FIREBASE CONFIGURATION (EXACT MATCH!)
         // ==========================================
         const firebaseConfig = {
-            apiKey: "AIzaSyBdP5JcEGJzkgM6O6BDxsQcNyPQ2nc_cQs",
+            apiKey: "AIzaSyBdP5JcEGJzkgM606BDxsQcNyPQ2nc_cQs",
             authDomain: "mocklab-5f062.firebaseapp.com",
             projectId: "mocklab-5f062",
             storageBucket: "mocklab-5f062.firebasestorage.app",
@@ -243,9 +252,7 @@
             appId: "1:743250587602:web:5cbbef1fef79f2e39ba20b",
             measurementId: "G-5Q7VMFDG84"
         };
-        // ==========================================
 
-        // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
         const db = firebase.firestore();
@@ -354,7 +361,6 @@
                     return;
                 }
                 
-                // Fetch all and display
                 snapshot.forEach(doc => {
                     let data = doc.data();
                     let uid = doc.id;
@@ -381,11 +387,11 @@
         }
 
         function togglePremiumStatus(uid, currentStatus) {
-            let newStatus = !currentStatus; // flip it
+            let newStatus = !currentStatus; 
             db.collection("users").doc(uid).update({
                 isPremium: newStatus
             }).then(() => {
-                loadAdminUsers(); // Refresh the list instantly
+                loadAdminUsers(); 
             }).catch(err => alert("Error updating status: " + err.message));
         }
 
@@ -443,7 +449,6 @@
         }
 
         function selectType(typeId, typeName) {
-            // PREMIUM GATEKEEPER
             if (typeId === 'nat-ie' && currentUserData && currentUserData.isPremium === false) {
                 document.getElementById('premium-modal').style.display = 'flex';
                 return;
