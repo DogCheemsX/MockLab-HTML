@@ -13,7 +13,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     
     <!-- LOAD OUR SEPARATE MCQ FILE -->
-    <script src="data.js?v=9"></script>
+    <script src="data.js?v=11"></script>
 
     <!-- FIREBASE LIBRARIES -->
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
@@ -69,9 +69,32 @@
             <button onclick="logout()" class="text-xs text-red-400 hover:text-red-300 ml-2 underline">Logout</button>
         </div>
 
+        <!-- SECRET ADMIN BUTTON (Hidden by default) -->
+        <button id="btn-admin" onclick="showAdminPanel()" class="w-full hidden bg-red-700 hover:bg-red-600 text-white transition-all font-extrabold text-xl py-3 px-8 rounded-xl shadow-lg mb-4">
+            👑 Secret Admin Dashboard
+        </button>
+
         <button onclick="showScreen('screen-intro', 'screen-home')" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white transition-all font-extrabold text-xl py-4 px-8 rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-1">
             Enter Portal 🚀
         </button>
+    </div>
+
+    <!-- 👑 SCREEN: SECRET ADMIN DASHBOARD 👑 -->
+    <div id="screen-admin" class="w-full max-w-4xl flex-col items-center" style="display: none;">
+        <div class="w-full flex justify-between items-center mb-8">
+            <button onclick="goBack('screen-intro', 'screen-admin')" class="text-sm font-bold text-gray-400 hover:text-white transition-colors">← Back</button>
+            <h1 class="text-3xl font-black text-red-400 tracking-tight">Admin Dashboard</h1>
+            <div class="w-10"></div> <!-- Spacer -->
+        </div>
+
+        <div class="w-full bg-gray-800 border-2 border-gray-700 rounded-xl p-6 shadow-xl">
+            <h2 class="text-xl font-bold mb-4 text-white">All Registered Students</h2>
+            
+            <!-- User List Container -->
+            <div id="admin-users-list" class="space-y-3 max-h-[60vh] overflow-y-auto pr-2">
+                <p class="text-gray-400">Loading students...</p>
+            </div>
+        </div>
     </div>
 
     <!-- SCREEN 1: SELECT TEST -->
@@ -209,10 +232,10 @@
         };
 
         // ==========================================
-        // 1. FIREBASE CONFIGURATION (EXACT MATCH!)
+        // FIREBASE CONNECTION
         // ==========================================
         const firebaseConfig = {
-            apiKey: "AIzaSyBdP5JcEGJzkgM6O6BDxsQcNyPQ2nc_cQs",
+            apiKey: "AIzaSyBdP5JcEGJzkgM606BDxsQcNyPQ2nc_cQs",
             authDomain: "mocklab-5f062.firebaseapp.com",
             projectId: "mocklab-5f062",
             storageBucket: "mocklab-5f062.firebasestorage.app",
@@ -220,9 +243,6 @@
             appId: "1:743250587602:web:5cbbef1fef79f2e39ba20b",
             measurementId: "G-5Q7VMFDG84"
         };
-        // ==========================================
-
-        // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
         const db = firebase.firestore();
@@ -233,10 +253,18 @@
         // CHECK IF USER IS LOGGED IN
         auth.onAuthStateChanged((user) => {
             if (user) {
+                currentUser = user;
                 db.collection("users").doc(user.uid).get().then((doc) => {
                     if (doc.exists) {
                         currentUserData = doc.data();
                         document.getElementById('user-display-name').innerText = currentUserData.name + (currentUserData.isPremium ? " (Premium 👑)" : " (Free Account)");
+                        
+                        // 👑 ADMIN CHECK 👑
+                        if(user.email === 'alisherahsan@gmail.com') {
+                            document.getElementById('btn-admin').classList.remove('hidden');
+                        } else {
+                            document.getElementById('btn-admin').classList.add('hidden');
+                        }
                     }
                     showScreen('screen-loading', 'screen-intro');
                     document.getElementById('screen-auth').style.display = 'none';
@@ -274,7 +302,7 @@
             .then((userCredential) => {
                 return db.collection("users").doc(userCredential.user.uid).set({
                     name: name,
-                    email: email,
+                    email: email.toLowerCase(),
                     whatsapp: whatsapp,
                     isPremium: false,
                     dateCreated: firebase.firestore.FieldValue.serverTimestamp()
@@ -298,6 +326,64 @@
         function logout() {
             auth.signOut();
             showScreen('screen-intro', 'screen-auth');
+        }
+
+        // ==========================================
+        // 👑 SECRET ADMIN PANEL LOGIC 👑
+        // ==========================================
+        function showAdminPanel() {
+            if (currentUser.email !== 'alisherahsan@gmail.com') {
+                alert("Unauthorized Access!");
+                return;
+            }
+            showScreen('screen-intro', 'screen-admin');
+            loadAdminUsers();
+        }
+
+        function loadAdminUsers() {
+            const container = document.getElementById('admin-users-list');
+            container.innerHTML = '<p class="text-gray-400">Loading students...</p>';
+            
+            db.collection("users").get().then((snapshot) => {
+                container.innerHTML = '';
+                if(snapshot.empty) {
+                    container.innerHTML = '<p class="text-gray-400">No students found.</p>';
+                    return;
+                }
+                
+                // Fetch all and display
+                snapshot.forEach(doc => {
+                    let data = doc.data();
+                    let uid = doc.id;
+                    let isPrem = data.isPremium;
+                    
+                    let buttonColor = isPrem ? "bg-green-500 hover:bg-green-400 text-white" : "bg-gray-600 hover:bg-gray-500 text-gray-200";
+                    let buttonText = isPrem ? "Premium ON 👑" : "Premium OFF";
+
+                    let card = `
+                        <div class="flex flex-col md:flex-row justify-between items-center bg-gray-900 border border-gray-700 p-4 rounded-lg">
+                            <div class="text-left w-full md:w-auto mb-3 md:mb-0">
+                                <h3 class="text-lg font-bold text-white">${data.name}</h3>
+                                <p class="text-sm text-gray-400">${data.email}</p>
+                                <p class="text-sm text-indigo-300 font-mono">📱 ${data.whatsapp}</p>
+                            </div>
+                            <button onclick="togglePremiumStatus('${uid}', ${isPrem})" class="w-full md:w-auto font-bold py-2 px-4 rounded-lg transition-colors shadow ${buttonColor}">
+                                ${buttonText}
+                            </button>
+                        </div>
+                    `;
+                    container.innerHTML += card;
+                });
+            }).catch(err => alert("Error loading users: " + err.message));
+        }
+
+        function togglePremiumStatus(uid, currentStatus) {
+            let newStatus = !currentStatus; // flip it
+            db.collection("users").doc(uid).update({
+                isPremium: newStatus
+            }).then(() => {
+                loadAdminUsers(); // Refresh the list instantly
+            }).catch(err => alert("Error updating status: " + err.message));
         }
 
         // ==========================================
