@@ -50,7 +50,7 @@
                 <input type="text" id="su-whatsapp" placeholder="03XX (WhatsApp Number)" class="w-full bg-gray-900/60 border border-gray-600 rounded-xl px-4 py-3.5 text-white placeholder-gray-500 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/50 focus:outline-none transition-all font-medium">
                 <input type="password" id="su-password" placeholder="Password (Min 6 characters)" class="w-full bg-gray-900/60 border border-gray-600 rounded-xl px-4 py-3.5 text-white placeholder-gray-500 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/50 focus:outline-none transition-all font-medium">
                 
-                <button onclick="handleSignUp()" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-black text-lg py-4 rounded-xl mt-4 transition-all shadow-[0_0_15px_rgba(79,70,229,0.4)] hover:shadow-[0_0_25px_rgba(79,70,229,0.6)] transform hover:-translate-y-0.5">Sign Up 🚀</button>
+                <button id="btn-signup" onclick="handleSignUp()" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-black text-lg py-4 rounded-xl mt-4 transition-all shadow-[0_0_15px_rgba(79,70,229,0.4)] hover:shadow-[0_0_25px_rgba(79,70,229,0.6)] transform hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed">Sign Up 🚀</button>
                 <p class="text-center text-sm text-gray-400 mt-6 font-medium">Already have an account? <span onclick="toggleAuth('login')" class="text-indigo-400 font-bold cursor-pointer hover:text-indigo-300 hover:underline transition-colors">Log In</span></p>
             </div>
 
@@ -59,7 +59,7 @@
                 <input type="email" id="li-email" placeholder="Email Address" class="w-full bg-gray-900/60 border border-gray-600 rounded-xl px-4 py-3.5 text-white placeholder-gray-500 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/50 focus:outline-none transition-all font-medium">
                 <input type="password" id="li-password" placeholder="Password" class="w-full bg-gray-900/60 border border-gray-600 rounded-xl px-4 py-3.5 text-white placeholder-gray-500 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/50 focus:outline-none transition-all font-medium">
                 
-                <button onclick="handleLogin()" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-black text-lg py-4 rounded-xl mt-4 transition-all shadow-[0_0_15px_rgba(79,70,229,0.4)] hover:shadow-[0_0_25px_rgba(79,70,229,0.6)] transform hover:-translate-y-0.5">Log In 🚀</button>
+                <button id="btn-login" onclick="handleLogin()" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-black text-lg py-4 rounded-xl mt-4 transition-all shadow-[0_0_15px_rgba(79,70,229,0.4)] hover:shadow-[0_0_25px_rgba(79,70,229,0.6)] transform hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed">Log In 🚀</button>
                 <p class="text-center text-sm text-gray-400 mt-6 font-medium">New student? <span onclick="toggleAuth('signup')" class="text-indigo-400 font-bold cursor-pointer hover:text-indigo-300 hover:underline transition-colors">Sign Up</span></p>
             </div>
         </div>
@@ -241,7 +241,7 @@
         };
 
         // ==========================================
-        // 1. FIREBASE CONFIGURATION
+        // 1. FIREBASE CONFIGURATION (YOUR EXACT KEYS)
         // ==========================================
         const firebaseConfig = {
             apiKey: "AIzaSyBdP5JcEGJzkgM6O6BDxsQcNyPQ2nc_cQs",
@@ -254,7 +254,6 @@
         };
         // ==========================================
 
-        // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
         const db = firebase.firestore();
@@ -299,16 +298,24 @@
             }
         }
 
+        function getSpinner() {
+            return `<svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white inline-block" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>`;
+        }
+
         function handleSignUp() {
             const name = document.getElementById('su-name').value;
             const email = document.getElementById('su-email').value;
             const whatsapp = document.getElementById('su-whatsapp').value;
             const password = document.getElementById('su-password').value;
+            const btn = document.getElementById('btn-signup');
 
             if(!name || !email || !whatsapp || !password) {
                 alert("Please fill in all fields!");
                 return;
             }
+
+            btn.disabled = true;
+            btn.innerHTML = getSpinner() + ` Creating Account...`;
 
             auth.createUserWithEmailAndPassword(email, password)
             .then((userCredential) => {
@@ -322,16 +329,29 @@
             })
             .catch((error) => {
                 alert("Error: " + error.message);
+                btn.disabled = false;
+                btn.innerHTML = `Sign Up 🚀`;
             });
         }
 
         function handleLogin() {
             const email = document.getElementById('li-email').value;
             const password = document.getElementById('li-password').value;
+            const btn = document.getElementById('btn-login');
+
+            if(!email || !password) {
+                alert("Please enter email and password!");
+                return;
+            }
+
+            btn.disabled = true;
+            btn.innerHTML = getSpinner() + ` Logging In...`;
 
             auth.signInWithEmailAndPassword(email, password)
             .catch((error) => {
                 alert("Error: " + error.message);
+                btn.disabled = false;
+                btn.innerHTML = `Log In 🚀`;
             });
         }
 
@@ -604,31 +624,4 @@
             }
             clearInterval(timerInterval);
             let score = 0;
-            activeQuestions.forEach((q, index) => { if(userAnswers[index] === q.ans) score++; });
-            document.getElementById('final-score').innerText = `${score} / ${activeQuestions.length}`;
-            let percent = (score / activeQuestions.length) * 100;
-            document.getElementById('score-msg').innerText = percent > 80 ? "Excellent Job! 🚀" : percent > 50 ? "Good Effort! 👍" : "Keep Practicing! 📚";
-            showScreen('screen-test', 'screen-result');
-        }
-
-        function startTimer(durationSeconds) {
-            clearInterval(timerInterval);
-            let timer = durationSeconds;
-            timerInterval = setInterval(function () {
-                let hours = parseInt(timer / 3600, 10);
-                let minutes = parseInt((timer % 3600) / 60, 10);
-                let seconds = parseInt(timer % 60, 10);
-                document.getElementById('timer-display').textContent = 
-                    (hours < 10 ? "0" + hours : hours) + ":" + 
-                    (minutes < 10 ? "0" + minutes : minutes) + ":" + 
-                    (seconds < 10 ? "0" + seconds : seconds);
-                if (--timer < 0) {
-                    clearInterval(timerInterval);
-                    alert("Time is up! Submitting your test.");
-                    submitTest(); 
-                }
-            }, 1000);
-        }
-    </script>
-</body>
-</html>
+            activeQuestions.forEach((q, index) => { if(userAnswers[index] === q.ans) score++
