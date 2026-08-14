@@ -13,7 +13,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     
     <!-- LOAD OUR SEPARATE MCQ FILE -->
-    <script src="data.js?v=17"></script>
+    <script src="data.js?v=18"></script>
 
     <!-- FIREBASE LIBRARIES -->
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
@@ -193,11 +193,25 @@
     </div>
 
     <script>
+        // ERROR DETECTOR
+        window.onload = function() {
+            if (typeof testData === 'undefined' || typeof questionBank === 'undefined') {
+                document.getElementById('screen-loading').style.display = 'none';
+                document.getElementById('screen-intro').style.display = 'flex';
+                document.getElementById('screen-intro').innerHTML = `
+                    <div class="bg-red-100 border-2 border-red-500 text-red-900 p-8 rounded-xl max-w-lg shadow-2xl text-left">
+                        <h2 class="text-3xl font-black mb-4">⚠️ ERROR: data.js is broken!</h2>
+                        <p class="font-medium mb-4 text-lg">The buttons are completely frozen because the website cannot read your MCQs file.</p>
+                    </div>
+                `;
+            }
+        };
+
         // ==========================================
-        // 1. FIREBASE CONFIGURATION (EXACT MATCH!)
+        // FIREBASE CONFIGURATION
         // ==========================================
         const firebaseConfig = {
-            apiKey: "AIzaSyBdP5JcEGJzkgM6O6BDxsQcNyPQ2nc_cQs",
+            apiKey: "AIzaSyBdP5JcEGJzkgM606BDxsQcNyPQ2nc_cQs",
             authDomain: "mocklab-5f062.firebaseapp.com",
             projectId: "mocklab-5f062",
             storageBucket: "mocklab-5f062.firebasestorage.app",
@@ -205,6 +219,7 @@
             appId: "1:743250587602:web:5cbbef1fef79f2e39ba20b",
             measurementId: "G-5Q7VMFDG84"
         };
+        
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
         const db = firebase.firestore();
@@ -216,7 +231,7 @@
         auth.onAuthStateChanged((user) => {
             if (user) {
                 currentUser = user;
-                // TRY to get data from Firestore
+                
                 db.collection("users").doc(user.uid).get().then((doc) => {
                     if (doc.exists) {
                         currentUserData = doc.data();
@@ -230,15 +245,30 @@
                     } else {
                         document.getElementById('user-display-name').innerText = "Student (No DB record)";
                     }
-                    showScreen('screen-loading', 'screen-intro');
+                    
+                    // FIX: Make sure the login screen hides completely!
+                    document.getElementById('screen-loading').style.display = 'none';
+                    document.getElementById('screen-auth').style.display = 'none';
+                    document.getElementById('screen-intro').style.display = 'flex';
+                    
+                    // Reset Button Spinners
+                    document.getElementById('btn-login').disabled = false;
+                    document.getElementById('btn-login').innerHTML = 'Log In 🚀';
+                    document.getElementById('btn-signup').disabled = false;
+                    document.getElementById('btn-signup').innerHTML = 'Sign Up 🚀';
+
                 }).catch((error) => {
-                    // IF FIRESTORE FAILS (Because database isn't created yet), IT CATCHES THE ERROR HERE!
                     alert("⚠️ Database Connection Error: " + error.message + "\n\nDid you forget to click 'Create Database' in Firebase Firestore?");
                     document.getElementById('user-display-name').innerText = "Student (DB Error)";
-                    showScreen('screen-loading', 'screen-intro');
+                    
+                    document.getElementById('screen-loading').style.display = 'none';
+                    document.getElementById('screen-auth').style.display = 'none';
+                    document.getElementById('screen-intro').style.display = 'flex';
                 });
             } else {
-                showScreen('screen-loading', 'screen-auth');
+                document.getElementById('screen-loading').style.display = 'none';
+                document.getElementById('screen-intro').style.display = 'none';
+                document.getElementById('screen-auth').style.display = 'flex';
             }
         });
 
@@ -518,40 +548,3 @@
         function closeOverview() { document.getElementById('overview-modal').style.display = "none"; }
         function saveAnswer(optionIndex) {
             userAnswers[currentQIndex] = optionIndex;
-            if(reviewStatus[currentQIndex]) reviewStatus[currentQIndex] = false;
-            renderQuestion();
-        }
-        function nextQuestion() { if(currentQIndex < activeQuestions.length - 1) { currentQIndex++; renderQuestion(); } }
-        function prevQuestion() { if(currentQIndex > 0) { currentQIndex--; renderQuestion(); } }
-        function submitTest() {
-            const unanswered = activeQuestions.length - Object.keys(userAnswers).length;
-            if(unanswered > 0) {
-                if(!confirm(`You still have ${unanswered} unanswered questions. Are you sure you want to submit?`)) return;
-            }
-            clearInterval(timerInterval);
-            let score = 0;
-            activeQuestions.forEach((q, index) => { if(userAnswers[index] === q.ans) score++; });
-            document.getElementById('final-score').innerText = `${score} / ${activeQuestions.length}`;
-            let percent = (score / activeQuestions.length) * 100;
-            document.getElementById('score-msg').innerText = percent > 80 ? "Excellent Job! 🚀" : percent > 50 ? "Good Effort! 👍" : "Keep Practicing! 📚";
-            showScreen('screen-test', 'screen-result');
-        }
-        function startTimer(durationSeconds) {
-            clearInterval(timerInterval);
-            let timer = durationSeconds;
-            timerInterval = setInterval(function () {
-                let hours = parseInt(timer / 3600, 10);
-                let minutes = parseInt((timer % 3600) / 60, 10);
-                let seconds = parseInt(timer % 60, 10);
-                document.getElementById('timer-display').textContent = 
-                    (hours < 10 ? "0" + hours : hours) + ":" + (minutes < 10 ? "0" + minutes : minutes) + ":" + (seconds < 10 ? "0" + seconds : seconds);
-                if (--timer < 0) {
-                    clearInterval(timerInterval);
-                    alert("Time is up! Submitting your test.");
-                    submitTest(); 
-                }
-            }, 1000);
-        }
-    </script>
-</body>
-</html>
