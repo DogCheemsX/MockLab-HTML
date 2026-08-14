@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <!-- FORCE BROWSER TO NEVER CACHE THIS PAGE -->
+    <!-- FORCE BROWSER TO NEVER CACHE -->
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
@@ -13,7 +13,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     
     <!-- LOAD OUR SEPARATE MCQ FILE -->
-    <script src="data.js?v=15"></script>
+    <script src="data.js?v=16"></script>
 
     <!-- FIREBASE LIBRARIES -->
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
@@ -30,37 +30,32 @@
 
     <!-- ✨ UPGRADED AUTHENTICATION SCREEN ✨ -->
     <div id="screen-auth" class="w-full max-w-md flex-col items-center relative z-10" style="display: none;">
-        
-        <!-- Bigger Logo -->
         <img src="MockLab.png" alt="MockLab Logo" class="w-48 sm:w-56 h-auto mb-3 drop-shadow-2xl mx-auto transition-transform hover:scale-105">
-        
-        <!-- Catchy Tagline -->
         <p class="text-center text-indigo-300 font-bold text-sm sm:text-base mb-8 uppercase tracking-widest px-2 drop-shadow-md">
             Pakistan's ultimate <br class="sm:hidden"> All in One Entry Test Platform!
         </p>
         
-        <!-- Enhanced Form Box -->
         <div class="w-full bg-gray-800/90 backdrop-blur-sm border border-gray-700 rounded-2xl p-8 shadow-[0_0_40px_rgba(79,70,229,0.15)]">
             <h1 class="text-3xl font-black mb-8 tracking-tight text-white text-center" id="auth-title">Create Account</h1>
             
             <!-- Sign Up Form -->
             <div id="signup-form" class="space-y-4">
-                <input type="text" id="su-name" placeholder="Full Name" class="w-full bg-gray-900/60 border border-gray-600 rounded-xl px-4 py-3.5 text-white placeholder-gray-500 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/50 focus:outline-none transition-all font-medium">
-                <input type="email" id="su-email" placeholder="Email Address" class="w-full bg-gray-900/60 border border-gray-600 rounded-xl px-4 py-3.5 text-white placeholder-gray-500 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/50 focus:outline-none transition-all font-medium">
-                <input type="text" id="su-whatsapp" placeholder="03XX (WhatsApp Number)" class="w-full bg-gray-900/60 border border-gray-600 rounded-xl px-4 py-3.5 text-white placeholder-gray-500 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/50 focus:outline-none transition-all font-medium">
-                <input type="password" id="su-password" placeholder="Password (Min 6 characters)" class="w-full bg-gray-900/60 border border-gray-600 rounded-xl px-4 py-3.5 text-white placeholder-gray-500 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/50 focus:outline-none transition-all font-medium">
+                <input type="text" id="su-name" placeholder="Full Name" class="w-full bg-gray-900/60 border border-gray-600 rounded-xl px-4 py-3.5 text-white placeholder-gray-500 focus:border-indigo-500 focus:outline-none transition-all font-medium">
+                <input type="email" id="su-email" placeholder="Email Address" class="w-full bg-gray-900/60 border border-gray-600 rounded-xl px-4 py-3.5 text-white placeholder-gray-500 focus:border-indigo-500 focus:outline-none transition-all font-medium">
+                <input type="text" id="su-whatsapp" placeholder="03XX (WhatsApp Number)" class="w-full bg-gray-900/60 border border-gray-600 rounded-xl px-4 py-3.5 text-white placeholder-gray-500 focus:border-indigo-500 focus:outline-none transition-all font-medium">
+                <input type="password" id="su-password" placeholder="Password (Min 6 characters)" class="w-full bg-gray-900/60 border border-gray-600 rounded-xl px-4 py-3.5 text-white placeholder-gray-500 focus:border-indigo-500 focus:outline-none transition-all font-medium">
                 
-                <button id="btn-signup" onclick="handleSignUp()" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-black text-lg py-4 rounded-xl mt-4 transition-all shadow-[0_0_15px_rgba(79,70,229,0.4)] hover:shadow-[0_0_25px_rgba(79,70,229,0.6)] transform hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed">Sign Up 🚀</button>
-                <p class="text-center text-sm text-gray-400 mt-6 font-medium">Already have an account? <span onclick="toggleAuth('login')" class="text-indigo-400 font-bold cursor-pointer hover:text-indigo-300 hover:underline transition-colors">Log In</span></p>
+                <button id="btn-signup" onclick="handleSignUp()" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-black text-lg py-4 rounded-xl mt-4 transition-all shadow-lg disabled:opacity-50">Sign Up 🚀</button>
+                <p class="text-center text-sm text-gray-400 mt-6 font-medium">Already have an account? <span onclick="toggleAuth('login')" class="text-indigo-400 font-bold cursor-pointer hover:underline">Log In</span></p>
             </div>
 
             <!-- Log In Form -->
             <div id="login-form" class="space-y-4 hidden">
-                <input type="email" id="li-email" placeholder="Email Address" class="w-full bg-gray-900/60 border border-gray-600 rounded-xl px-4 py-3.5 text-white placeholder-gray-500 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/50 focus:outline-none transition-all font-medium">
-                <input type="password" id="li-password" placeholder="Password" class="w-full bg-gray-900/60 border border-gray-600 rounded-xl px-4 py-3.5 text-white placeholder-gray-500 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/50 focus:outline-none transition-all font-medium">
+                <input type="email" id="li-email" placeholder="Email Address" class="w-full bg-gray-900/60 border border-gray-600 rounded-xl px-4 py-3.5 text-white placeholder-gray-500 focus:border-indigo-500 focus:outline-none transition-all font-medium">
+                <input type="password" id="li-password" placeholder="Password" class="w-full bg-gray-900/60 border border-gray-600 rounded-xl px-4 py-3.5 text-white placeholder-gray-500 focus:border-indigo-500 focus:outline-none transition-all font-medium">
                 
-                <button id="btn-login" onclick="handleLogin()" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-black text-lg py-4 rounded-xl mt-4 transition-all shadow-[0_0_15px_rgba(79,70,229,0.4)] hover:shadow-[0_0_25px_rgba(79,70,229,0.6)] transform hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed">Log In 🚀</button>
-                <p class="text-center text-sm text-gray-400 mt-6 font-medium">New student? <span onclick="toggleAuth('signup')" class="text-indigo-400 font-bold cursor-pointer hover:text-indigo-300 hover:underline transition-colors">Sign Up</span></p>
+                <button id="btn-login" onclick="handleLogin()" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-black text-lg py-4 rounded-xl mt-4 transition-all shadow-lg disabled:opacity-50">Log In 🚀</button>
+                <p class="text-center text-sm text-gray-400 mt-6 font-medium">New student? <span onclick="toggleAuth('signup')" class="text-indigo-400 font-bold cursor-pointer hover:underline">Sign Up</span></p>
             </div>
         </div>
     </div>
@@ -73,19 +68,17 @@
             The ultimate entry test portal for all universities in Pakistan. Master your preparation for NTS NAT, PIEAS, Air University, and Bahria.
         </p>
         
-        <!-- User Welcome Badge -->
         <div class="bg-gray-800 border border-gray-700 rounded-full px-6 py-2 mb-8 flex items-center gap-3 mx-auto w-max">
             <span class="w-2 h-2 rounded-full bg-green-500"></span>
             <span class="text-sm font-bold text-gray-300">Logged in as <span id="user-display-name" class="text-white">Student</span></span>
             <button onclick="logout()" class="text-xs text-red-400 hover:text-red-300 ml-2 underline">Logout</button>
         </div>
 
-        <!-- SECRET ADMIN BUTTON -->
         <button id="btn-admin" onclick="showAdminPanel()" class="w-full hidden bg-red-700 hover:bg-red-600 text-white transition-all font-extrabold text-xl py-3 px-8 rounded-xl shadow-lg mb-4">
             👑 Secret Admin Dashboard
         </button>
 
-        <button onclick="showScreen('screen-intro', 'screen-home')" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white transition-all font-extrabold text-xl py-4 px-8 rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-1">
+        <button onclick="showScreen('screen-intro', 'screen-home')" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white transition-all font-extrabold text-xl py-4 px-8 rounded-xl shadow-lg hover:-translate-y-1">
             Enter Portal 🚀
         </button>
     </div>
@@ -95,14 +88,11 @@
         <div class="w-full flex justify-between items-center mb-8">
             <button onclick="goBack('screen-intro', 'screen-admin')" class="text-sm font-bold text-gray-400 hover:text-white transition-colors">← Back</button>
             <h1 class="text-3xl font-black text-red-400 tracking-tight">Admin Dashboard</h1>
-            <div class="w-10"></div> <!-- Spacer -->
+            <div class="w-10"></div>
         </div>
-
         <div class="w-full bg-gray-800 border-2 border-gray-700 rounded-xl p-6 shadow-xl">
             <h2 class="text-xl font-bold mb-4 text-white">All Registered Students</h2>
-            <div id="admin-users-list" class="space-y-3 max-h-[60vh] overflow-y-auto pr-2">
-                <p class="text-gray-400">Loading students...</p>
-            </div>
+            <div id="admin-users-list" class="space-y-3 max-h-[60vh] overflow-y-auto pr-2"></div>
         </div>
     </div>
 
@@ -110,14 +100,7 @@
     <div id="screen-home" class="w-full max-w-md flex-col items-center" style="display: none;">
         <button onclick="goBack('screen-intro', 'screen-home')" class="self-start mb-6 text-sm font-bold text-gray-400 hover:text-white transition-colors">← Back to Home</button>
         <h1 class="text-4xl font-extrabold mb-8 tracking-tight text-center">Select Test</h1>
-        
-        <div class="w-full space-y-3">
-            <button onclick="selectUniversity('COMSATS')" class="w-full bg-gray-800 border-2 border-gray-700 hover:border-white hover:bg-white hover:text-black transition-all font-bold text-lg py-4 px-6 rounded-xl shadow-sm">COMSATS Admission Test (NTS NAT)</button>
-            <button onclick="selectUniversity('PIEAS')" class="w-full bg-gray-800 border-2 border-gray-700 hover:border-white hover:bg-white hover:text-black transition-all font-bold text-lg py-4 px-6 rounded-xl shadow-sm">PIEAS Admission Test</button>
-            <button onclick="selectUniversity('AIR')" class="w-full bg-gray-800 border-2 border-gray-700 hover:border-white hover:bg-white hover:text-black transition-all font-bold text-lg py-4 px-6 rounded-xl shadow-sm">Air Admission Test</button>
-            <button onclick="selectUniversity('BAHRIA')" class="w-full bg-gray-800 border-2 border-gray-700 hover:border-white hover:bg-white hover:text-black transition-all font-bold text-lg py-4 px-6 rounded-xl shadow-sm">Bahria Admission Test</button>
-            <button onclick="selectUniversity('NTS')" class="w-full bg-gray-800 border-2 border-gray-700 hover:border-white hover:bg-white hover:text-black transition-all font-bold text-lg py-4 px-6 rounded-xl shadow-sm">OR NTS NAT</button>
-        </div>
+        <div class="w-full space-y-3" id="type-options-main"></div>
     </div>
 
     <!-- SCREEN 2: SELECT TYPE -->
@@ -131,17 +114,14 @@
     <div id="premium-modal" class="fixed inset-0 bg-black/90 z-50 flex-col items-center justify-center p-4" style="display: none;">
         <div class="bg-gray-800 border-2 border-indigo-500 rounded-xl p-6 w-full max-w-md shadow-2xl relative">
             <button onclick="document.getElementById('premium-modal').style.display='none'" class="absolute top-4 right-4 text-gray-400 hover:text-white font-bold text-xl">✕</button>
-            
             <h2 class="text-2xl font-black mb-2 text-center text-indigo-400">🔒 Premium Test</h2>
             <p class="text-center text-gray-300 text-sm mb-6">This test is locked. Upgrade your account to unlock all tests permanently on all your devices!</p>
-            
             <div class="flex flex-col items-center justify-center mb-6">
                 <div class="bg-white p-3 rounded-2xl shadow-[0_0_15px_rgba(79,70,229,0.3)] border-2 border-indigo-400 mb-3">
                     <img src="qr.png" alt="NayaPay QR Code" class="w-32 h-32 object-contain rounded-lg">
                 </div>
                 <span class="text-xs font-bold text-indigo-400 uppercase tracking-widest bg-indigo-900/40 px-3 py-1 rounded-full border border-indigo-500/30">Scan to Pay</span>
             </div>
-
             <div class="space-y-4 text-left bg-gray-900 p-4 rounded-lg border border-gray-700">
                 <div class="flex items-start">
                     <div class="bg-indigo-600 text-white font-bold rounded-full h-6 w-6 flex items-center justify-center text-xs shrink-0 mt-0.5 mr-3">1</div>
@@ -163,22 +143,11 @@
     <div id="screen-info" class="w-full max-w-md flex-col items-center" style="display: none;">
         <button onclick="goBack('screen-type', 'screen-info')" class="self-start mb-6 text-sm font-bold text-gray-400 hover:text-white transition-colors">← Back</button>
         <h1 id="info-title" class="text-3xl font-extrabold mb-6 tracking-tight text-center text-indigo-400"></h1>
-        
         <div class="w-full bg-gray-800 border-2 border-gray-700 rounded-xl p-6 shadow-lg mb-8 text-left">
-            <div class="mb-4">
-                <span class="block text-sm font-bold text-gray-500 uppercase tracking-wider">Duration</span>
-                <span id="info-time" class="text-lg font-bold text-gray-100"></span>
-            </div>
-            <div class="mb-4">
-                <span class="block text-sm font-bold text-gray-500 uppercase tracking-wider">Total Marks / MCQs</span>
-                <span id="info-marks" class="text-lg font-bold text-gray-100"></span>
-            </div>
-            <div>
-                <span class="block text-sm font-bold text-gray-500 uppercase tracking-wider mb-2">Subject Breakdown</span>
-                <ul id="info-breakdown" class="list-none space-y-1 text-md font-medium text-gray-300"></ul>
-            </div>
+            <div class="mb-4"><span class="block text-sm font-bold text-gray-500 uppercase tracking-wider">Duration</span><span id="info-time" class="text-lg font-bold text-gray-100"></span></div>
+            <div class="mb-4"><span class="block text-sm font-bold text-gray-500 uppercase tracking-wider">Total Marks</span><span id="info-marks" class="text-lg font-bold text-gray-100"></span></div>
+            <div><span class="block text-sm font-bold text-gray-500 uppercase tracking-wider mb-2">Subject Breakdown</span><ul id="info-breakdown" class="list-none space-y-1 text-md font-medium text-gray-300"></ul></div>
         </div>
-
         <button onclick="startTest()" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white transition-all font-extrabold text-xl py-4 px-6 rounded-xl shadow-lg w-full">START TEST</button>
     </div>
 
@@ -188,10 +157,7 @@
             <h2 class="text-xl font-bold text-gray-100">MockLab Test</h2>
             <div class="text-2xl font-mono font-bold text-red-400 bg-red-900/30 py-1 px-3 rounded-lg border border-red-900/50" id="timer-display">00:00:00</div>
         </div>
-        
-        <div id="question-container" class="bg-gray-800 p-6 md:p-8 rounded-b-xl min-h-[50vh] border-x-2 border-b-2 border-gray-700 shadow-lg">
-            <!-- Questions loaded via JS -->
-        </div>
+        <div id="question-container" class="bg-gray-800 p-6 md:p-8 rounded-b-xl min-h-[50vh] border-x-2 border-b-2 border-gray-700 shadow-lg"></div>
     </div>
     
     <!-- SCREEN 5: RESULTS -->
@@ -212,39 +178,21 @@
                 <h2 class="text-2xl font-bold text-white">Test Overview</h2>
                 <button onclick="closeOverview()" class="text-red-400 font-extrabold hover:text-red-300 text-lg">✕ Close</button>
             </div>
-            
             <div class="flex flex-wrap gap-4 mb-6 text-xs font-bold uppercase tracking-wider justify-center">
                 <span class="flex items-center gap-1 text-green-400"><div class="w-3 h-3 bg-green-500 rounded-sm"></div> Answered</span>
                 <span class="flex items-center gap-1 text-yellow-400"><div class="w-3 h-3 bg-yellow-500 rounded-sm"></div> Marked for Review</span>
                 <span class="flex items-center gap-1 text-gray-400"><div class="w-3 h-3 bg-gray-600 rounded-sm"></div> Unanswered</span>
             </div>
-            
-            <!-- Grid generated by JS -->
             <div id="overview-grid" class="grid grid-cols-5 sm:grid-cols-8 md:grid-cols-10 gap-3"></div>
         </div>
     </div>
 
     <script>
-        // ERROR DETECTOR
-        window.onload = function() {
-            if (typeof testData === 'undefined' || typeof questionBank === 'undefined') {
-                document.getElementById('screen-loading').style.display = 'none';
-                document.getElementById('screen-intro').style.display = 'flex';
-                document.getElementById('screen-intro').innerHTML = `
-                    <div class="bg-red-100 border-2 border-red-500 text-red-900 p-8 rounded-xl max-w-lg shadow-2xl text-left">
-                        <h2 class="text-3xl font-black mb-4">⚠️ ERROR: data.js is broken!</h2>
-                        <p class="font-medium mb-4 text-lg">The buttons are completely frozen because the website cannot read your MCQs file.</p>
-                        <p class="font-bold text-red-700 bg-red-200 p-3 rounded text-center">Please re-copy the data.js file carefully!</p>
-                    </div>
-                `;
-            }
-        };
-
         // ==========================================
-        // 1. FIREBASE CONFIGURATION (YOUR EXACT KEYS)
+        // FIREBASE CONFIGURATION (EXACT MATCH!)
         // ==========================================
         const firebaseConfig = {
-            apiKey: "AIzaSyBdP5JcEGJzkgM6O6BDxsQcNyPQ2nc_cQs",
+            apiKey: "AIzaSyBdP5JcEGJzkgM606BDxsQcNyPQ2nc_cQs",
             authDomain: "mocklab-5f062.firebaseapp.com",
             projectId: "mocklab-5f062",
             storageBucket: "mocklab-5f062.firebasestorage.app",
@@ -252,8 +200,6 @@
             appId: "1:743250587602:web:5cbbef1fef79f2e39ba20b",
             measurementId: "G-5Q7VMFDG84"
         };
-        // ==========================================
-
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
         const db = firebase.firestore();
@@ -261,31 +207,40 @@
         let currentUser = null;
         let currentUserData = null; 
 
-        // CHECK IF USER IS LOGGED IN
+        // CRASH-PROOF LOGIN CHECK
         auth.onAuthStateChanged((user) => {
             if (user) {
                 currentUser = user;
+                // TRY to get data from Firestore
                 db.collection("users").doc(user.uid).get().then((doc) => {
                     if (doc.exists) {
                         currentUserData = doc.data();
                         document.getElementById('user-display-name').innerText = currentUserData.name + (currentUserData.isPremium ? " (Premium 👑)" : " (Free Account)");
                         
-                        // 👑 ADMIN CHECK 👑
                         if(user.email === 'alisherahsan@gmail.com') {
                             document.getElementById('btn-admin').classList.remove('hidden');
                         } else {
                             document.getElementById('btn-admin').classList.add('hidden');
                         }
+                    } else {
+                        document.getElementById('user-display-name').innerText = "Student (No DB record)";
                     }
                     showScreen('screen-loading', 'screen-intro');
-                    document.getElementById('screen-auth').style.display = 'none';
+                }).catch((error) => {
+                    // IF FIRESTORE FAILS (Because database isn't created yet), IT CATCHES THE ERROR HERE!
+                    alert("⚠️ Database Connection Error: " + error.message + "\n\nDid you forget to click 'Create Database' in Firebase Firestore?");
+                    document.getElementById('user-display-name').innerText = "Student (DB Error)";
+                    showScreen('screen-loading', 'screen-intro');
                 });
             } else {
                 showScreen('screen-loading', 'screen-auth');
             }
         });
 
-        // --- AUTHENTICATION FUNCTIONS ---
+        function getSpinner() {
+            return `<svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white inline-block" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>`;
+        }
+
         function toggleAuth(type) {
             if(type === 'login') {
                 document.getElementById('signup-form').classList.add('hidden');
@@ -296,10 +251,6 @@
                 document.getElementById('signup-form').classList.remove('hidden');
                 document.getElementById('auth-title').innerText = 'Create Account';
             }
-        }
-
-        function getSpinner() {
-            return `<svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white inline-block" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>`;
         }
 
         function handleSignUp() {
@@ -325,6 +276,8 @@
                     whatsapp: whatsapp,
                     isPremium: false,
                     dateCreated: firebase.firestore.FieldValue.serverTimestamp()
+                }).catch((dbErr) => {
+                    alert("Account created, but failed to save to Database: " + dbErr.message + "\nMake sure Firestore is in Test Mode!");
                 });
             })
             .catch((error) => {
@@ -357,14 +310,14 @@
 
         function logout() {
             auth.signOut();
-            showScreen('screen-intro', 'screen-auth');
+            setTimeout(() => { window.location.reload(); }, 500);
         }
 
         // ==========================================
-        // 👑 SECRET ADMIN PANEL LOGIC 👑
+        // 👑 SECRET ADMIN PANEL LOGIC
         // ==========================================
         function showAdminPanel() {
-            if (currentUser.email !== 'alisherahsan@gmail.com') {
+            if (!currentUser || currentUser.email !== 'alisherahsan@gmail.com') {
                 alert("Unauthorized Access!");
                 return;
             }
@@ -382,28 +335,25 @@
                     container.innerHTML = '<p class="text-gray-400">No students found.</p>';
                     return;
                 }
-                
                 snapshot.forEach(doc => {
                     let data = doc.data();
                     let uid = doc.id;
                     let isPrem = data.isPremium;
-                    
                     let buttonColor = isPrem ? "bg-green-500 hover:bg-green-400 text-white" : "bg-gray-600 hover:bg-gray-500 text-gray-200";
                     let buttonText = isPrem ? "Premium ON 👑" : "Premium OFF";
 
-                    let card = `
+                    container.innerHTML += `
                         <div class="flex flex-col md:flex-row justify-between items-center bg-gray-900 border border-gray-700 p-4 rounded-lg">
                             <div class="text-left w-full md:w-auto mb-3 md:mb-0">
-                                <h3 class="text-lg font-bold text-white">${data.name}</h3>
-                                <p class="text-sm text-gray-400">${data.email}</p>
-                                <p class="text-sm text-indigo-300 font-mono">📱 ${data.whatsapp}</p>
+                                <h3 class="text-lg font-bold text-white">${data.name || "Unknown"}</h3>
+                                <p class="text-sm text-gray-400">${data.email || "No Email"}</p>
+                                <p class="text-sm text-indigo-300 font-mono">📱 ${data.whatsapp || "No Number"}</p>
                             </div>
                             <button onclick="togglePremiumStatus('${uid}', ${isPrem})" class="w-full md:w-auto font-bold py-2 px-4 rounded-lg transition-colors shadow ${buttonColor}">
                                 ${buttonText}
                             </button>
                         </div>
                     `;
-                    container.innerHTML += card;
                 });
             }).catch(err => alert("Error loading users: " + err.message));
         }
@@ -418,7 +368,7 @@
         }
 
         // ==========================================
-        // TEST NAVIGATION & LOGIC
+        // TEST UI LOGIC
         // ==========================================
         let currentUni = null;
         let currentTestId = null; 
@@ -430,44 +380,43 @@
         let reviewStatus = {}; 
 
         function showScreen(hideId, showId) {
-            try {
-                document.getElementById(hideId).style.display = "none";
-                document.getElementById(showId).style.display = "flex";
-                window.scrollTo(0,0);
-            } catch (error) {
-                alert("Error switching screens: " + error.message);
-            }
+            document.getElementById(hideId).style.display = "none";
+            document.getElementById(showId).style.display = "flex";
+            window.scrollTo(0,0);
         }
-
-        function goBack(showId, hideId) {
-            showScreen(hideId, showId);
-        }
+        function goBack(showId, hideId) { showScreen(hideId, showId); }
 
         function selectUniversity(uniKey) {
-            try {
-                currentUni = uniKey;
-                const typeContainer = document.getElementById('type-options');
-                typeContainer.innerHTML = ''; 
-
-                const options = testData[uniKey].options;
-                options.forEach(opt => {
-                    const btn = document.createElement('button');
-                    btn.className = "w-full bg-gray-800 border-2 border-gray-700 hover:border-white hover:bg-white hover:text-black transition-all font-bold text-lg py-4 px-6 rounded-xl shadow-sm text-left";
-                    
-                    if(opt.id === 'nat-ie') {
-                        btn.innerHTML = `🔒 ${opt.name}`;
-                    } else {
-                        btn.innerHTML = opt.name;
-                    }
-
-                    btn.onclick = () => selectType(opt.id, opt.name);
-                    typeContainer.appendChild(btn);
-                });
-
-                showScreen('screen-home', 'screen-type');
-            } catch (error) {
-                alert("An error occurred. Check if your data.js is broken! Error: " + error.message);
-            }
+            currentUni = uniKey;
+            const container = document.getElementById('type-options-main');
+            container.innerHTML = ''; 
+            
+            // Build buttons dynamically on home screen now!
+            const options = testData[uniKey].options;
+            options.forEach(opt => {
+                const btn = document.createElement('button');
+                btn.className = "w-full bg-gray-800 border-2 border-gray-700 hover:border-white hover:bg-white hover:text-black transition-all font-bold text-lg py-4 px-6 rounded-xl shadow-sm text-left";
+                btn.innerHTML = (opt.id === 'nat-ie') ? `🔒 ${opt.name}` : opt.name;
+                btn.onclick = () => selectType(opt.id, opt.name);
+                container.appendChild(btn);
+            });
+            showScreen('screen-home', 'screen-home'); // stays on home just loads buttons. Wait, no.
+        }
+        
+        // Wait, overriding above for correct flow
+        function selectUniversity(uniKey) {
+            currentUni = uniKey;
+            const typeContainer = document.getElementById('type-options');
+            typeContainer.innerHTML = ''; 
+            const options = testData[uniKey].options;
+            options.forEach(opt => {
+                const btn = document.createElement('button');
+                btn.className = "w-full bg-gray-800 border-2 border-gray-700 hover:border-white hover:bg-white hover:text-black transition-all font-bold text-lg py-4 px-6 rounded-xl shadow-sm text-left";
+                btn.innerHTML = (opt.id === 'nat-ie') ? `🔒 ${opt.name}` : opt.name;
+                btn.onclick = () => selectType(opt.id, opt.name);
+                typeContainer.appendChild(btn);
+            });
+            showScreen('screen-home', 'screen-type');
         }
 
         function selectType(typeId, typeName) {
@@ -475,12 +424,9 @@
                 document.getElementById('premium-modal').style.display = 'flex';
                 return;
             }
-
             currentTestId = typeId; 
             document.getElementById('info-title').innerText = typeName;
-            
             let infoData = testData[currentUni].info || testData[currentUni].infoMap[typeId]; 
-            
             document.getElementById('info-time').innerText = infoData.time;
             document.getElementById('info-marks').innerText = infoData.marks;
             testTimeMinutes = parseInt(infoData.time.split(' ')[0]);
@@ -492,14 +438,12 @@
                 li.innerHTML = `• ${item}`;
                 breakdownUl.appendChild(li);
             });
-
             showScreen('screen-type', 'screen-info');
         }
 
         function startTest() {
             showScreen('screen-info', 'screen-test');
-            
-            activeQuestions = questionBank[currentTestId] || [];
+            activeQuestions = typeof questionBank !== 'undefined' ? (questionBank[currentTestId] || []) : [];
             if(activeQuestions.length === 0) return;
 
             currentQIndex = 0;
@@ -527,11 +471,8 @@
                             <p class="text-lg font-bold text-yellow-400">${reviewCount}</p>
                         </div>
                     </div>
-                    
                     <div class="flex flex-wrap justify-center items-center gap-2">
-                        <button onclick="showOverview()" class="bg-indigo-600/20 text-indigo-400 border border-indigo-500 hover:bg-indigo-600 hover:text-white px-4 py-2 rounded-lg font-bold transition-colors shadow-sm text-sm flex items-center">
-                            Grid Overview
-                        </button>
+                        <button onclick="showOverview()" class="bg-indigo-600/20 text-indigo-400 border border-indigo-500 hover:bg-indigo-600 hover:text-white px-4 py-2 rounded-lg font-bold transition-colors shadow-sm text-sm">Grid Overview</button>
                         <div class="flex items-center">
                             <input type="number" id="jump-input" min="1" max="${activeQuestions.length}" class="w-14 px-2 py-2 rounded-l-lg bg-gray-800 border border-gray-600 text-white font-bold focus:outline-none focus:border-indigo-500 text-center" placeholder="#">
                             <button onclick="jumpToQuestion()" class="bg-indigo-600 hover:bg-indigo-500 px-3 py-2 rounded-r-lg font-bold text-white transition-colors shadow-sm text-sm border border-indigo-600">Jump</button>
@@ -539,52 +480,32 @@
                         <button onclick="jumpToNextSection()" class="bg-gray-700 hover:bg-gray-600 px-3 py-2 rounded-lg font-bold text-gray-200 transition-colors shadow-sm border border-gray-600 text-sm">Next Section &raquo;</button>
                     </div>
                 </div>
-            `;
-
-            html += `
                 <div class="flex justify-between items-center mb-4">
                     <div class="text-sm font-bold text-indigo-400 uppercase tracking-widest">Question ${currentQIndex + 1} of ${activeQuestions.length}</div>
                     <button onclick="toggleReview()" class="flex items-center space-x-1 text-sm font-bold px-4 py-2 rounded-full border-2 transition-colors ${isReview ? 'border-yellow-500 text-yellow-400 bg-yellow-900/20 shadow-[0_0_10px_rgba(234,179,8,0.3)]' : 'border-gray-600 text-gray-400 hover:text-white hover:border-gray-400'}">
                         <span>${isReview ? '★ Marked for Review' : '☆ Mark for Review'}</span>
                     </button>
                 </div>
+                <h3 class="text-xl md:text-2xl font-semibold mb-8 text-white leading-relaxed">${qData.q}</h3><div class="space-y-3">
             `;
-            
-            html += `<h3 class="text-xl md:text-2xl font-semibold mb-8 text-white leading-relaxed">${qData.q}</h3><div class="space-y-3">`;
-            
             qData.options.forEach((opt, idx) => {
                 const isSelected = userAnswers[currentQIndex] === idx ? 'checked' : '';
                 const activeStyle = isSelected ? 'border-indigo-500 bg-indigo-900/30' : 'border-gray-700 bg-gray-800 hover:bg-gray-700';
-                html += `
-                <label class="flex items-center space-x-4 p-4 rounded-xl border-2 ${activeStyle} cursor-pointer transition-all">
-                    <input type="radio" name="option" value="${idx}" class="w-5 h-5 text-indigo-600 focus:ring-indigo-500 bg-gray-900 border-gray-600" ${isSelected} onchange="saveAnswer(${idx})">
-                    <span class="text-gray-200 font-medium text-lg">${opt}</span>
-                </label>`;
+                html += `<label class="flex items-center space-x-4 p-4 rounded-xl border-2 ${activeStyle} cursor-pointer transition-all"><input type="radio" name="option" value="${idx}" class="w-5 h-5 text-indigo-600 focus:ring-indigo-500 bg-gray-900 border-gray-600" ${isSelected} onchange="saveAnswer(${idx})"><span class="text-gray-200 font-medium text-lg">${opt}</span></label>`;
             });
+            html += `</div><div class="mt-10 flex justify-between items-center border-t border-gray-700 pt-6">`;
+            if(currentQIndex > 0) html += `<button onclick="prevQuestion()" class="px-6 py-3 bg-gray-700 text-white rounded-lg font-bold hover:bg-gray-600 transition-colors">&larr; Prev</button>`;
+            else html += `<div></div>`; 
+            if(currentQIndex === activeQuestions.length - 1) html += `<button onclick="submitTest()" class="px-8 py-3 bg-green-600 text-white rounded-lg font-bold hover:bg-green-500 transition-colors shadow-lg">Submit Test</button>`;
+            else html += `<button onclick="nextQuestion()" class="px-8 py-3 bg-indigo-600 text-white rounded-lg font-bold hover:bg-indigo-500 transition-colors shadow-lg">Next &rarr;</button>`;
             html += `</div>`;
-            
-            html += `<div class="mt-10 flex justify-between items-center border-t border-gray-700 pt-6">`;
-            if(currentQIndex === 0) {
-                html += `<div></div>`; 
-            } else {
-                html += `<button onclick="prevQuestion()" class="px-6 py-3 bg-gray-700 text-white rounded-lg font-bold hover:bg-gray-600 transition-colors">&larr; Prev</button>`;
-            }
-            if(currentQIndex === activeQuestions.length - 1) {
-                html += `<button onclick="submitTest()" class="px-8 py-3 bg-green-600 text-white rounded-lg font-bold hover:bg-green-500 transition-colors shadow-lg">Submit Test</button>`;
-            } else {
-                html += `<button onclick="nextQuestion()" class="px-8 py-3 bg-indigo-600 text-white rounded-lg font-bold hover:bg-indigo-500 transition-colors shadow-lg">Next &rarr;</button>`;
-            }
-            html += `</div>`;
-            
             document.getElementById('question-container').innerHTML = html;
         }
 
         function toggleReview() { reviewStatus[currentQIndex] = !reviewStatus[currentQIndex]; renderQuestion(); }
         function jumpToQuestion() {
             const qNum = parseInt(document.getElementById('jump-input').value);
-            if (qNum >= 1 && qNum <= activeQuestions.length) {
-                currentQIndex = qNum - 1; renderQuestion();
-            }
+            if (qNum >= 1 && qNum <= activeQuestions.length) { currentQIndex = qNum - 1; renderQuestion(); }
         }
         function jumpToNextSection() {
             let nextBoundary = Math.floor(currentQIndex / 20) * 20 + 20;
@@ -615,13 +536,35 @@
         }
         function nextQuestion() { if(currentQIndex < activeQuestions.length - 1) { currentQIndex++; renderQuestion(); } }
         function prevQuestion() { if(currentQIndex > 0) { currentQIndex--; renderQuestion(); } }
-
         function submitTest() {
             const unanswered = activeQuestions.length - Object.keys(userAnswers).length;
             if(unanswered > 0) {
-                const confirmSubmit = confirm(`You still have ${unanswered} unanswered questions. Are you sure you want to submit?`);
-                if(!confirmSubmit) return;
+                if(!confirm(`You still have ${unanswered} unanswered questions. Are you sure you want to submit?`)) return;
             }
             clearInterval(timerInterval);
             let score = 0;
-            activeQuestions.forEach((q, index) => { if(userAnswers[index] === q.ans) score++
+            activeQuestions.forEach((q, index) => { if(userAnswers[index] === q.ans) score++; });
+            document.getElementById('final-score').innerText = `${score} / ${activeQuestions.length}`;
+            let percent = (score / activeQuestions.length) * 100;
+            document.getElementById('score-msg').innerText = percent > 80 ? "Excellent Job! 🚀" : percent > 50 ? "Good Effort! 👍" : "Keep Practicing! 📚";
+            showScreen('screen-test', 'screen-result');
+        }
+        function startTimer(durationSeconds) {
+            clearInterval(timerInterval);
+            let timer = durationSeconds;
+            timerInterval = setInterval(function () {
+                let hours = parseInt(timer / 3600, 10);
+                let minutes = parseInt((timer % 3600) / 60, 10);
+                let seconds = parseInt(timer % 60, 10);
+                document.getElementById('timer-display').textContent = 
+                    (hours < 10 ? "0" + hours : hours) + ":" + (minutes < 10 ? "0" + minutes : minutes) + ":" + (seconds < 10 ? "0" + seconds : seconds);
+                if (--timer < 0) {
+                    clearInterval(timerInterval);
+                    alert("Time is up! Submitting your test.");
+                    submitTest(); 
+                }
+            }, 1000);
+        }
+    </script>
+</body>
+</html>
