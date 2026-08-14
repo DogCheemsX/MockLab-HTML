@@ -12,8 +12,8 @@
     <title>MockLab</title>
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- LOAD OUR SEPARATE MCQ FILE -->
-    <script src="data.js"></script>
+    <!-- LOAD OUR SEPARATE MCQ FILE (v=4 forces fresh load) -->
+    <script src="data.js?v=4"></script>
 </head>
 <body class="bg-gray-900 text-gray-100 min-h-screen flex flex-col items-center justify-center p-4">
 
@@ -113,7 +113,6 @@
             <div class="text-2xl font-mono font-bold text-red-400 bg-red-900/30 py-1 px-3 rounded-lg border border-red-900/50" id="timer-display">00:00:00</div>
         </div>
         
-        <!-- TEST QUESTION CONTAINER -->
         <div id="question-container" class="bg-gray-800 p-6 md:p-8 rounded-b-xl min-h-[50vh] border-x-2 border-b-2 border-gray-700 shadow-lg">
             <!-- Questions loaded via JS -->
         </div>
@@ -150,12 +149,32 @@
     </div>
 
     <script>
+        // ERROR DETECTOR: Runs immediately when the page loads
+        window.onload = function() {
+            if (typeof testData === 'undefined' || typeof questionBank === 'undefined') {
+                // If data.js is broken or missing, replace the whole screen with a warning
+                document.getElementById('screen-home').style.display = 'none';
+                document.getElementById('screen-intro').style.display = 'flex';
+                document.getElementById('screen-intro').innerHTML = `
+                    <div class="bg-red-100 border-2 border-red-500 text-red-900 p-8 rounded-xl max-w-lg shadow-2xl text-left">
+                        <h2 class="text-3xl font-black mb-4">⚠️ ERROR: data.js is broken!</h2>
+                        <p class="font-medium mb-4 text-lg">The buttons are completely frozen because the website cannot read your MCQs file. This usually happens if:</p>
+                        <ol class="list-decimal pl-6 space-y-3 font-bold text-md mb-6">
+                            <li>You missed the final <code class="bg-red-200 px-1 py-0.5 rounded text-red-800">};</code> at the very bottom when copying the data.js code.</li>
+                            <li>You accidentally copied some text outside of the code box.</li>
+                            <li>Your browser is using an old saved version (Press Ctrl + F5).</li>
+                        </ol>
+                        <p class="font-bold text-red-700 bg-red-200 p-3 rounded text-center">Please re-copy the data.js file carefully and make sure you get everything down to the last bracket!</p>
+                    </div>
+                `;
+            }
+        };
+
         let currentUni = null;
         let currentTestId = null; 
         let testTimeMinutes = 0;
         let timerInterval;
 
-        // TEST TAKING VARIABLES
         let activeQuestions = [];
         let currentQIndex = 0;
         let userAnswers = {};
@@ -176,20 +195,25 @@
         }
 
         function selectUniversity(uniKey) {
-            currentUni = uniKey;
-            const typeContainer = document.getElementById('type-options');
-            typeContainer.innerHTML = ''; 
+            try {
+                currentUni = uniKey;
+                const typeContainer = document.getElementById('type-options');
+                typeContainer.innerHTML = ''; 
 
-            const options = testData[uniKey].options;
-            options.forEach(opt => {
-                const btn = document.createElement('button');
-                btn.className = "w-full bg-gray-800 border-2 border-gray-700 hover:border-white hover:bg-white hover:text-black transition-all font-bold text-lg py-4 px-6 rounded-xl shadow-sm text-left";
-                btn.innerText = opt.name;
-                btn.onclick = () => selectType(opt.id, opt.name);
-                typeContainer.appendChild(btn);
-            });
+                const options = testData[uniKey].options;
+                options.forEach(opt => {
+                    const btn = document.createElement('button');
+                    btn.className = "w-full bg-gray-800 border-2 border-gray-700 hover:border-white hover:bg-white hover:text-black transition-all font-bold text-lg py-4 px-6 rounded-xl shadow-sm text-left";
+                    btn.innerText = opt.name;
+                    btn.onclick = () => selectType(opt.id, opt.name);
+                    typeContainer.appendChild(btn);
+                });
 
-            showScreen('screen-home', 'screen-type');
+                showScreen('screen-home', 'screen-type');
+            } catch (error) {
+                // Failsafe error alert
+                alert("An error occurred. Check if your data.js is broken! Error: " + error.message);
+            }
         }
 
         function selectType(typeId, typeName) {
@@ -213,9 +237,6 @@
             showScreen('screen-type', 'screen-info');
         }
 
-        // =========================================================
-        // TEST ENGINE LOGIC
-        // =========================================================
         function startTest() {
             showScreen('screen-info', 'screen-test');
             
@@ -232,7 +253,6 @@
                 return;
             }
 
-            // Reset test variables
             currentQIndex = 0;
             userAnswers = {};
             reviewStatus = {}; 
@@ -246,10 +266,8 @@
             const reviewCount = Object.values(reviewStatus).filter(Boolean).length;
             const isReview = reviewStatus[currentQIndex] || false;
             
-            // 1. TOP NAVIGATION / COUNTERS PANEL (ADDED OVERVIEW BUTTON)
             let html = `
                 <div class="flex flex-col lg:flex-row justify-between items-center bg-gray-900 border-b-2 border-gray-700 pb-4 mb-6 rounded-lg p-4 shadow-inner gap-4">
-                    
                     <div class="flex space-x-8">
                         <div class="text-center">
                             <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest">Answered</p>
@@ -262,25 +280,19 @@
                     </div>
                     
                     <div class="flex flex-wrap justify-center items-center gap-2">
-                        <!-- Overview Button -->
                         <button onclick="showOverview()" class="bg-indigo-600/20 text-indigo-400 border border-indigo-500 hover:bg-indigo-600 hover:text-white px-4 py-2 rounded-lg font-bold transition-colors shadow-sm text-sm flex items-center">
-                            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
                             Grid Overview
                         </button>
                         
-                        <!-- Manual Jump -->
                         <div class="flex items-center">
                             <input type="number" id="jump-input" min="1" max="${activeQuestions.length}" class="w-14 px-2 py-2 rounded-l-lg bg-gray-800 border border-gray-600 text-white font-bold focus:outline-none focus:border-indigo-500 text-center" placeholder="#">
                             <button onclick="jumpToQuestion()" class="bg-indigo-600 hover:bg-indigo-500 px-3 py-2 rounded-r-lg font-bold text-white transition-colors shadow-sm text-sm border border-indigo-600">Jump</button>
                         </div>
-                        
-                        <!-- Next Section -->
                         <button onclick="jumpToNextSection()" class="bg-gray-700 hover:bg-gray-600 px-3 py-2 rounded-lg font-bold text-gray-200 transition-colors shadow-sm border border-gray-600 text-sm">Next Section &raquo;</button>
                     </div>
                 </div>
             `;
 
-            // 2. QUESTION HEADER & REVIEW BUTTON
             html += `
                 <div class="flex justify-between items-center mb-4">
                     <div class="text-sm font-bold text-indigo-400 uppercase tracking-widest">Question ${currentQIndex + 1} of ${activeQuestions.length}</div>
@@ -290,9 +302,7 @@
                 </div>
             `;
             
-            // 3. ACTUAL QUESTION & OPTIONS
-            html += `<h3 class="text-xl md:text-2xl font-semibold mb-8 text-white leading-relaxed">${qData.q}</h3>
-                     <div class="space-y-3">`;
+            html += `<h3 class="text-xl md:text-2xl font-semibold mb-8 text-white leading-relaxed">${qData.q}</h3><div class="space-y-3">`;
             
             qData.options.forEach((opt, idx) => {
                 const isSelected = userAnswers[currentQIndex] === idx ? 'checked' : '';
@@ -306,7 +316,6 @@
             });
             html += `</div>`;
             
-            // 4. BOTTOM CONTROLS
             html += `<div class="mt-10 flex justify-between items-center border-t border-gray-700 pt-6">`;
             
             if(currentQIndex === 0) {
@@ -325,8 +334,6 @@
             document.getElementById('question-container').innerHTML = html;
         }
 
-        // --- NEW FEATURES LOGIC ---
-        
         function toggleReview() {
             reviewStatus[currentQIndex] = !reviewStatus[currentQIndex];
             renderQuestion(); 
@@ -335,7 +342,6 @@
         function jumpToQuestion() {
             const inputVal = document.getElementById('jump-input').value;
             const qNum = parseInt(inputVal);
-            
             if (qNum >= 1 && qNum <= activeQuestions.length) {
                 currentQIndex = qNum - 1; 
                 renderQuestion();
@@ -353,8 +359,6 @@
             renderQuestion();
         }
 
-        // --- NEW OVERVIEW MODAL LOGIC ---
-        
         function showOverview() {
             const gridContainer = document.getElementById('overview-grid');
             gridContainer.innerHTML = '';
@@ -363,21 +367,16 @@
                 const btn = document.createElement('button');
                 btn.innerText = i + 1;
                 
-                // Determine Colors based on status
                 let baseClasses = "w-full aspect-square rounded-lg font-bold flex items-center justify-center transition-transform hover:scale-110 shadow-sm border ";
                 
                 if (reviewStatus[i]) {
-                    // Review overrides all colors (Yellow)
                     btn.className = baseClasses + "bg-yellow-500 text-yellow-900 border-yellow-600";
                 } else if (userAnswers[i] !== undefined) {
-                    // Answered (Green)
                     btn.className = baseClasses + "bg-green-500 text-white border-green-600";
                 } else {
-                    // Unanswered (Gray)
                     btn.className = baseClasses + "bg-gray-700 text-gray-300 border-gray-600 hover:bg-gray-600";
                 }
                 
-                // Add highlight outline if it's the current question they are looking at
                 if (i === currentQIndex) {
                     btn.classList.add("ring-2", "ring-white", "ring-offset-2", "ring-offset-gray-800");
                 }
@@ -398,8 +397,6 @@
             closeOverview();
             renderQuestion();
         }
-
-        // --- ORIGINAL TEST LOGIC ---
 
         function saveAnswer(optionIndex) {
             userAnswers[currentQIndex] = optionIndex;
@@ -449,9 +446,6 @@
             showScreen('screen-test', 'screen-result');
         }
 
-        // =========================================================
-        // TIMER LOGIC
-        // =========================================================
         function startTimer(durationSeconds) {
             clearInterval(timerInterval);
             let timer = durationSeconds;
