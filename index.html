@@ -12,22 +12,65 @@
     <title>MockLab</title>
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- LOAD OUR SEPARATE MCQ FILE (v=4 forces fresh load) -->
-    <script src="data.js?v=4"></script>
+    <!-- LOAD OUR SEPARATE MCQ FILE -->
+    <script src="data.js?v=6"></script>
+
+    <!-- FIREBASE LIBRARIES -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 </head>
 <body class="bg-gray-900 text-gray-100 min-h-screen flex flex-col items-center justify-center p-4">
 
-    <!-- SCREEN 0: INTRO / LANDING PAGE -->
-    <div id="screen-intro" class="w-full max-w-lg flex-col items-center text-center" style="display: flex;">
-        <img src="MockLab.png" alt="MockLab Logo" class="w-48 h-auto mb-6 drop-shadow-md">
+    <!-- LOADING SCREEN -->
+    <div id="screen-loading" class="w-full flex-col items-center text-center" style="display: flex;">
+        <div class="w-12 h-12 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin mb-4 mx-auto"></div>
+        <p class="text-gray-400 font-bold tracking-widest uppercase">Loading MockLab...</p>
+    </div>
+
+    <!-- AUTHENTICATION SCREEN (LOGIN / SIGN UP) -->
+    <div id="screen-auth" class="w-full max-w-md flex-col items-center" style="display: none;">
+        <img src="MockLab.png" alt="MockLab Logo" class="w-32 h-auto mb-6 drop-shadow-md mx-auto">
+        <h1 class="text-3xl font-extrabold mb-8 tracking-tight text-white text-center" id="auth-title">Create Account</h1>
         
+        <div class="w-full bg-gray-800 border-2 border-gray-700 rounded-xl p-6 shadow-xl">
+            <!-- Sign Up Form -->
+            <div id="signup-form" class="space-y-4">
+                <input type="text" id="su-name" placeholder="Full Name" class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-3 text-white focus:border-indigo-500 focus:outline-none">
+                <input type="email" id="su-email" placeholder="Email Address" class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-3 text-white focus:border-indigo-500 focus:outline-none">
+                <input type="text" id="su-whatsapp" placeholder="WhatsApp Number" class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-3 text-white focus:border-indigo-500 focus:outline-none">
+                <input type="password" id="su-password" placeholder="Password (Min 6 characters)" class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-3 text-white focus:border-indigo-500 focus:outline-none">
+                <button onclick="handleSignUp()" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3 rounded-lg mt-2 transition-colors shadow-lg">Sign Up</button>
+                <p class="text-center text-sm text-gray-400 mt-4">Already have an account? <span onclick="toggleAuth('login')" class="text-indigo-400 cursor-pointer hover:underline">Log In</span></p>
+            </div>
+
+            <!-- Log In Form (Hidden by default) -->
+            <div id="login-form" class="space-y-4 hidden">
+                <input type="email" id="li-email" placeholder="Email Address" class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-3 text-white focus:border-indigo-500 focus:outline-none">
+                <input type="password" id="li-password" placeholder="Password" class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-3 text-white focus:border-indigo-500 focus:outline-none">
+                <button onclick="handleLogin()" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3 rounded-lg mt-2 transition-colors shadow-lg">Log In</button>
+                <p class="text-center text-sm text-gray-400 mt-4">New student? <span onclick="toggleAuth('signup')" class="text-indigo-400 cursor-pointer hover:underline">Sign Up</span></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- SCREEN 0: INTRO / LANDING PAGE -->
+    <div id="screen-intro" class="w-full max-w-lg flex-col items-center text-center" style="display: none;">
+        <img src="MockLab.png" alt="MockLab Logo" class="w-48 h-auto mb-6 drop-shadow-md mx-auto">
         <h1 class="text-5xl font-extrabold mb-4 tracking-tight text-indigo-400">MockLab</h1>
-        <p class="text-lg text-gray-300 mb-10 font-medium px-4">
-            The ultimate entry test portal for all universities in Pakistan. Master your preparation for NTS NAT, PIEAS, Air University, Bahria, and more with our premium mock tests.
+        <p class="text-lg text-gray-300 mb-6 font-medium px-4">
+            The ultimate entry test portal for all universities in Pakistan. Master your preparation for NTS NAT, PIEAS, Air University, and Bahria.
         </p>
         
+        <!-- User Welcome Badge -->
+        <div class="bg-gray-800 border border-gray-700 rounded-full px-6 py-2 mb-8 flex items-center gap-3 mx-auto w-max">
+            <span class="w-2 h-2 rounded-full bg-green-500"></span>
+            <span class="text-sm font-bold text-gray-300">Logged in as <span id="user-display-name" class="text-white">Student</span></span>
+            <button onclick="logout()" class="text-xs text-red-400 hover:text-red-300 ml-2 underline">Logout</button>
+        </div>
+
         <button onclick="showScreen('screen-intro', 'screen-home')" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white transition-all font-extrabold text-xl py-4 px-8 rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-1">
-            Get Started 🚀
+            Enter Portal 🚀
         </button>
     </div>
 
@@ -43,37 +86,6 @@
             <button onclick="selectUniversity('BAHRIA')" class="w-full bg-gray-800 border-2 border-gray-700 hover:border-white hover:bg-white hover:text-black transition-all font-bold text-lg py-4 px-6 rounded-xl shadow-sm">Bahria Admission Test</button>
             <button onclick="selectUniversity('NTS')" class="w-full bg-gray-800 border-2 border-gray-700 hover:border-white hover:bg-white hover:text-black transition-all font-bold text-lg py-4 px-6 rounded-xl shadow-sm">OR NTS NAT</button>
         </div>
-
-        <!-- STEP-BY-STEP UNLOCK SECTION WITH QR CODE -->
-        <div class="mt-12 w-full bg-gray-800 border-2 border-indigo-900/50 rounded-xl p-6 shadow-lg">
-            <h2 class="text-xl font-extrabold mb-5 text-center text-indigo-400">Unlock All Tests (Premium)</h2>
-            <div class="flex flex-col items-center justify-center mb-6">
-                <div class="bg-white p-3 rounded-2xl shadow-[0_0_15px_rgba(79,70,229,0.3)] border-2 border-indigo-400 mb-3 hover:scale-105 transition-transform duration-300">
-                    <img src="qr.png" alt="NayaPay QR Code" class="w-36 h-36 object-contain rounded-lg">
-                </div>
-                <span class="text-xs font-bold text-indigo-400 uppercase tracking-widest bg-indigo-900/40 px-3 py-1 rounded-full border border-indigo-500/30">Scan to Pay</span>
-            </div>
-
-            <div class="space-y-4 text-left">
-                <div class="flex items-start">
-                    <div class="bg-indigo-600 text-white font-bold rounded-full h-6 w-6 flex items-center justify-center text-xs shrink-0 mt-0.5 mr-3">1</div>
-                    <p class="text-sm font-medium text-gray-300">Send <b class="text-white">PKR 500</b> to <b class="text-white">03465939277</b> (Bank NayaPay) or scan the QR code above.</p>
-                </div>
-                <div class="flex items-start">
-                    <div class="bg-indigo-600 text-white font-bold rounded-full h-6 w-6 flex items-center justify-center text-xs shrink-0 mt-0.5 mr-3">2</div>
-                    <p class="text-sm font-medium text-gray-300">Send transaction screenshot to <a href="https://wa.me/923465939277" target="_blank" class="text-green-400 font-bold underline hover:text-green-300">WhatsApp (03465939277)</a>.</p>
-                </div>
-                <div class="flex items-start">
-                    <div class="bg-indigo-600 text-white font-bold rounded-full h-6 w-6 flex items-center justify-center text-xs shrink-0 mt-0.5 mr-3">3</div>
-                    <p class="text-sm font-medium text-gray-300">Receive your code and enter it below.</p>
-                </div>
-            </div>
-            
-            <div class="mt-5 flex gap-2">
-                <input type="text" id="unlock-code" placeholder="Enter Unlock Code" class="flex-1 bg-gray-700 border border-gray-600 text-white placeholder-gray-400 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-indigo-400 focus:ring-1 focus:ring-indigo-400 font-medium transition-all">
-                <button onclick="verifyCode()" class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-2 px-4 rounded-lg text-sm transition-all shadow-sm">Submit</button>
-            </div>
-        </div>
     </div>
 
     <!-- SCREEN 2: SELECT TYPE -->
@@ -81,6 +93,38 @@
         <button onclick="goBack('screen-home', 'screen-type')" class="self-start mb-6 text-sm font-bold text-gray-400 hover:text-white transition-colors">← Back</button>
         <h1 class="text-3xl font-extrabold mb-8 tracking-tight text-center">Select Test Type</h1>
         <div id="type-options" class="w-full space-y-3"></div>
+    </div>
+
+    <!-- PREMIUM UNLOCK MODAL (Pops up if they click NAT-IE and aren't premium) -->
+    <div id="premium-modal" class="fixed inset-0 bg-black/90 z-50 flex-col items-center justify-center p-4" style="display: none;">
+        <div class="bg-gray-800 border-2 border-indigo-500 rounded-xl p-6 w-full max-w-md shadow-2xl relative">
+            <button onclick="document.getElementById('premium-modal').style.display='none'" class="absolute top-4 right-4 text-gray-400 hover:text-white font-bold text-xl">✕</button>
+            
+            <h2 class="text-2xl font-black mb-2 text-center text-indigo-400">🔒 Premium Test</h2>
+            <p class="text-center text-gray-300 text-sm mb-6">This test is locked. Upgrade your account to unlock all tests permanently on all your devices!</p>
+            
+            <div class="flex flex-col items-center justify-center mb-6">
+                <div class="bg-white p-3 rounded-2xl shadow-[0_0_15px_rgba(79,70,229,0.3)] border-2 border-indigo-400 mb-3">
+                    <img src="qr.png" alt="NayaPay QR Code" class="w-32 h-32 object-contain rounded-lg">
+                </div>
+                <span class="text-xs font-bold text-indigo-400 uppercase tracking-widest bg-indigo-900/40 px-3 py-1 rounded-full border border-indigo-500/30">Scan to Pay</span>
+            </div>
+
+            <div class="space-y-4 text-left bg-gray-900 p-4 rounded-lg border border-gray-700">
+                <div class="flex items-start">
+                    <div class="bg-indigo-600 text-white font-bold rounded-full h-6 w-6 flex items-center justify-center text-xs shrink-0 mt-0.5 mr-3">1</div>
+                    <p class="text-sm font-medium text-gray-300">Send <b class="text-white">PKR 500</b> to <b class="text-white">03465939277</b> (Bank NayaPay).</p>
+                </div>
+                <div class="flex items-start">
+                    <div class="bg-indigo-600 text-white font-bold rounded-full h-6 w-6 flex items-center justify-center text-xs shrink-0 mt-0.5 mr-3">2</div>
+                    <p class="text-sm font-medium text-gray-300">Message your registered email and screenshot to <a href="https://wa.me/923465939277" target="_blank" class="text-green-400 font-bold underline hover:text-green-300">WhatsApp Admin</a>.</p>
+                </div>
+                <div class="flex items-start">
+                    <div class="bg-indigo-600 text-white font-bold rounded-full h-6 w-6 flex items-center justify-center text-xs shrink-0 mt-0.5 mr-3">3</div>
+                    <p class="text-sm font-medium text-gray-300">We will instantly activate Premium on your account!</p>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- SCREEN 3: TEST INFO -->
@@ -103,7 +147,7 @@
             </div>
         </div>
 
-        <button onclick="startTest()" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white transition-all font-extrabold text-xl py-4 px-6 rounded-xl shadow-lg">START TEST</button>
+        <button onclick="startTest()" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white transition-all font-extrabold text-xl py-4 px-6 rounded-xl shadow-lg w-full">START TEST</button>
     </div>
 
     <!-- SCREEN 4: ACTIVE TEST -->
@@ -149,32 +193,125 @@
     </div>
 
     <script>
-        // ERROR DETECTOR: Runs immediately when the page loads
+        // ERROR DETECTOR: Runs immediately when the page loads to check if data.js is broken
         window.onload = function() {
             if (typeof testData === 'undefined' || typeof questionBank === 'undefined') {
-                // If data.js is broken or missing, replace the whole screen with a warning
-                document.getElementById('screen-home').style.display = 'none';
+                document.getElementById('screen-loading').style.display = 'none';
                 document.getElementById('screen-intro').style.display = 'flex';
                 document.getElementById('screen-intro').innerHTML = `
                     <div class="bg-red-100 border-2 border-red-500 text-red-900 p-8 rounded-xl max-w-lg shadow-2xl text-left">
                         <h2 class="text-3xl font-black mb-4">⚠️ ERROR: data.js is broken!</h2>
-                        <p class="font-medium mb-4 text-lg">The buttons are completely frozen because the website cannot read your MCQs file. This usually happens if:</p>
+                        <p class="font-medium mb-4 text-lg">The buttons are completely frozen because the website cannot read your MCQs file.</p>
                         <ol class="list-decimal pl-6 space-y-3 font-bold text-md mb-6">
                             <li>You missed the final <code class="bg-red-200 px-1 py-0.5 rounded text-red-800">};</code> at the very bottom when copying the data.js code.</li>
                             <li>You accidentally copied some text outside of the code box.</li>
                             <li>Your browser is using an old saved version (Press Ctrl + F5).</li>
                         </ol>
-                        <p class="font-bold text-red-700 bg-red-200 p-3 rounded text-center">Please re-copy the data.js file carefully and make sure you get everything down to the last bracket!</p>
+                        <p class="font-bold text-red-700 bg-red-200 p-3 rounded text-center">Please re-copy the data.js file carefully!</p>
                     </div>
                 `;
             }
         };
 
+        // ==========================================
+        // 1. FIREBASE CONFIGURATION (YOUR KEYS)
+        // ==========================================
+        const firebaseConfig = {
+            apiKey: "AIzaSyBdP5JcEGJzkgM6O6BDxsQcNpPQ2nc_cQs",
+            authDomain: "mocklab-5f062.firebaseapp.com",
+            projectId: "mocklab-5f062",
+            storageBucket: "mocklab-5f062.firebasestorage.app",
+            messagingSenderId: "743250587602",
+            appId: "1:743250587602:web:5cbbef1fef79f2e39ba20b",
+            measurementId: "G-5Q7VMFDG84"
+        };
+        // ==========================================
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+
+        let currentUser = null;
+        let currentUserData = null; 
+
+        // CHECK IF USER IS LOGGED IN
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                db.collection("users").doc(user.uid).get().then((doc) => {
+                    if (doc.exists) {
+                        currentUserData = doc.data();
+                        document.getElementById('user-display-name').innerText = currentUserData.name + (currentUserData.isPremium ? " (Premium 👑)" : " (Free Account)");
+                    }
+                    showScreen('screen-loading', 'screen-intro');
+                    document.getElementById('screen-auth').style.display = 'none';
+                });
+            } else {
+                showScreen('screen-loading', 'screen-auth');
+            }
+        });
+
+        // --- AUTHENTICATION FUNCTIONS ---
+        function toggleAuth(type) {
+            if(type === 'login') {
+                document.getElementById('signup-form').classList.add('hidden');
+                document.getElementById('login-form').classList.remove('hidden');
+                document.getElementById('auth-title').innerText = 'Welcome Back';
+            } else {
+                document.getElementById('login-form').classList.add('hidden');
+                document.getElementById('signup-form').classList.remove('hidden');
+                document.getElementById('auth-title').innerText = 'Create Account';
+            }
+        }
+
+        function handleSignUp() {
+            const name = document.getElementById('su-name').value;
+            const email = document.getElementById('su-email').value;
+            const whatsapp = document.getElementById('su-whatsapp').value;
+            const password = document.getElementById('su-password').value;
+
+            if(!name || !email || !whatsapp || !password) {
+                alert("Please fill in all fields!");
+                return;
+            }
+
+            auth.createUserWithEmailAndPassword(email, password)
+            .then((userCredential) => {
+                return db.collection("users").doc(userCredential.user.uid).set({
+                    name: name,
+                    email: email,
+                    whatsapp: whatsapp,
+                    isPremium: false,
+                    dateCreated: firebase.firestore.FieldValue.serverTimestamp()
+                });
+            })
+            .catch((error) => {
+                alert("Error: " + error.message);
+            });
+        }
+
+        function handleLogin() {
+            const email = document.getElementById('li-email').value;
+            const password = document.getElementById('li-password').value;
+
+            auth.signInWithEmailAndPassword(email, password)
+            .catch((error) => {
+                alert("Error: " + error.message);
+            });
+        }
+
+        function logout() {
+            auth.signOut();
+            showScreen('screen-intro', 'screen-auth');
+        }
+
+        // ==========================================
+        // TEST NAVIGATION & LOGIC
+        // ==========================================
         let currentUni = null;
         let currentTestId = null; 
         let testTimeMinutes = 0;
         let timerInterval;
-
         let activeQuestions = [];
         let currentQIndex = 0;
         let userAnswers = {};
@@ -204,19 +341,30 @@
                 options.forEach(opt => {
                     const btn = document.createElement('button');
                     btn.className = "w-full bg-gray-800 border-2 border-gray-700 hover:border-white hover:bg-white hover:text-black transition-all font-bold text-lg py-4 px-6 rounded-xl shadow-sm text-left";
-                    btn.innerText = opt.name;
+                    
+                    if(opt.id === 'nat-ie') {
+                        btn.innerHTML = `🔒 ${opt.name}`;
+                    } else {
+                        btn.innerHTML = opt.name;
+                    }
+
                     btn.onclick = () => selectType(opt.id, opt.name);
                     typeContainer.appendChild(btn);
                 });
 
                 showScreen('screen-home', 'screen-type');
             } catch (error) {
-                // Failsafe error alert
                 alert("An error occurred. Check if your data.js is broken! Error: " + error.message);
             }
         }
 
         function selectType(typeId, typeName) {
+            // PREMIUM GATEKEEPER
+            if (typeId === 'nat-ie' && currentUserData && currentUserData.isPremium === false) {
+                document.getElementById('premium-modal').style.display = 'flex';
+                return;
+            }
+
             currentTestId = typeId; 
             document.getElementById('info-title').innerText = typeName;
             
@@ -241,17 +389,7 @@
             showScreen('screen-info', 'screen-test');
             
             activeQuestions = questionBank[currentTestId] || [];
-            
-            if(activeQuestions.length === 0) {
-                document.getElementById('question-container').innerHTML = `
-                    <div class="flex h-full items-center justify-center text-center">
-                        <p class="text-xl font-bold text-gray-500 p-10 border-2 border-dashed border-gray-600 rounded-xl">
-                            Questions for ${currentTestId.toUpperCase()} will be added very soon!<br>
-                            <button onclick="goBack('screen-home', 'screen-test')" class="mt-4 text-indigo-400 underline text-sm">Go Back</button>
-                        </p>
-                    </div>`;
-                return;
-            }
+            if(activeQuestions.length === 0) return;
 
             currentQIndex = 0;
             userAnswers = {};
@@ -283,7 +421,6 @@
                         <button onclick="showOverview()" class="bg-indigo-600/20 text-indigo-400 border border-indigo-500 hover:bg-indigo-600 hover:text-white px-4 py-2 rounded-lg font-bold transition-colors shadow-sm text-sm flex items-center">
                             Grid Overview
                         </button>
-                        
                         <div class="flex items-center">
                             <input type="number" id="jump-input" min="1" max="${activeQuestions.length}" class="w-14 px-2 py-2 rounded-l-lg bg-gray-800 border border-gray-600 text-white font-bold focus:outline-none focus:border-indigo-500 text-center" placeholder="#">
                             <button onclick="jumpToQuestion()" class="bg-indigo-600 hover:bg-indigo-500 px-3 py-2 rounded-r-lg font-bold text-white transition-colors shadow-sm text-sm border border-indigo-600">Jump</button>
@@ -307,7 +444,6 @@
             qData.options.forEach((opt, idx) => {
                 const isSelected = userAnswers[currentQIndex] === idx ? 'checked' : '';
                 const activeStyle = isSelected ? 'border-indigo-500 bg-indigo-900/30' : 'border-gray-700 bg-gray-800 hover:bg-gray-700';
-                
                 html += `
                 <label class="flex items-center space-x-4 p-4 rounded-xl border-2 ${activeStyle} cursor-pointer transition-all">
                     <input type="radio" name="option" value="${idx}" class="w-5 h-5 text-indigo-600 focus:ring-indigo-500 bg-gray-900 border-gray-600" ${isSelected} onchange="saveAnswer(${idx})">
@@ -317,13 +453,11 @@
             html += `</div>`;
             
             html += `<div class="mt-10 flex justify-between items-center border-t border-gray-700 pt-6">`;
-            
             if(currentQIndex === 0) {
                 html += `<div></div>`; 
             } else {
                 html += `<button onclick="prevQuestion()" class="px-6 py-3 bg-gray-700 text-white rounded-lg font-bold hover:bg-gray-600 transition-colors">&larr; Prev</button>`;
             }
-
             if(currentQIndex === activeQuestions.length - 1) {
                 html += `<button onclick="submitTest()" class="px-8 py-3 bg-green-600 text-white rounded-lg font-bold hover:bg-green-500 transition-colors shadow-lg">Submit Test</button>`;
             } else {
@@ -334,155 +468,75 @@
             document.getElementById('question-container').innerHTML = html;
         }
 
-        function toggleReview() {
-            reviewStatus[currentQIndex] = !reviewStatus[currentQIndex];
-            renderQuestion(); 
-        }
-
+        function toggleReview() { reviewStatus[currentQIndex] = !reviewStatus[currentQIndex]; renderQuestion(); }
         function jumpToQuestion() {
-            const inputVal = document.getElementById('jump-input').value;
-            const qNum = parseInt(inputVal);
+            const qNum = parseInt(document.getElementById('jump-input').value);
             if (qNum >= 1 && qNum <= activeQuestions.length) {
-                currentQIndex = qNum - 1; 
-                renderQuestion();
-            } else {
-                alert(`Please enter a valid question number between 1 and ${activeQuestions.length}`);
+                currentQIndex = qNum - 1; renderQuestion();
             }
         }
-
         function jumpToNextSection() {
             let nextBoundary = Math.floor(currentQIndex / 20) * 20 + 20;
-            if (nextBoundary >= activeQuestions.length) {
-                nextBoundary = activeQuestions.length - 1; 
-            }
-            currentQIndex = nextBoundary;
-            renderQuestion();
+            if (nextBoundary >= activeQuestions.length) nextBoundary = activeQuestions.length - 1; 
+            currentQIndex = nextBoundary; renderQuestion();
         }
-
         function showOverview() {
             const gridContainer = document.getElementById('overview-grid');
             gridContainer.innerHTML = '';
-            
             for(let i = 0; i < activeQuestions.length; i++) {
                 const btn = document.createElement('button');
                 btn.innerText = i + 1;
-                
                 let baseClasses = "w-full aspect-square rounded-lg font-bold flex items-center justify-center transition-transform hover:scale-110 shadow-sm border ";
-                
-                if (reviewStatus[i]) {
-                    btn.className = baseClasses + "bg-yellow-500 text-yellow-900 border-yellow-600";
-                } else if (userAnswers[i] !== undefined) {
-                    btn.className = baseClasses + "bg-green-500 text-white border-green-600";
-                } else {
-                    btn.className = baseClasses + "bg-gray-700 text-gray-300 border-gray-600 hover:bg-gray-600";
-                }
-                
-                if (i === currentQIndex) {
-                    btn.classList.add("ring-2", "ring-white", "ring-offset-2", "ring-offset-gray-800");
-                }
-
-                btn.onclick = () => jumpToQuestionIndex(i);
+                if (reviewStatus[i]) btn.className = baseClasses + "bg-yellow-500 text-yellow-900 border-yellow-600";
+                else if (userAnswers[i] !== undefined) btn.className = baseClasses + "bg-green-500 text-white border-green-600";
+                else btn.className = baseClasses + "bg-gray-700 text-gray-300 border-gray-600 hover:bg-gray-600";
+                if (i === currentQIndex) btn.classList.add("ring-2", "ring-white", "ring-offset-2", "ring-offset-gray-800");
+                btn.onclick = () => { currentQIndex = i; document.getElementById('overview-modal').style.display = "none"; renderQuestion(); };
                 gridContainer.appendChild(btn);
             }
-            
             document.getElementById('overview-modal').style.display = "flex";
         }
-
-        function closeOverview() {
-            document.getElementById('overview-modal').style.display = "none";
-        }
-
-        function jumpToQuestionIndex(index) {
-            currentQIndex = index;
-            closeOverview();
-            renderQuestion();
-        }
-
+        function closeOverview() { document.getElementById('overview-modal').style.display = "none"; }
         function saveAnswer(optionIndex) {
             userAnswers[currentQIndex] = optionIndex;
-            if(reviewStatus[currentQIndex]) {
-                reviewStatus[currentQIndex] = false;
-            }
+            if(reviewStatus[currentQIndex]) reviewStatus[currentQIndex] = false;
             renderQuestion();
         }
-
-        function nextQuestion() {
-            if(currentQIndex < activeQuestions.length - 1) {
-                currentQIndex++;
-                renderQuestion();
-            }
-        }
-
-        function prevQuestion() {
-            if(currentQIndex > 0) {
-                currentQIndex--;
-                renderQuestion();
-            }
-        }
+        function nextQuestion() { if(currentQIndex < activeQuestions.length - 1) { currentQIndex++; renderQuestion(); } }
+        function prevQuestion() { if(currentQIndex > 0) { currentQIndex--; renderQuestion(); } }
 
         function submitTest() {
             const unanswered = activeQuestions.length - Object.keys(userAnswers).length;
-            
             if(unanswered > 0) {
                 const confirmSubmit = confirm(`You still have ${unanswered} unanswered questions. Are you sure you want to submit?`);
                 if(!confirmSubmit) return;
             }
-
             clearInterval(timerInterval);
             let score = 0;
-            
-            activeQuestions.forEach((q, index) => {
-                if(userAnswers[index] === q.ans) {
-                    score++;
-                }
-            });
-
+            activeQuestions.forEach((q, index) => { if(userAnswers[index] === q.ans) score++; });
             document.getElementById('final-score').innerText = `${score} / ${activeQuestions.length}`;
-            
             let percent = (score / activeQuestions.length) * 100;
-            let msg = percent > 80 ? "Excellent Job! 🚀" : percent > 50 ? "Good Effort! 👍" : "Keep Practicing! 📚";
-            document.getElementById('score-msg').innerText = msg;
-
+            document.getElementById('score-msg').innerText = percent > 80 ? "Excellent Job! 🚀" : percent > 50 ? "Good Effort! 👍" : "Keep Practicing! 📚";
             showScreen('screen-test', 'screen-result');
         }
 
         function startTimer(durationSeconds) {
             clearInterval(timerInterval);
             let timer = durationSeconds;
-            const display = document.getElementById('timer-display');
-            
             timerInterval = setInterval(function () {
                 let hours = parseInt(timer / 3600, 10);
                 let minutes = parseInt((timer % 3600) / 60, 10);
                 let seconds = parseInt(timer % 60, 10);
-
-                hours = hours < 10 ? "0" + hours : hours;
-                minutes = minutes < 10 ? "0" + minutes : minutes;
-                seconds = seconds < 10 ? "0" + seconds : seconds;
-
-                display.textContent = hours + ":" + minutes + ":" + seconds;
-
+                document.getElementById('timer-display').textContent = 
+                    (hours < 10 ? "0" + hours : hours) + ":" + 
+                    (minutes < 10 ? "0" + minutes : minutes) + ":" + 
+                    (seconds < 10 ? "0" + seconds : seconds);
                 if (--timer < 0) {
                     clearInterval(timerInterval);
-                    display.textContent = "00:00:00";
-                    alert("Time is up! Submitting your test automatically.");
+                    alert("Time is up! Submitting your test.");
                     submitTest(); 
                 }
             }, 1000);
-        }
-
-        function verifyCode() {
-            const codeInput = document.getElementById('unlock-code').value.trim();
-            if(codeInput === "") {
-                alert("Please enter a code first.");
-                return;
-            }
-            if(codeInput.toUpperCase() === "MOCK2026") {
-                alert("Success! All MockLab tests have been unlocked.");
-                document.getElementById('unlock-code').value = ""; 
-            } else {
-                alert("Invalid Code. Please check with the WhatsApp admin.");
-            }
         }
     </script>
 </body>
