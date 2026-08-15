@@ -30,24 +30,68 @@ export const SelectTypeScreen: React.FC<SelectTypeScreenProps> = React.memo(({ u
   };
 
   return (
-    <div id="screen-type" className="w-full max-w-md flex flex-col items-center">
-      <button
-        onClick={() => navigate('/select-university')}
-        className="self-start mb-6 text-sm font-bold text-gray-400 hover:text-white transition-colors"
-      >
-        ← Back
-      </button>
-      <h1 className="text-3xl font-extrabold mb-8 tracking-tight text-center">Select Test Type</h1>
+    <div id="screen-type" className="w-full max-w-xl flex flex-col items-center">
+      {/* Top Breadcrumb Header */}
+      <div className="w-full flex items-center justify-between mb-6">
+        <button
+          onClick={() => navigate('/select-university')}
+          className="inline-flex items-center gap-2 text-xs font-bold text-slate-400 hover:text-white transition-colors bg-slate-800/80 px-3 py-1.5 rounded-lg border border-slate-700/60"
+        >
+          <span>←</span> Select University
+        </button>
+        <span className="text-xs font-semibold text-indigo-400 bg-indigo-500/10 px-3 py-1 rounded-full border border-indigo-500/20">
+          Step 2 of 3 • {key}
+        </span>
+      </div>
+
+      <div className="text-center mb-8">
+        <h1 className="text-3xl sm:text-4xl font-extrabold font-display tracking-tight text-white mb-2">
+          Select Academic Stream
+        </h1>
+        <p className="text-sm text-slate-400">
+          Choose your subject stream to load the relevant test portion breakdown.
+        </p>
+      </div>
+
       <div id="type-options" className="w-full space-y-3">
         {uniData.options.map((opt) => {
-          const isLocked = opt.id === 'nat-ie';
+          const isLocked = opt.id === 'nat-ie' && (!userData || userData.isPremium === false);
           return (
             <button
               key={opt.id}
               onClick={() => handleSelectType(opt.id)}
-              className="w-full bg-gray-800 border-2 border-gray-700 hover:border-white hover:bg-white hover:text-black transition-all font-bold text-lg py-4 px-6 rounded-xl shadow-sm text-left"
+              className={`w-full glass-card glass-card-hover rounded-2xl p-4 sm:p-5 text-left flex items-center justify-between group transition-all ${
+                isLocked ? 'border-amber-500/30 bg-amber-950/10' : ''
+              }`}
             >
-              {isLocked ? `🔒 ${opt.name}` : opt.name}
+              <div className="flex items-center gap-4">
+                <div className={`w-11 h-11 rounded-xl flex items-center justify-center font-bold text-lg ${
+                  isLocked 
+                    ? 'bg-amber-500/20 text-amber-400 border border-amber-500/30' 
+                    : 'bg-indigo-500/20 text-indigo-400 border border-indigo-500/30'
+                }`}>
+                  {isLocked ? '🔒' : '📝'}
+                </div>
+                <div>
+                  <div className="flex items-center gap-2">
+                    <h3 className="font-bold text-white text-base sm:text-lg group-hover:text-indigo-300 transition-colors">
+                      {opt.name}
+                    </h3>
+                    {isLocked && (
+                      <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/30">
+                        PREMIUM
+                      </span>
+                    )}
+                  </div>
+                  <p className="text-xs text-slate-400 mt-0.5">
+                    {isLocked ? 'Click to view unlock details & access test' : 'Full exam paper structure and duration'}
+                  </p>
+                </div>
+              </div>
+
+              <div className="w-8 h-8 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center text-slate-400 group-hover:text-white group-hover:bg-indigo-600 transition-all shrink-0 ml-2">
+                →
+              </div>
             </button>
           );
         })}
@@ -62,3 +106,4 @@ export const SelectTypeScreen: React.FC<SelectTypeScreenProps> = React.memo(({ u
 });
 
 SelectTypeScreen.displayName = 'SelectTypeScreen';
+

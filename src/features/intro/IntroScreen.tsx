@@ -13,46 +13,100 @@ interface IntroScreenProps {
 export const IntroScreen: React.FC<IntroScreenProps> = React.memo(({ user, userData, onLogout }) => {
   const navigate = useNavigate();
   const isAdmin = user?.email === ADMIN_EMAIL;
-
-  const displayName = userData
-    ? `${userData.name}${userData.isPremium ? ' (Premium 👑)' : ' (Free Account)'}`
-    : 'Student';
+  const isPremium = userData?.isPremium;
 
   return (
-    <div id="screen-intro" className="w-full max-w-lg flex flex-col items-center text-center">
-      <img src="MockLab.png" alt="MockLab Logo" className="w-48 h-auto mb-6 drop-shadow-md mx-auto" />
-      <h1 className="text-5xl font-extrabold mb-4 tracking-tight text-indigo-400">MockLab</h1>
-      <p className="text-lg text-gray-300 mb-6 font-medium px-4">
-        The ultimate entry test portal for all universities in Pakistan. Master your preparation for NTS NAT, PIEAS, Air University, and Bahria.
+    <div id="screen-intro" className="w-full max-w-2xl flex flex-col items-center text-center py-4">
+      {/* Brand Hero */}
+      <div className="relative mb-6">
+        <div className="absolute -inset-4 bg-indigo-500/15 rounded-full blur-2xl pointer-events-none"></div>
+        <img
+          src="MockLab.png"
+          alt="MockLab Logo"
+          className="relative w-44 sm:w-56 h-auto drop-shadow-[0_15px_30px_rgba(99,102,241,0.3)] mx-auto transition-transform hover:scale-105 duration-300"
+        />
+      </div>
+
+      <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-800/80 border border-slate-700/80 text-xs font-semibold text-slate-300 mb-4 shadow-sm backdrop-blur-md">
+        <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+        Computer-Based Test Portal 2.0
+      </div>
+
+      <h1 className="text-4xl sm:text-5xl font-black font-display tracking-tight text-white mb-4">
+        Master Your University <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-purple-300 to-emerald-400">Entry Tests</span>
+      </h1>
+
+      <p className="text-base sm:text-lg text-slate-300 mb-8 max-w-lg font-normal leading-relaxed">
+        Timed exam simulations, instant score reports, and category-wise practice tailored for <strong className="text-indigo-300 font-semibold">NTS NAT, PIEAS, Air University</strong>, and <strong className="text-indigo-300 font-semibold">Bahria</strong>.
       </p>
 
-      <div className="bg-gray-800 border border-gray-700 rounded-full px-6 py-2 mb-8 flex items-center gap-3 mx-auto w-max">
-        <span className="w-2 h-2 rounded-full bg-green-500"></span>
-        <span className="text-sm font-bold text-gray-300">
-          Logged in as <span className="text-white">{displayName}</span>
-        </span>
-        <button onClick={onLogout} className="text-xs text-red-400 hover:text-red-300 ml-2 underline">
-          Logout
+      {/* Account Status Pill */}
+      <div className="glass-panel rounded-2xl px-5 py-3 mb-8 flex flex-wrap items-center justify-between gap-4 w-full max-w-md shadow-lg border border-slate-700/60">
+        <div className="flex items-center gap-3 text-left">
+          <div className={`w-9 h-9 rounded-xl flex items-center justify-center font-bold text-sm ${isPremium ? 'bg-amber-500/20 text-amber-300 border border-amber-500/30' : 'bg-indigo-500/20 text-indigo-300 border border-indigo-500/30'}`}>
+            {isPremium ? '👑' : '🎓'}
+          </div>
+          <div>
+            <p className="text-xs text-slate-400 uppercase tracking-wider font-semibold">Student Account</p>
+            <p className="text-sm font-bold text-white flex items-center gap-1.5">
+              {userData?.name || 'Student'}
+              {isPremium ? (
+                <span className="text-[10px] px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 font-bold border border-amber-500/30">
+                  PRO
+                </span>
+              ) : (
+                <span className="text-[10px] px-2 py-0.5 rounded-full bg-slate-700 text-slate-300 font-medium">
+                  Free
+                </span>
+              )}
+            </p>
+          </div>
+        </div>
+        <button
+          onClick={onLogout}
+          className="text-xs font-semibold text-rose-400 hover:text-rose-300 px-3 py-1.5 rounded-lg bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/20 transition-all"
+        >
+          Sign Out
         </button>
       </div>
 
-      {isAdmin && (
-        <button
-          onClick={() => navigate('/admin')}
-          className="w-full bg-red-700 hover:bg-red-600 text-white transition-all font-extrabold text-xl py-3 px-8 rounded-xl shadow-lg mb-4"
-        >
-          👑 Secret Admin Dashboard
-        </button>
-      )}
+      {/* Feature Highlights Cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 w-full mb-8 text-left">
+        <div className="glass-card p-4 rounded-xl">
+          <div className="text-indigo-400 text-lg mb-1">⏱️ Real-Time Timer</div>
+          <p className="text-xs text-slate-400 font-medium">Simulates official exam timing and countdown stress.</p>
+        </div>
+        <div className="glass-card p-4 rounded-xl">
+          <div className="text-emerald-400 text-lg mb-1">📊 Instant Scoring</div>
+          <p className="text-xs text-slate-400 font-medium">Immediate feedback and subject score breakdown.</p>
+        </div>
+        <div className="glass-card p-4 rounded-xl">
+          <div className="text-amber-400 text-lg mb-1">🎯 Curated MCQs</div>
+          <p className="text-xs text-slate-400 font-medium">Handpicked questions by past paper patterns.</p>
+        </div>
+      </div>
 
-      <button
-        onClick={() => navigate('/select-university')}
-        className="w-full bg-indigo-600 hover:bg-indigo-500 text-white transition-all font-extrabold text-xl py-4 px-8 rounded-xl shadow-lg hover:-translate-y-1"
-      >
-        🚀 Enter Portal
-      </button>
+      {/* Action Buttons */}
+      <div className="w-full max-w-md space-y-3">
+        {isAdmin && (
+          <button
+            onClick={() => navigate('/admin')}
+            className="w-full bg-gradient-to-r from-rose-900/80 to-red-800/80 hover:from-rose-800 hover:to-red-700 text-rose-100 font-bold text-base py-3.5 px-6 rounded-xl border border-rose-500/40 shadow-lg transition-all flex items-center justify-center gap-2"
+          >
+            <span>👑</span> Admin Control Console
+          </button>
+        )}
+
+        <button
+          onClick={() => navigate('/select-university')}
+          className="w-full bg-gradient-to-r from-indigo-600 via-indigo-500 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-extrabold text-lg py-4 px-8 rounded-xl shadow-glow-indigo transition-all transform hover:-translate-y-0.5 active:translate-y-0 flex items-center justify-center gap-3 border border-indigo-400/30"
+        >
+          <span>🚀</span> Enter Portal
+        </button>
+      </div>
     </div>
   );
 });
 
 IntroScreen.displayName = 'IntroScreen';
+

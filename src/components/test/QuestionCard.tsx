@@ -19,6 +19,8 @@ interface QuestionCardProps {
   onSubmit: () => void;
 }
 
+const OPTION_LETTERS = ['A', 'B', 'C', 'D', 'E'];
+
 export const QuestionCard: React.FC<QuestionCardProps> = React.memo(
   ({
     question,
@@ -48,130 +50,155 @@ export const QuestionCard: React.FC<QuestionCardProps> = React.memo(
       }
     };
 
+    const percentComplete = Math.round(((questionIndex + 1) / totalQuestions) * 100);
+
     return (
-      <div className="bg-gray-800 p-6 md:p-8 rounded-b-xl min-h-[50vh] border-x-2 border-b-2 border-gray-700 shadow-lg">
-        {/* Top Control Bar */}
-        <div className="flex flex-col lg:flex-row justify-between items-center bg-gray-900 border-b-2 border-gray-700 pb-4 mb-6 rounded-lg p-4 shadow-inner gap-4">
-          <div className="flex space-x-8">
-            <div className="text-center">
-              <p className="text-[10px] text-gray-400 font-bold uppercase tracking-widest">Answered</p>
-              <p className="text-lg font-bold text-green-400">
-                {answeredCount} <span className="text-gray-500 text-sm">/ {totalQuestions}</span>
-              </p>
+      <div className="glass-panel p-6 sm:p-8 rounded-b-2xl border-x border-b border-slate-700/80 shadow-glass min-h-[55vh] flex flex-col justify-between">
+        <div>
+          {/* Top Control Bar & Stats */}
+          <div className="flex flex-col lg:flex-row justify-between items-center bg-slate-900/90 border border-slate-800 p-4 rounded-xl mb-6 shadow-inner gap-4">
+            <div className="flex items-center space-x-6">
+              <div className="text-left">
+                <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Answered</p>
+                <p className="text-base font-extrabold text-emerald-400">
+                  {answeredCount} <span className="text-slate-500 text-xs font-normal">/ {totalQuestions}</span>
+                </p>
+              </div>
+              <div className="h-6 w-px bg-slate-800"></div>
+              <div className="text-left cursor-pointer hover:opacity-80 transition-opacity" onClick={onOpenOverview}>
+                <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Review</p>
+                <p className="text-base font-extrabold text-amber-400">{reviewCount}</p>
+              </div>
             </div>
-            <div className="text-center cursor-pointer hover:opacity-80" onClick={onOpenOverview}>
-              <p className="text-[10px] text-gray-400 font-bold uppercase tracking-widest">Review</p>
-              <p className="text-lg font-bold text-yellow-400">{reviewCount}</p>
-            </div>
-          </div>
-          <div className="flex flex-wrap justify-center items-center gap-2">
-            <button
-              onClick={onOpenOverview}
-              className="bg-indigo-600/20 text-indigo-400 border border-indigo-500 hover:bg-indigo-600 hover:text-white px-4 py-2 rounded-lg font-bold transition-colors shadow-sm text-sm"
-            >
-              Grid Overview
-            </button>
-            <form onSubmit={handleJumpSubmit} className="flex items-center">
-              <input
-                type="number"
-                min="1"
-                max={totalQuestions}
-                value={jumpInput}
-                onChange={(e) => setJumpInput(e.target.value)}
-                className="w-14 px-2 py-2 rounded-l-lg bg-gray-800 border border-gray-600 text-white font-bold focus:outline-none focus:border-indigo-500 text-center"
-                placeholder="#"
-              />
+
+            <div className="flex flex-wrap justify-center items-center gap-2 w-full lg:w-auto">
               <button
-                type="submit"
-                className="bg-indigo-600 hover:bg-indigo-500 px-3 py-2 rounded-r-lg font-bold text-white transition-colors shadow-sm text-sm border border-indigo-600"
+                onClick={onOpenOverview}
+                className="bg-indigo-500/10 text-indigo-300 border border-indigo-500/30 hover:bg-indigo-500/20 px-3.5 py-1.5 rounded-lg font-bold transition-all text-xs flex items-center gap-1.5"
               >
-                Jump
+                <span>📊</span> Grid Overview
               </button>
-            </form>
+
+              <form onSubmit={handleJumpSubmit} className="flex items-center">
+                <input
+                  type="number"
+                  min="1"
+                  max={totalQuestions}
+                  value={jumpInput}
+                  onChange={(e) => setJumpInput(e.target.value)}
+                  className="w-12 px-2 py-1.5 rounded-l-lg bg-slate-950 border border-slate-700 text-white font-bold focus:outline-none focus:border-indigo-500 text-center text-xs"
+                  placeholder="#"
+                />
+                <button
+                  type="submit"
+                  className="bg-indigo-600 hover:bg-indigo-500 px-3 py-1.5 rounded-r-lg font-bold text-white transition-colors text-xs border border-indigo-600"
+                >
+                  Jump
+                </button>
+              </form>
+
+              <button
+                onClick={onJumpToNextSection}
+                className="bg-slate-800 hover:bg-slate-700 px-3 py-1.5 rounded-lg font-bold text-slate-300 transition-colors border border-slate-700 text-xs"
+              >
+                Next Sec »
+              </button>
+            </div>
+          </div>
+
+          {/* Progress Bar */}
+          <div className="w-full bg-slate-900 h-1.5 rounded-full overflow-hidden mb-6">
+            <div
+              className="bg-gradient-to-r from-indigo-500 to-emerald-400 h-full transition-all duration-300"
+              style={{ width: `${percentComplete}%` }}
+            ></div>
+          </div>
+
+          {/* Question Header & Review Toggle */}
+          <div className="flex justify-between items-center mb-5">
+            <div className="flex items-center gap-2">
+              <span className="text-xs font-bold text-indigo-400 bg-indigo-500/10 px-3 py-1 rounded-full border border-indigo-500/20 uppercase tracking-wider">
+                Question {questionIndex + 1} of {totalQuestions}
+              </span>
+            </div>
+
             <button
-              onClick={onJumpToNextSection}
-              className="bg-gray-700 hover:bg-gray-600 px-3 py-2 rounded-lg font-bold text-gray-200 transition-colors shadow-sm border border-gray-600 text-sm"
+              onClick={onToggleReview}
+              className={`flex items-center gap-1.5 text-xs font-bold px-3.5 py-1.5 rounded-full border transition-all ${
+                isReview
+                  ? 'border-amber-500 text-amber-300 bg-amber-950/40 shadow-glow-amber'
+                  : 'border-slate-700 text-slate-400 hover:text-white hover:border-slate-500 bg-slate-900/60'
+              }`}
             >
-              Next Section &raquo;
+              <span>{isReview ? '★ Marked' : '☆ Mark for Review'}</span>
             </button>
           </div>
-        </div>
 
-        {/* Question Header & Review Toggle */}
-        <div className="flex justify-between items-center mb-4">
-          <div className="text-sm font-bold text-indigo-400 uppercase tracking-widest">
-            Question {questionIndex + 1} of {totalQuestions}
+          {/* Question Text */}
+          <h3 className="text-lg sm:text-xl md:text-2xl font-bold mb-8 text-white leading-relaxed whitespace-pre-line">
+            {question.q}
+          </h3>
+
+          {/* Option Cards */}
+          <div className="space-y-3 mb-8">
+            {question.options.map((opt, idx) => {
+              const isSelected = selectedOption === idx;
+              const letter = OPTION_LETTERS[idx] || (idx + 1).toString();
+
+              return (
+                <div
+                  key={idx}
+                  onClick={() => onSelectOption(idx)}
+                  className={`flex items-center gap-4 p-4 rounded-xl border-2 cursor-pointer transition-all ${
+                    isSelected
+                      ? 'border-indigo-500 bg-indigo-950/40 shadow-glow-indigo'
+                      : 'border-slate-800 bg-slate-900/60 hover:bg-slate-850 hover:border-slate-700'
+                  }`}
+                >
+                  <div
+                    className={`w-9 h-9 rounded-xl flex items-center justify-center font-bold text-sm shrink-0 transition-all ${
+                      isSelected
+                        ? 'bg-indigo-600 text-white shadow-md'
+                        : 'bg-slate-800 text-slate-300 border border-slate-700'
+                    }`}
+                  >
+                    {letter}
+                  </div>
+                  <span className={`text-base font-medium transition-colors ${isSelected ? 'text-white font-semibold' : 'text-slate-200'}`}>
+                    {opt}
+                  </span>
+                </div>
+              );
+            })}
           </div>
-          <button
-            onClick={onToggleReview}
-            className={`flex items-center space-x-1 text-sm font-bold px-4 py-2 rounded-full border-2 transition-colors ${
-              isReview
-                ? 'border-yellow-500 text-yellow-400 bg-yellow-900/20 shadow-[0_0_10px_rgba(234,179,8,0.3)]'
-                : 'border-gray-600 text-gray-400 hover:text-white hover:border-gray-400'
-            }`}
-          >
-            <span>{isReview ? '★ Marked for Review' : '☆ Mark for Review'}</span>
-          </button>
         </div>
 
-        {/* Question Text */}
-        <h3 className="text-xl md:text-2xl font-semibold mb-8 text-white leading-relaxed whitespace-pre-line">
-          {question.q}
-        </h3>
-
-        {/* Radio Options */}
-        <div className="space-y-3">
-          {question.options.map((opt, idx) => {
-            const isSelected = selectedOption === idx;
-            const activeStyle = isSelected
-              ? 'border-indigo-500 bg-indigo-900/30'
-              : 'border-gray-700 bg-gray-800 hover:bg-gray-700';
-
-            return (
-              <label
-                key={idx}
-                className={`flex items-center space-x-4 p-4 rounded-xl border-2 ${activeStyle} cursor-pointer transition-all`}
-              >
-                <input
-                  type="radio"
-                  name="option"
-                  value={idx}
-                  checked={isSelected}
-                  onChange={() => onSelectOption(idx)}
-                  className="w-5 h-5 text-indigo-600 focus:ring-indigo-500 bg-gray-900 border-gray-600"
-                />
-                <span className="text-gray-200 font-medium text-lg">{opt}</span>
-              </label>
-            );
-          })}
-        </div>
-
-        {/* Navigation Buttons */}
-        <div className="mt-10 flex justify-between items-center border-t border-gray-700 pt-6">
+        {/* Navigation Buttons Footer */}
+        <div className="flex justify-between items-center border-t border-slate-800 pt-6 mt-4">
           {questionIndex > 0 ? (
             <button
               onClick={onPrev}
-              className="px-6 py-3 bg-gray-700 text-white rounded-lg font-bold hover:bg-gray-600 transition-colors"
+              className="px-5 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-xl font-bold text-sm transition-all border border-slate-700"
             >
-              &larr; Prev
+              ← Previous
             </button>
           ) : (
-            <div />
+            <div></div>
           )}
 
           {questionIndex === totalQuestions - 1 ? (
             <button
               onClick={onSubmit}
-              className="px-8 py-3 bg-green-600 text-white rounded-lg font-bold hover:bg-green-500 transition-colors shadow-lg"
+              className="px-7 py-3 bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-white rounded-xl font-extrabold text-sm transition-all shadow-glow-emerald border border-emerald-400/30"
             >
-              Submit Test
+              Submit Test 🏁
             </button>
           ) : (
             <button
               onClick={onNext}
-              className="px-8 py-3 bg-indigo-600 text-white rounded-lg font-bold hover:bg-indigo-500 transition-colors shadow-lg"
+              className="px-7 py-3 bg-gradient-to-r from-indigo-600 to-indigo-500 hover:from-indigo-500 hover:to-indigo-400 text-white rounded-xl font-extrabold text-sm transition-all shadow-glow-indigo border border-indigo-400/30"
             >
-              Next &rarr;
+              Next Question →
             </button>
           )}
         </div>
@@ -181,3 +208,4 @@ export const QuestionCard: React.FC<QuestionCardProps> = React.memo(
 );
 
 QuestionCard.displayName = 'QuestionCard';
+

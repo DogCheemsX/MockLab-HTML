@@ -120,7 +120,7 @@ export const ActiveTestScreen: React.FC<ActiveTestScreenProps> = React.memo(({ t
   };
 
   return (
-    <div id="screen-test" className="w-full max-w-3xl flex flex-col">
+    <div id="screen-test" className="w-full max-w-4xl flex flex-col py-2">
       <TestHeader timeLeft={timeLeft} />
 
       {currentQuestion && (

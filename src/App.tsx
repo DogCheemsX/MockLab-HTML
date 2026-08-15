@@ -41,7 +41,9 @@ export const App: React.FC = () => {
   if (!user) {
     return (
       <ErrorBoundary>
-        <AuthScreen />
+        <div className="w-full min-h-screen flex flex-col items-center justify-center p-4 sm:p-6">
+          <AuthScreen />
+        </div>
       </ErrorBoundary>
     );
   }
@@ -50,46 +52,52 @@ export const App: React.FC = () => {
 
   return (
     <ErrorBoundary>
-      <div className="w-full flex flex-col items-center justify-center">
-        <Routes>
-          <Route
-            path="/"
-            element={<IntroScreen user={user} userData={userData} onLogout={handleLogout} />}
-          />
-          <Route
-            path="/select-university"
-            element={<SelectUniversityScreen />}
-          />
-          <Route
-            path="/select-type/:uniKey"
-            element={<SelectTypeScreen userData={userData} />}
-          />
-          <Route
-            path="/test-info/:uniKey/:typeId"
-            element={<TestInfoScreen testSession={testSession} />}
-          />
-          <Route
-            path="/test-runner"
-            element={<ActiveTestScreen testSession={testSession} />}
-          />
-          <Route
-            path="/results"
-            element={<TestResultScreen testSession={testSession} />}
-          />
-          <Route
-            path="/admin"
-            element={
-              isAdmin ? (
-                <Suspense fallback={<LoadingSpinner />}>
-                  <AdminScreen />
-                </Suspense>
-              ) : (
-                <Navigate to="/" replace />
-              )
-            }
-          />
-          <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
+      <div className="w-full min-h-screen flex flex-col items-center justify-between p-4 sm:p-6 lg:p-8">
+        <main className="w-full max-w-5xl flex flex-col items-center justify-center flex-1 py-4 sm:py-6">
+          <Routes>
+            <Route
+              path="/"
+              element={<IntroScreen user={user} userData={userData} onLogout={handleLogout} />}
+            />
+            <Route
+              path="/select-university"
+              element={<SelectUniversityScreen />}
+            />
+            <Route
+              path="/select-type/:uniKey"
+              element={<SelectTypeScreen userData={userData} />}
+            />
+            <Route
+              path="/test-info/:uniKey/:typeId"
+              element={<TestInfoScreen testSession={testSession} />}
+            />
+            <Route
+              path="/test-runner"
+              element={<ActiveTestScreen testSession={testSession} />}
+            />
+            <Route
+              path="/results"
+              element={<TestResultScreen testSession={testSession} />}
+            />
+            <Route
+              path="/admin"
+              element={
+                isAdmin ? (
+                  <Suspense fallback={<LoadingSpinner />}>
+                    <AdminScreen />
+                  </Suspense>
+                ) : (
+                  <Navigate to="/" replace />
+                )
+              }
+            />
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
+        </main>
+        
+        <footer className="w-full text-center py-4 text-xs text-slate-500 font-medium border-t border-slate-800/60 mt-8">
+          <p>© {new Date().getFullYear()} MockLab Entry Test Prep • Designed for Pakistani University Aspirants</p>
+        </footer>
       </div>
     </ErrorBoundary>
   );
