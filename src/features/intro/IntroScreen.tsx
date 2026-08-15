@@ -49,7 +49,7 @@ export const IntroScreen: React.FC<IntroScreenProps> = React.memo(({ user, userD
         onClick={() => navigate('/select-university')}
         className="w-full bg-indigo-600 hover:bg-indigo-500 text-white transition-all font-extrabold text-xl py-4 px-8 rounded-xl shadow-lg hover:-translate-y-1"
       >
-        Enter Portall
+        🚀 Enter Portal
       </button>
     </div>
   );
