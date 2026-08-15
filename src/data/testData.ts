@@ -10,15 +10,11 @@ export const testData: TestDataMap = {
       { id: "nat-ia", name: "Arts / Humanities: NAT-IA" },
       { id: "nat-icom", name: "Commerce: NAT-ICOM" }
     ],
-    info: {
-      time: "120 Minutes",
-      marks: "90 Marks (No negative marking)",
-      breakdown: [
-        "English / Verbal: 20 MCQs",
-        "Analytical Reasoning: 20 MCQs",
-        "Quantitative Reasoning: 20 MCQs",
-        "Subject Portion: 30 MCQs"
-      ]
+    infoMap: {
+      "nat-ie": { time: "120 Minutes", marks: "90 Marks (No negative marking)", breakdown: ["Verbal Ability: 20 MCQs", "Analytical Reasoning: 20 MCQs", "Quantitative Reasoning: 20 MCQs", "Physics: 10 MCQs", "Chemistry: 10 MCQs", "Mathematics: 10 MCQs"] },
+      "nat-im": { time: "120 Minutes", marks: "90 Marks (No negative marking)", breakdown: ["Verbal Ability: 20 MCQs", "Analytical Reasoning: 20 MCQs", "Quantitative Reasoning: 20 MCQs", "Physics: 8 MCQs", "Chemistry: 8 MCQs", "Biology: 14 MCQs"] },
+      "nat-ics": { time: "120 Minutes", marks: "90 Marks (No negative marking)", breakdown: ["Verbal Ability: 20 MCQs", "Analytical Reasoning: 20 MCQs", "Quantitative Reasoning: 20 MCQs", "Physics: 10 MCQs", "Computer Science: 10 MCQs", "Mathematics: 10 MCQs"] },
+      "nat-igs": { time: "120 Minutes", marks: "90 Marks (No negative marking)", breakdown: ["Verbal Ability: 20 MCQs", "Analytical Reasoning: 20 MCQs", "Quantitative Reasoning: 20 MCQs", "Physics: 10 MCQs", "Chemistry: 10 MCQs", "Biology: 10 MCQs"] }
     }
   },
   NTS: {
@@ -30,15 +26,11 @@ export const testData: TestDataMap = {
       { id: "nat-ia", name: "Arts / Humanities: NAT-IA" },
       { id: "nat-icom", name: "Commerce: NAT-ICOM" }
     ],
-    info: {
-      time: "120 Minutes",
-      marks: "90 Marks (No negative marking)",
-      breakdown: [
-        "English / Verbal: 20 MCQs",
-        "Analytical Reasoning: 20 MCQs",
-        "Quantitative Reasoning: 20 MCQs",
-        "Subject Portion: 30 MCQs"
-      ]
+    infoMap: {
+      "nat-ie": { time: "120 Minutes", marks: "90 Marks (No negative marking)", breakdown: ["Verbal Ability: 20 MCQs", "Analytical Reasoning: 20 MCQs", "Quantitative Reasoning: 20 MCQs", "Physics: 10 MCQs", "Chemistry: 10 MCQs", "Mathematics: 10 MCQs"] },
+      "nat-im": { time: "120 Minutes", marks: "90 Marks (No negative marking)", breakdown: ["Verbal Ability: 20 MCQs", "Analytical Reasoning: 20 MCQs", "Quantitative Reasoning: 20 MCQs", "Physics: 8 MCQs", "Chemistry: 8 MCQs", "Biology: 14 MCQs"] },
+      "nat-ics": { time: "120 Minutes", marks: "90 Marks (No negative marking)", breakdown: ["Verbal Ability: 20 MCQs", "Analytical Reasoning: 20 MCQs", "Quantitative Reasoning: 20 MCQs", "Physics: 10 MCQs", "Computer Science: 10 MCQs", "Mathematics: 10 MCQs"] },
+      "nat-igs": { time: "120 Minutes", marks: "90 Marks (No negative marking)", breakdown: ["Verbal Ability: 20 MCQs", "Analytical Reasoning: 20 MCQs", "Quantitative Reasoning: 20 MCQs", "Physics: 10 MCQs", "Chemistry: 10 MCQs", "Biology: 10 MCQs"] }
     }
   },
   PIEAS: {

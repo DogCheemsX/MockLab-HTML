@@ -273,3 +273,5 @@ const questionBank = {
         { q: "The study of preservation of life or the study of organisms at low temperature is known as", options: ["Kalology", "Malacology", "Cryobiology", "Dermatology"], ans: 2 }
     ]
 };
+
+questionBank["nat-im"] = questionBank["nat-igs"];
