@@ -9,7 +9,6 @@ interface UniversityOption {
   tag: string;
   desc: string;
   color: string;
-  logo: string;
 }
 
 const UNIVERSITIES: UniversityOption[] = [
@@ -20,7 +19,6 @@ const UNIVERSITIES: UniversityOption[] = [
     tag: 'NTS NAT Pattern',
     desc: 'Pre-Eng, Pre-Med, ICS, General Science & Commerce',
     color: 'from-blue-600 to-indigo-600',
-    logo: 'logos/comsats.svg',
   },
   {
     key: 'PIEAS',
@@ -29,7 +27,6 @@ const UNIVERSITIES: UniversityOption[] = [
     tag: 'Engineering / Physics',
     desc: 'High-rigor STEM paper pattern for Islamabad campus',
     color: 'from-purple-600 to-indigo-600',
-    logo: 'logos/pieas.svg',
   },
   {
     key: 'AIR',
@@ -38,7 +35,6 @@ const UNIVERSITIES: UniversityOption[] = [
     tag: 'AU-CBT Pattern',
     desc: 'Computing, Engineering & Management streams',
     color: 'from-cyan-600 to-blue-600',
-    logo: 'logos/air.svg',
   },
   {
     key: 'BAHRIA',
@@ -47,7 +43,6 @@ const UNIVERSITIES: UniversityOption[] = [
     tag: 'BUET Exam',
     desc: 'CS, IT, Engineering & Social Sciences pattern',
     color: 'from-emerald-600 to-teal-600',
-    logo: 'logos/bahria.svg',
   },
   {
     key: 'NTS',
@@ -56,7 +51,6 @@ const UNIVERSITIES: UniversityOption[] = [
     tag: 'NAT-I Standard',
     desc: 'General NTS NAT prep for all affiliated institutes',
     color: 'from-amber-600 to-orange-600',
-    logo: 'logos/nts.svg',
   },
 ];
 
@@ -99,16 +93,8 @@ export const SelectUniversityScreen: React.FC = React.memo(() => {
             className="w-full glass-card glass-card-hover rounded-2xl p-4 sm:p-5 text-left flex items-center justify-between group transition-all"
           >
             <div className="flex items-center gap-4">
-              <div className={`w-13 h-13 sm:w-14 sm:h-14 rounded-2xl bg-slate-900/90 border border-slate-700/80 p-2 flex items-center justify-center shadow-lg group-hover:scale-105 group-hover:border-indigo-500/50 transition-all shrink-0 relative overflow-hidden`}>
-                <img
-                  src={u.logo}
-                  alt={`${u.name} Logo`}
-                  className="w-full h-full object-contain filter drop-shadow-md"
-                  onError={(e) => {
-                    // Fallback to text badge if image fails to render
-                    (e.target as HTMLElement).style.display = 'none';
-                  }}
-                />
+              <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${u.color} flex items-center justify-center font-extrabold font-display text-white text-base shadow-md group-hover:scale-105 transition-transform shrink-0`}>
+                {u.badge}
               </div>
               <div>
                 <div className="flex items-center gap-2 mb-1">
