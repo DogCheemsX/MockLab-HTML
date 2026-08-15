@@ -10,66 +10,76 @@ export const PremiumModal: React.FC<PremiumModalProps> = React.memo(({ isOpen, o
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/90 z-50 flex flex-col items-center justify-center p-4">
-      <div className="bg-gray-800 border-2 border-indigo-500 rounded-xl p-6 w-full max-w-md shadow-2xl relative">
+    <div className="fixed inset-0 bg-slate-950/85 backdrop-blur-md z-50 flex flex-col items-center justify-center p-4">
+      <div className="glass-panel rounded-3xl p-6 sm:p-8 w-full max-w-md shadow-2xl border border-indigo-500/40 relative overflow-hidden">
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 text-gray-400 hover:text-white font-bold text-xl"
+          className="absolute top-4 right-4 text-slate-400 hover:text-white font-bold text-sm bg-slate-800 hover:bg-slate-700 w-8 h-8 rounded-full flex items-center justify-center border border-slate-700 transition-colors"
         >
           ✕
         </button>
-        <h2 className="text-2xl font-black mb-2 text-center text-indigo-400">🔒 Premium Test</h2>
-        <p className="text-center text-gray-300 text-sm mb-6">
-          This test is locked. Upgrade your account to unlock all tests permanently on all your devices!
-        </p>
 
+        <div className="text-center mb-6">
+          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30 text-xs font-bold uppercase tracking-wider mb-2">
+            <span>👑</span> Premium Pass Unlock
+          </span>
+          <h2 className="text-2xl font-extrabold font-display text-white">Unlock All Practice Tests</h2>
+          <p className="text-xs text-slate-400 mt-1">
+            Get lifetime unlimited access to all NTS NAT, ECAT, MDCAT & University test banks across all devices.
+          </p>
+        </div>
+
+        {/* QR Code Container */}
         <div className="flex flex-col items-center justify-center mb-6">
-          <div className="bg-white p-3 rounded-2xl shadow-[0_0_15px_rgba(79,70,229,0.3)] border-2 border-indigo-400 mb-3">
+          <div className="bg-white p-3 rounded-2xl shadow-glow-indigo border-2 border-indigo-400 mb-2">
             <img src="qr.png" alt="NayaPay QR Code" className="w-32 h-32 object-contain rounded-lg" />
           </div>
-          <span className="text-xs font-bold text-indigo-400 uppercase tracking-widest bg-indigo-900/40 px-3 py-1 rounded-full border border-indigo-500/30">
-            Scan to Pay
+          <span className="text-[11px] font-bold text-indigo-300 uppercase tracking-widest bg-indigo-950/60 px-3 py-1 rounded-full border border-indigo-500/30">
+            Scan to Pay Via NayaPay / JazzCash / EasyPaisa
           </span>
         </div>
 
-        <div className="space-y-4 text-left bg-gray-900 p-4 rounded-lg border border-gray-700">
+        {/* Step-by-Step Payment Instructions */}
+        <div className="space-y-3 bg-slate-900/90 p-4 rounded-2xl border border-slate-800 text-left mb-6">
           <div className="flex items-start">
-            <div className="bg-indigo-600 text-white font-bold rounded-full h-6 w-6 flex items-center justify-center text-xs shrink-0 mt-0.5 mr-3">
+            <div className="bg-indigo-600 text-white font-black rounded-lg h-6 w-6 flex items-center justify-center text-xs shrink-0 mt-0.5 mr-3">
               1
             </div>
-            <p className="text-sm font-medium text-gray-300">
-              Send <b className="text-white">{PAYMENT_INFO.amount}</b> to <b className="text-white">{PAYMENT_INFO.accountNumber}</b> ({PAYMENT_INFO.bankName}).
+            <p className="text-xs font-medium text-slate-300 leading-relaxed">
+              Transfer <b className="text-emerald-400 font-bold">{PAYMENT_INFO.amount}</b> to account <b className="text-white font-bold">{PAYMENT_INFO.accountNumber}</b> ({PAYMENT_INFO.bankName}).
             </p>
           </div>
           <div className="flex items-start">
-            <div className="bg-indigo-600 text-white font-bold rounded-full h-6 w-6 flex items-center justify-center text-xs shrink-0 mt-0.5 mr-3">
+            <div className="bg-indigo-600 text-white font-black rounded-lg h-6 w-6 flex items-center justify-center text-xs shrink-0 mt-0.5 mr-3">
               2
             </div>
-            <p className="text-sm font-medium text-gray-300">
-              Message your registered email and screenshot to{' '}
-              <a
-                href={PAYMENT_INFO.whatsappUrl}
-                target="_blank"
-                rel="noreferrer"
-                className="text-green-400 font-bold underline hover:text-green-300"
-              >
-                WhatsApp Admin
-              </a>
-              .
+            <p className="text-xs font-medium text-slate-300 leading-relaxed">
+              Send your registered email & receipt screenshot to our WhatsApp admin.
             </p>
           </div>
           <div className="flex items-start">
-            <div className="bg-indigo-600 text-white font-bold rounded-full h-6 w-6 flex items-center justify-center text-xs shrink-0 mt-0.5 mr-3">
+            <div className="bg-indigo-600 text-white font-black rounded-lg h-6 w-6 flex items-center justify-center text-xs shrink-0 mt-0.5 mr-3">
               3
             </div>
-            <p className="text-sm font-medium text-gray-300">
-              We will instantly activate Premium on your account!
+            <p className="text-xs font-medium text-slate-300 leading-relaxed">
+              Instant activation within 5 minutes!
             </p>
           </div>
         </div>
+
+        {/* WhatsApp Direct Action Button */}
+        <a
+          href={PAYMENT_INFO.whatsappUrl}
+          target="_blank"
+          rel="noreferrer"
+          className="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-sm py-3.5 px-4 rounded-xl shadow-glow-emerald transition-all flex items-center justify-center gap-2 border border-emerald-400/30 text-center"
+        >
+          <span>💬</span> Contact Admin on WhatsApp
+        </a>
       </div>
     </div>
   );
 });
 
 PremiumModal.displayName = 'PremiumModal';
+
