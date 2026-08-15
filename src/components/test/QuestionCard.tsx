@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Question } from '../../types/test';
+import { MathText } from '../common/MathText';
 
 interface QuestionCardProps {
   question: Question;
@@ -135,9 +136,9 @@ export const QuestionCard: React.FC<QuestionCardProps> = React.memo(
           </div>
 
           {/* Question Text */}
-          <h3 className="text-lg sm:text-xl md:text-2xl font-bold mb-8 text-white leading-relaxed whitespace-pre-line">
-            {question.q}
-          </h3>
+          <div className="text-lg sm:text-xl md:text-2xl font-bold mb-8 text-white leading-relaxed">
+            <MathText text={question.q} />
+          </div>
 
           {/* Option Cards */}
           <div className="space-y-3 mb-8">
@@ -165,7 +166,7 @@ export const QuestionCard: React.FC<QuestionCardProps> = React.memo(
                     {letter}
                   </div>
                   <span className={`text-base font-medium transition-colors ${isSelected ? 'text-white font-semibold' : 'text-slate-200'}`}>
-                    {opt}
+                    <MathText text={opt} inline />
                   </span>
                 </div>
               );
