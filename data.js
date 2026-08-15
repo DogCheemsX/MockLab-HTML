@@ -24,16 +24,16 @@ const testData = {
     },
     "PIEAS": {
         options: [
-            { id: "pieas-eng", name: "Pre-Engineering" },
-            { id: "pieas-med", name: "Pre-Medical" },
-            { id: "pieas-ics", name: "ICS (Maths, Physics, CS)" },
-            { id: "pieas-gen", name: "Science General (with Maths)" }
+            { id: "pieas-eng", name: "Pre-Engineering (Maths, Physics, Chemistry)" },
+            { id: "pieas-ics", name: "ICS (Maths, Physics, Computer Science)" },
+            { id: "pieas-med", name: "Pre-Medical Stream" },
+            { id: "pieas-gen", name: "Science General Stream" }
         ],
         infoMap: {
-            "pieas-eng": { time: "180 Minutes", marks: "100 MCQs", breakdown: ["English: 10", "Maths: 30", "Physics: 30", "Chemistry: 30"] },
-            "pieas-med": { time: "180 Minutes", marks: "100 MCQs", breakdown: ["English: 10", "Chemistry: 30", "Physics: 30", "Maths (SSC Level): 30"] },
-            "pieas-ics": { time: "180 Minutes", marks: "100 MCQs", breakdown: ["English: 10", "Maths: 30", "Physics: 30", "Computer Science: 30"] },
-            "pieas-gen": { time: "180 Minutes", marks: "100 MCQs", breakdown: ["English: 10", "Maths: 60", "Physics (SSC Level): 30"] }
+            "pieas-eng": { time: "180 Minutes", marks: "100 Marks (No negative marking)", breakdown: ["Section (I) English: 20 MCQs (Q1-20)", "Section (II) Mathematics: 30 MCQs (Q21-50)", "Section (III) Physics: 30 MCQs (Q51-80)", "Section (IV) Chemistry: 20 MCQs (Q81-100)"] },
+            "pieas-ics": { time: "180 Minutes", marks: "100 Marks (No negative marking)", breakdown: ["Section (I) English: 20 MCQs (Q1-20)", "Section (II) Mathematics: 30 MCQs (Q21-50)", "Section (III) Physics: 30 MCQs (Q51-80)", "Section (IV) Computer Science: 20 MCQs (Q81-100)"] },
+            "pieas-med": { time: "180 Minutes", marks: "100 Marks (No negative marking)", breakdown: ["Section (I) English: 20 MCQs (Q1-20)", "Section (II) Mathematics: 30 MCQs (Q21-50)", "Section (III) Physics: 30 MCQs (Q51-80)", "Section (IV) Chemistry: 20 MCQs (Q81-100)"] },
+            "pieas-gen": { time: "180 Minutes", marks: "100 Marks (No negative marking)", breakdown: ["Section (I) English: 20 MCQs (Q1-20)", "Section (II) Mathematics: 30 MCQs (Q21-50)", "Section (III) Physics: 30 MCQs (Q51-80)", "Section (IV) Computer Science: 20 MCQs (Q81-100)"] }
         }
     },
     "AIR": {
