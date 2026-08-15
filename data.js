@@ -32,8 +32,8 @@ const testData = {
         infoMap: {
             "pieas-eng": { time: "180 Minutes", marks: "100 Marks (No negative marking)", breakdown: ["Section (I) English: 20 MCQs (Q1-20)", "Section (II) Mathematics: 30 MCQs (Q21-50)", "Section (III) Physics: 30 MCQs (Q51-80)", "Section (IV) Chemistry: 20 MCQs (Q81-100)"] },
             "pieas-ics": { time: "180 Minutes", marks: "100 Marks (No negative marking)", breakdown: ["Section (I) English: 20 MCQs (Q1-20)", "Section (II) Mathematics: 30 MCQs (Q21-50)", "Section (III) Physics: 30 MCQs (Q51-80)", "Section (IV) Computer Science: 20 MCQs (Q81-100)"] },
-            "pieas-med": { time: "180 Minutes", marks: "100 Marks (No negative marking)", breakdown: ["Section (I) English: 20 MCQs (Q1-20)", "Section (II) Mathematics: 30 MCQs (Q21-50)", "Section (III) Physics: 30 MCQs (Q51-80)", "Section (IV) Chemistry: 20 MCQs (Q81-100)"] },
-            "pieas-gen": { time: "180 Minutes", marks: "100 Marks (No negative marking)", breakdown: ["Section (I) English: 20 MCQs (Q1-20)", "Section (II) Mathematics: 30 MCQs (Q21-50)", "Section (III) Physics: 30 MCQs (Q51-80)", "Section (IV) Computer Science: 20 MCQs (Q81-100)"] }
+            "pieas-med": { time: "180 Minutes", marks: "100 Marks (No negative marking)", breakdown: ["Section (I) English: 20 MCQs (Q1-20)", "Section (II) Biology: 30 MCQs (Q21-50)", "Section (III) Physics: 30 MCQs (Q51-80)", "Section (IV) Chemistry: 20 MCQs (Q81-100)"] },
+            "pieas-gen": { time: "180 Minutes", marks: "100 Marks (No negative marking)", breakdown: ["Section (I) English: 20 MCQs (Q1-20)", "Section (II) Mathematics: 30 MCQs (Q21-50)", "Section (III) Physics: 30 MCQs (Q51-80)", "Section (IV) Statistics & Data Analysis: 20 MCQs (Q81-100)"] }
         }
     },
     "AIR": {
