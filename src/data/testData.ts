@@ -106,7 +106,42 @@ export const testData: TestDataMap = {
     }
   },
   BAHRIA: {
-    options: [{ id: "bah-cbt", name: "Standard CBT (Mock Format)" }],
-    info: { time: "120 Minutes", marks: "100 MCQs", breakdown: ["Test details will be updated based on specific group selection."] }
+    options: [
+      { id: "bah-eng", name: "Engineering, CS & IT Tracks (BS CS, SE, IT, AI/DS, EE/CE)" },
+      { id: "bah-bus", name: "Business, Social Sciences & Law (BBA, A&F, Law, Psych, Media)" },
+      { id: "bah-env", name: "Earth & Environmental Sciences (Geology, Geophysics, Environmental)" }
+    ],
+    infoMap: {
+      "bah-eng": {
+        time: "120 Minutes",
+        marks: "100 Marks (100 MCQs)",
+        breakdown: [
+          "Verbal Ability (English): 30% (30 MCQs)",
+          "Mathematics (FSc/ICS level): 30% (30 MCQs)",
+          "Quantitative Reasoning: 15% (15 MCQs)",
+          "Analytical Reasoning: 15% (15 MCQs)",
+          "Physics: 10% (10 MCQs)"
+        ]
+      },
+      "bah-bus": {
+        time: "120 Minutes",
+        marks: "100 Marks (100 MCQs)",
+        breakdown: [
+          "Verbal Ability (English): 50% (50 MCQs)",
+          "Quantitative Reasoning (Basic Math): 25% (25 MCQs)",
+          "General Knowledge / Analytical: 25% (25 MCQs)"
+        ]
+      },
+      "bah-env": {
+        time: "120 Minutes",
+        marks: "100 Marks (100 MCQs)",
+        breakdown: [
+          "Verbal Ability (English): 25% (25 MCQs)",
+          "Quantitative Reasoning (Basic Math): 25% (25 MCQs)",
+          "Analytical Reasoning: 25% (25 MCQs)",
+          "Elective Science (Math/Bio/Phy/Chem)*: 25% (25 MCQs)"
+        ]
+      }
+    }
   }
 };
