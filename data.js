@@ -275,3 +275,6 @@ const questionBank = {
 };
 
 questionBank["nat-im"] = questionBank["nat-igs"];
+questionBank["nat-ics"] = questionBank["nat-ie"];
+questionBank["nat-icom"] = questionBank["nat-ie"];
+questionBank["nat-ia"] = questionBank["nat-ie"];
