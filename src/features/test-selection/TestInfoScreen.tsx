@@ -1,17 +1,22 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useParams, useNavigate, Navigate } from 'react-router-dom';
 import { testData } from '../../data/testData';
 import { questionBank } from '../../data/questionBank';
 import { UniversityKey } from '../../types/test';
+import { UserProfile } from '../../types/auth';
 import { UseTestSessionReturn } from '../../hooks/useTestSession';
+import { isTestUnlocked } from '../../constants/config';
+import { PremiumModal } from '../../components/modals/PremiumModal';
 
 interface TestInfoScreenProps {
   testSession: UseTestSessionReturn;
+  userData?: UserProfile | null;
 }
 
-export const TestInfoScreen: React.FC<TestInfoScreenProps> = React.memo(({ testSession }) => {
+export const TestInfoScreen: React.FC<TestInfoScreenProps> = React.memo(({ testSession, userData }) => {
   const { uniKey, typeId } = useParams<{ uniKey: string; typeId: string }>();
   const navigate = useNavigate();
+  const [isPremiumModalOpen, setIsPremiumModalOpen] = useState(false);
 
   const key = uniKey as UniversityKey;
   const uniData = testData[key];
@@ -28,7 +33,14 @@ export const TestInfoScreen: React.FC<TestInfoScreenProps> = React.memo(({ testS
     return <Navigate to={`/select-type/${uniKey}`} replace />;
   }
 
+  const isUnlocked = isTestUnlocked(typeId, userData?.isPremium);
+
   const handleStartTest = () => {
+    if (!isUnlocked) {
+      setIsPremiumModalOpen(true);
+      return;
+    }
+
     const questions = questionBank[typeId] || [];
     if (questions.length === 0) {
       alert('No questions found for this test category.');
@@ -59,9 +71,18 @@ export const TestInfoScreen: React.FC<TestInfoScreenProps> = React.memo(({ testS
         <div className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-indigo-400 mb-2">
           🏛️ {key} Official Pattern
         </div>
-        <h1 id="info-title" className="text-2xl sm:text-3xl font-extrabold font-display tracking-tight text-white">
+        <h1 id="info-title" className="text-2xl sm:text-3xl font-extrabold font-display tracking-tight text-white mb-2">
           {typeName}
         </h1>
+        {isUnlocked ? (
+          <span className="inline-flex items-center gap-1.5 text-xs font-bold px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+            <span>✓</span> FREE ACCESS TEST
+          </span>
+        ) : (
+          <span className="inline-flex items-center gap-1.5 text-xs font-bold px-3 py-1 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30">
+            <span>🔒</span> PREMIUM PASS REQUIRED
+          </span>
+        )}
       </div>
 
       {/* Metric Cards Grid */}
@@ -122,12 +143,26 @@ export const TestInfoScreen: React.FC<TestInfoScreenProps> = React.memo(({ testS
         </div>
       </div>
 
-      <button
-        onClick={handleStartTest}
-        className="w-full bg-gradient-to-r from-emerald-600 via-teal-500 to-indigo-600 hover:from-emerald-500 hover:to-indigo-500 text-white font-extrabold text-lg py-4 px-6 rounded-2xl shadow-glow-emerald transition-all transform hover:-translate-y-0.5 border border-emerald-400/30 flex items-center justify-center gap-3"
-      >
-        <span>⚡</span> START TEST NOW
-      </button>
+      {isUnlocked ? (
+        <button
+          onClick={handleStartTest}
+          className="w-full bg-gradient-to-r from-emerald-600 via-teal-500 to-indigo-600 hover:from-emerald-500 hover:to-indigo-500 text-white font-extrabold text-lg py-4 px-6 rounded-2xl shadow-glow-emerald transition-all transform hover:-translate-y-0.5 border border-emerald-400/30 flex items-center justify-center gap-3"
+        >
+          <span>⚡</span> START TEST NOW
+        </button>
+      ) : (
+        <button
+          onClick={() => setIsPremiumModalOpen(true)}
+          className="w-full bg-gradient-to-r from-amber-600 via-amber-500 to-orange-600 hover:from-amber-500 hover:to-orange-500 text-slate-950 font-black text-lg py-4 px-6 rounded-2xl shadow-glow-amber transition-all transform hover:-translate-y-0.5 border border-amber-400/40 flex items-center justify-center gap-3"
+        >
+          <span>👑</span> UNLOCK WITH PREMIUM PASS
+        </button>
+      )}
+
+      <PremiumModal
+        isOpen={isPremiumModalOpen}
+        onClose={() => setIsPremiumModalOpen(false)}
+      />
     </div>
   );
 });

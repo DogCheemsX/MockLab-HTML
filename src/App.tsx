@@ -71,7 +71,7 @@ export const App: React.FC = () => {
               />
               <Route
                 path="/test-info/:uniKey/:typeId"
-                element={<TestInfoScreen testSession={testSession} />}
+                element={<TestInfoScreen testSession={testSession} userData={userData} />}
               />
               <Route
                 path="/test-runner"

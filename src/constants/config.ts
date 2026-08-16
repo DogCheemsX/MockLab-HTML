@@ -16,3 +16,10 @@ export const PAYMENT_INFO = {
   bankName: import.meta.env.VITE_PAYMENT_BANK_NAME || "Bank NayaPay",
   whatsappUrl: import.meta.env.VITE_PAYMENT_WHATSAPP_URL || "https://wa.me/923465939277"
 };
+
+export const FREE_TEST_ID = 'nat-ics';
+
+export const isTestUnlocked = (typeId: string, isPremium?: boolean): boolean => {
+  if (isPremium) return true;
+  return typeId === FREE_TEST_ID;
+};
