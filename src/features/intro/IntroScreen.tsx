@@ -37,7 +37,7 @@ export const IntroScreen: React.FC<IntroScreenProps> = React.memo(({ user, userD
       </h1>
 
       <p className="text-base sm:text-lg text-slate-300 mb-8 max-w-lg font-normal leading-relaxed">
-        Timed exam simulations, instant score reports, and category-wise practice tailored for <strong className="text-indigo-300 font-semibold">NTS NAT, PIEAS, Air University</strong>, and <strong className="text-indigo-300 font-semibold">Bahria</strong>.
+        Timed exam simulations, instant score reports, and category-wise practice tailored for <strong className="text-indigo-300 font-semibold">NTS NAT, PIEAS, CUST, Air University</strong>, and <strong className="text-indigo-300 font-semibold">Bahria</strong>.
       </p>
 
       {/* Account Status Pill */}
@@ -71,18 +71,15 @@ export const IntroScreen: React.FC<IntroScreenProps> = React.memo(({ user, userD
       </div>
 
       {/* Feature Highlights Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 w-full mb-8 text-left">
-        <div className="glass-card p-4 rounded-xl">
-          <div className="text-indigo-400 text-lg mb-1">⏱️ Real-Time Timer</div>
-          <p className="text-xs text-slate-400 font-medium">Simulates official exam timing and countdown stress.</p>
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 w-full mb-8 text-center">
+        <div className="glass-card p-4 rounded-xl flex items-center justify-center">
+          <div className="text-indigo-400 font-semibold">⏱️ Real-Time Timer</div>
         </div>
-        <div className="glass-card p-4 rounded-xl">
-          <div className="text-emerald-400 text-lg mb-1">📊 Instant Scoring</div>
-          <p className="text-xs text-slate-400 font-medium">Immediate feedback and subject score breakdown.</p>
+        <div className="glass-card p-4 rounded-xl flex items-center justify-center">
+          <div className="text-emerald-400 font-semibold">📊 Instant Scoring</div>
         </div>
-        <div className="glass-card p-4 rounded-xl">
-          <div className="text-amber-400 text-lg mb-1">🎯 Curated MCQs</div>
-          <p className="text-xs text-slate-400 font-medium">Handpicked questions by past paper patterns.</p>
+        <div className="glass-card p-4 rounded-xl flex items-center justify-center">
+          <div className="text-amber-400 font-semibold">🎯 Curated MCQs</div>
         </div>
       </div>
 

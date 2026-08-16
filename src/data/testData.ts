@@ -143,5 +143,42 @@ export const testData: TestDataMap = {
         ]
       }
     }
+  },
+  CUST: {
+    options: [
+      { id: "cust-comp", name: "Computing & General Track" },
+      { id: "cust-eng", name: "Engineering Programs" },
+      { id: "cust-bus", name: "Business & Social Sciences" }
+    ],
+    infoMap: {
+      "cust-comp": {
+        time: "90 Minutes",
+        marks: "60 Marks (60 MCQs)",
+        breakdown: [
+          "Quantitative Aptitude: 33.3% (20 MCQs)",
+          "English / Verbal Ability: 33.3% (20 MCQs)",
+          "General Knowledge: 33.3% (20 MCQs)"
+        ]
+      },
+      "cust-eng": {
+        time: "90 Minutes",
+        marks: "60 Marks (60 MCQs)",
+        breakdown: [
+          "Mathematics: 42% (25 MCQs)",
+          "Physics: 33% (20 MCQs)",
+          "English: 17% (10 MCQs)",
+          "Reading Comprehension: 8% (5 MCQs)"
+        ]
+      },
+      "cust-bus": {
+        time: "90 Minutes",
+        marks: "55 Marks (55 MCQs)",
+        breakdown: [
+          "Quantitative Reasoning: 50% (30 MCQs)",
+          "English Aptitude: 25% (15 MCQs)",
+          "General Knowledge: 17% (10 MCQs)"
+        ]
+      }
+    }
   }
 };

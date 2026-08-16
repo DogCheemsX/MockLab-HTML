@@ -150,16 +150,16 @@ export const QuestionCard: React.FC<QuestionCardProps> = React.memo(
                 <div
                   key={idx}
                   onClick={() => onSelectOption(idx)}
-                  className={`flex items-center gap-4 p-4 rounded-xl border-2 cursor-pointer transition-all ${
+                  className={`flex items-center gap-4 p-4 rounded-xl border-2 cursor-pointer transition-all duration-200 ease-out active:scale-[0.99] ${
                     isSelected
                       ? 'border-indigo-500 bg-indigo-950/40 shadow-glow-indigo'
                       : 'border-slate-800 bg-slate-900/60 hover:bg-slate-850 hover:border-slate-700'
                   }`}
                 >
                   <div
-                    className={`w-9 h-9 rounded-xl flex items-center justify-center font-bold text-sm shrink-0 transition-all ${
+                    className={`w-9 h-9 rounded-xl flex items-center justify-center font-bold text-sm shrink-0 transition-all duration-200 ease-out ${
                       isSelected
-                        ? 'bg-indigo-600 text-white shadow-md'
+                        ? 'bg-indigo-600 text-white shadow-md scale-105'
                         : 'bg-slate-800 text-slate-300 border border-slate-700'
                     }`}
                   >

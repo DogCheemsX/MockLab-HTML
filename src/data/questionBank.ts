@@ -963,5 +963,8 @@ questionBank["nat-igs"] = questionBank["nat-ics"];
 questionBank["bah-eng"] = questionBank["nat-ie"];
 questionBank["bah-bus"] = questionBank["nat-ia"];
 questionBank["bah-env"] = questionBank["nat-igs"];
+questionBank["cust-comp"] = [];
+questionBank["cust-eng"] = [];
+questionBank["cust-bus"] = [];
 
 

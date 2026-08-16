@@ -10,8 +10,8 @@ export const PremiumModal: React.FC<PremiumModalProps> = React.memo(({ isOpen, o
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-slate-950/85 backdrop-blur-md z-50 flex flex-col items-center justify-center p-4">
-      <div className="glass-panel rounded-3xl p-6 sm:p-8 w-full max-w-md shadow-2xl border border-indigo-500/40 relative overflow-hidden">
+    <div className="fixed inset-0 bg-slate-950/85 backdrop-blur-md z-50 flex flex-col items-center justify-center p-4 animate-backdrop-enter">
+      <div className="glass-panel rounded-3xl p-6 sm:p-8 w-full max-w-md shadow-2xl border border-indigo-500/40 relative overflow-hidden animate-modal-enter">
         <button
           onClick={onClose}
           className="absolute top-4 right-4 text-slate-400 hover:text-white font-bold text-sm bg-slate-800 hover:bg-slate-700 w-8 h-8 rounded-full flex items-center justify-center border border-slate-700 transition-colors"

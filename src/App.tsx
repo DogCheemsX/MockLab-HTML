@@ -1,5 +1,5 @@
 import React, { useCallback, lazy, Suspense } from 'react';
-import { Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { signOut } from 'firebase/auth';
 import { auth } from './services/firebase';
 import { useAuth } from './hooks/useAuth';
@@ -25,6 +25,7 @@ const AdminScreen = lazy(() => import('./features/admin/AdminScreen'));
 export const App: React.FC = () => {
   const { user, userData, loading: authLoading } = useAuth();
   const testSession = useTestSession();
+  const location = useLocation();
 
   const handleLogout = useCallback(() => {
     signOut(auth);
@@ -41,7 +42,7 @@ export const App: React.FC = () => {
   if (!user) {
     return (
       <ErrorBoundary>
-        <div className="w-full min-h-screen flex flex-col items-center justify-center p-4 sm:p-6">
+        <div className="w-full min-h-screen flex flex-col items-center justify-center p-4 sm:p-6 animate-page-enter">
           <AuthScreen />
         </div>
       </ErrorBoundary>
@@ -54,45 +55,47 @@ export const App: React.FC = () => {
     <ErrorBoundary>
       <div className="w-full min-h-screen flex flex-col items-center justify-between p-4 sm:p-6 lg:p-8">
         <main className="w-full max-w-5xl flex flex-col items-center justify-center flex-1 py-4 sm:py-6">
-          <Routes>
-            <Route
-              path="/"
-              element={<IntroScreen user={user} userData={userData} onLogout={handleLogout} />}
-            />
-            <Route
-              path="/select-university"
-              element={<SelectUniversityScreen />}
-            />
-            <Route
-              path="/select-type/:uniKey"
-              element={<SelectTypeScreen userData={userData} />}
-            />
-            <Route
-              path="/test-info/:uniKey/:typeId"
-              element={<TestInfoScreen testSession={testSession} />}
-            />
-            <Route
-              path="/test-runner"
-              element={<ActiveTestScreen testSession={testSession} />}
-            />
-            <Route
-              path="/results"
-              element={<TestResultScreen testSession={testSession} />}
-            />
-            <Route
-              path="/admin"
-              element={
-                isAdmin ? (
-                  <Suspense fallback={<LoadingSpinner />}>
-                    <AdminScreen />
-                  </Suspense>
-                ) : (
-                  <Navigate to="/" replace />
-                )
-              }
-            />
-            <Route path="*" element={<Navigate to="/" replace />} />
-          </Routes>
+          <div key={location.pathname} className="w-full flex flex-col items-center animate-page-enter">
+            <Routes location={location}>
+              <Route
+                path="/"
+                element={<IntroScreen user={user} userData={userData} onLogout={handleLogout} />}
+              />
+              <Route
+                path="/select-university"
+                element={<SelectUniversityScreen />}
+              />
+              <Route
+                path="/select-type/:uniKey"
+                element={<SelectTypeScreen userData={userData} />}
+              />
+              <Route
+                path="/test-info/:uniKey/:typeId"
+                element={<TestInfoScreen testSession={testSession} />}
+              />
+              <Route
+                path="/test-runner"
+                element={<ActiveTestScreen testSession={testSession} />}
+              />
+              <Route
+                path="/results"
+                element={<TestResultScreen testSession={testSession} />}
+              />
+              <Route
+                path="/admin"
+                element={
+                  isAdmin ? (
+                    <Suspense fallback={<LoadingSpinner />}>
+                      <AdminScreen />
+                    </Suspense>
+                  ) : (
+                    <Navigate to="/" replace />
+                  )
+                }
+              />
+              <Route path="*" element={<Navigate to="/" replace />} />
+            </Routes>
+          </div>
         </main>
         
         <footer className="w-full text-center py-4 text-xs text-slate-500 font-medium border-t border-slate-800/60 mt-8">

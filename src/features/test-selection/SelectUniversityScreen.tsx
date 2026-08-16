@@ -13,6 +13,14 @@ interface UniversityOption {
 
 const UNIVERSITIES: UniversityOption[] = [
   {
+    key: 'NTS',
+    name: 'NTS National Aptitude Test',
+    badge: 'NTS',
+    tag: 'NAT-I Standard',
+    desc: 'General NTS NAT prep for all affiliated institutes',
+    color: 'from-amber-600 to-orange-600',
+  },
+  {
     key: 'COMSATS',
     name: 'COMSATS Admission Test',
     badge: 'CU',
@@ -45,12 +53,12 @@ const UNIVERSITIES: UniversityOption[] = [
     color: 'from-emerald-600 to-teal-600',
   },
   {
-    key: 'NTS',
-    name: 'NTS National Aptitude Test',
-    badge: 'NTS',
-    tag: 'NAT-I Standard',
-    desc: 'General NTS NAT prep for all affiliated institutes',
-    color: 'from-amber-600 to-orange-600',
+    key: 'CUST',
+    name: 'CUST Admission Test',
+    badge: 'CUST',
+    tag: 'UG Entry Test',
+    desc: 'Computing, Engineering & Business streams',
+    color: 'from-fuchsia-600 to-violet-600',
   },
 ];
 
@@ -97,7 +105,7 @@ export const SelectUniversityScreen: React.FC = React.memo(() => {
                 {u.badge}
               </div>
               <div>
-                <div className="flex items-center gap-2 mb-1">
+                <div className="flex items-center gap-2">
                   <h3 className="font-bold text-white text-base sm:text-lg group-hover:text-indigo-300 transition-colors">
                     {u.name}
                   </h3>
@@ -105,9 +113,6 @@ export const SelectUniversityScreen: React.FC = React.memo(() => {
                     {u.tag}
                   </span>
                 </div>
-                <p className="text-xs text-slate-400 font-normal">
-                  {u.desc}
-                </p>
               </div>
             </div>
             <div className="w-8 h-8 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center text-slate-400 group-hover:text-white group-hover:bg-indigo-600 group-hover:border-indigo-500 transition-all shrink-0 ml-2">

@@ -83,9 +83,6 @@ export const SelectTypeScreen: React.FC<SelectTypeScreenProps> = React.memo(({ u
                       </span>
                     )}
                   </div>
-                  <p className="text-xs text-slate-400 mt-0.5">
-                    {isLocked ? 'Click to view unlock details & access test' : 'Full exam paper structure and duration'}
-                  </p>
                 </div>
               </div>
 

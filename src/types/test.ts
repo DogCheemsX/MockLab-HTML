@@ -1,4 +1,4 @@
-export type UniversityKey = 'COMSATS' | 'NTS' | 'PIEAS' | 'AIR' | 'BAHRIA';
+export type UniversityKey = 'COMSATS' | 'NTS' | 'PIEAS' | 'AIR' | 'BAHRIA' | 'CUST';
 
 export interface TestOption {
   id: string;
