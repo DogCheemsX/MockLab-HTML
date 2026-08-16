@@ -72,9 +72,10 @@ export const PremiumModal: React.FC<PremiumModalProps> = React.memo(({ isOpen, o
           href={PAYMENT_INFO.whatsappUrl}
           target="_blank"
           rel="noreferrer"
-          className="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-sm py-3.5 px-4 rounded-xl shadow-glow-emerald transition-all flex items-center justify-center gap-2 border border-emerald-400/30 text-center"
+          className="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-sm py-3.5 px-4 rounded-xl shadow-glow-emerald transition-all flex items-center justify-center gap-2.5 border border-emerald-400/30 text-center"
         >
-          <span>💬</span> Contact Admin on WhatsApp
+          <img src="whatsapp.png" alt="WhatsApp" className="w-5 h-5 object-contain shrink-0" />
+          <span>Contact Admin on WhatsApp</span>
         </a>
       </div>
     </div>

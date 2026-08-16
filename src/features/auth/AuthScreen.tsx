@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../../services/firebase';
 import { createUserProfile } from '../../services/userService';
@@ -8,6 +9,7 @@ import { SignUpForm } from '../../components/auth/SignUpForm';
 import { AuthMode } from '../../types/auth';
 
 export const AuthScreen: React.FC = () => {
+  const navigate = useNavigate();
   const [mode, setMode] = useState<AuthMode>('login');
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -89,6 +91,36 @@ export const AuthScreen: React.FC = () => {
             loading={loading}
           />
         )}
+      </div>
+
+      {/* No Sign-Up Required: UniPath Matcher Feature Card */}
+      <div className="w-full mt-5">
+        <button
+          onClick={() => navigate('/unipath')}
+          className="w-full glass-card glass-card-hover rounded-2xl p-4 text-left flex items-center justify-between group border border-emerald-500/30 bg-emerald-950/20 shadow-lg transition-all"
+        >
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 flex items-center justify-center font-bold text-lg shrink-0">
+              🎯
+            </div>
+            <div>
+              <div className="flex items-center gap-2">
+                <h3 className="font-extrabold text-white text-sm group-hover:text-emerald-300 transition-colors">
+                  UniPath Matcher 2.0
+                </h3>
+                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+                  NO SIGN-UP REQUIRED
+                </span>
+              </div>
+              <p className="text-[11px] text-slate-300">
+                Check university & program eligibility instantly with your marks!
+              </p>
+            </div>
+          </div>
+          <div className="w-7 h-7 rounded-full bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center text-emerald-300 group-hover:bg-emerald-500 group-hover:text-slate-950 transition-all shrink-0 ml-2 font-bold text-xs">
+            →
+          </div>
+        </button>
       </div>
     </div>
   );

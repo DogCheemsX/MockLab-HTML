@@ -100,6 +100,16 @@ export const IntroScreen: React.FC<IntroScreenProps> = React.memo(({ user, userD
         >
           <span>🚀</span> Enter Portal
         </button>
+
+        <a
+          href="https://wa.me/923465939277?text=Hi%20MockLab!%20I%20have%20a%20question%20about%20the%20entry%20test%20prep."
+          target="_blank"
+          rel="noreferrer"
+          className="w-full bg-gradient-to-r from-emerald-600/20 via-emerald-500/20 to-teal-600/20 hover:from-emerald-600/30 hover:to-teal-600/30 text-emerald-300 font-extrabold text-sm py-3.5 px-5 rounded-xl border border-emerald-500/40 shadow-lg transition-all transform hover:-translate-y-0.5 active:translate-y-0 flex items-center justify-center gap-2.5"
+        >
+          <img src="whatsapp.png" alt="WhatsApp" className="w-5 h-5 object-contain shrink-0" />
+          <span>Have any doubts? Message us on WhatsApp!</span>
+        </a>
       </div>
     </div>
   );

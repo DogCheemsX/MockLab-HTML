@@ -81,12 +81,20 @@ export const SelectUniversityScreen: React.FC = React.memo(() => {
     <div id="screen-home" className="w-full max-w-xl flex flex-col items-center">
       {/* Top Header & Breadcrumb */}
       <div className="w-full flex items-center justify-between mb-6">
-        <button
-          onClick={() => navigate('/')}
-          className="inline-flex items-center gap-2 text-xs font-bold text-slate-400 hover:text-white transition-colors bg-slate-800/80 px-3 py-1.5 rounded-lg border border-slate-700/60"
-        >
-          <span>←</span> Back to Dashboard
-        </button>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={() => navigate('/')}
+            className="inline-flex items-center gap-2 text-xs font-bold text-slate-400 hover:text-white transition-colors bg-slate-800/80 px-3 py-1.5 rounded-lg border border-slate-700/60"
+          >
+            <span>←</span> Dashboard
+          </button>
+          <button
+            onClick={() => navigate('/unipath')}
+            className="inline-flex items-center gap-1.5 text-xs font-bold text-emerald-300 hover:text-white transition-colors bg-emerald-500/10 px-3 py-1.5 rounded-lg border border-emerald-500/30"
+          >
+            <span>🎯</span> UniPath Matcher
+          </button>
+        </div>
         <span className="text-xs font-semibold text-indigo-400 bg-indigo-500/10 px-3 py-1 rounded-full border border-indigo-500/20">
           Step 1 of 3
         </span>
@@ -188,9 +196,10 @@ export const SelectUniversityScreen: React.FC = React.memo(() => {
             href={PAYMENT_INFO.whatsappUrl}
             target="_blank"
             rel="noreferrer"
-            className="w-full max-w-md bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-sm sm:text-base py-3.5 px-6 rounded-xl shadow-glow-emerald transition-all transform hover:-translate-y-0.5 active:translate-y-0 flex items-center justify-center gap-2 border border-emerald-400/30 text-center"
+            className="w-full max-w-md bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-sm sm:text-base py-3.5 px-6 rounded-xl shadow-glow-emerald transition-all transform hover:-translate-y-0.5 active:translate-y-0 flex items-center justify-center gap-2.5 border border-emerald-400/30 text-center"
           >
-            <span>💬</span> Contact Admin on WhatsApp
+            <img src="whatsapp.png" alt="WhatsApp" className="w-5 h-5 object-contain shrink-0" />
+            <span>Contact Admin on WhatsApp</span>
           </a>
         </div>
       </div>
