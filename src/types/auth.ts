@@ -10,4 +10,4 @@ export interface AdminUserRecord extends UserProfile {
   uid: string;
 }
 
-export type AuthMode = 'login' | 'signup';
+export type AuthMode = 'login' | 'signup' | 'forgot';

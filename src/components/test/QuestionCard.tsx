@@ -135,42 +135,45 @@ export const QuestionCard: React.FC<QuestionCardProps> = React.memo(
             </button>
           </div>
 
-          {/* Question Text */}
-          <div className="text-lg sm:text-xl md:text-2xl font-bold mb-8 text-white leading-relaxed">
-            <MathText text={question.q} />
-          </div>
+          {/* Animated Question Body */}
+          <div key={questionIndex} className="animate-page-enter">
+            {/* Question Text */}
+            <div className="text-lg sm:text-xl md:text-2xl font-bold mb-8 text-white leading-relaxed">
+              <MathText text={question.q} />
+            </div>
 
-          {/* Option Cards */}
-          <div className="space-y-3 mb-8">
-            {question.options.map((opt, idx) => {
-              const isSelected = selectedOption === idx;
-              const letter = OPTION_LETTERS[idx] || (idx + 1).toString();
+            {/* Option Cards */}
+            <div className="space-y-3 mb-8">
+              {question.options.map((opt, idx) => {
+                const isSelected = selectedOption === idx;
+                const letter = OPTION_LETTERS[idx] || (idx + 1).toString();
 
-              return (
-                <div
-                  key={idx}
-                  onClick={() => onSelectOption(idx)}
-                  className={`flex items-center gap-4 p-4 rounded-xl border-2 cursor-pointer transition-all duration-200 ease-out active:scale-[0.99] ${
-                    isSelected
-                      ? 'border-indigo-500 bg-indigo-950/40 shadow-glow-indigo'
-                      : 'border-slate-800 bg-slate-900/60 hover:bg-slate-850 hover:border-slate-700'
-                  }`}
-                >
+                return (
                   <div
-                    className={`w-9 h-9 rounded-xl flex items-center justify-center font-bold text-sm shrink-0 transition-all duration-200 ease-out ${
+                    key={idx}
+                    onClick={() => onSelectOption(idx)}
+                    className={`flex items-center gap-4 p-4 rounded-xl border-2 cursor-pointer transition-all duration-350 ease-soothing active:scale-[0.99] ${
                       isSelected
-                        ? 'bg-indigo-600 text-white shadow-md scale-105'
-                        : 'bg-slate-800 text-slate-300 border border-slate-700'
+                        ? 'border-indigo-500 bg-indigo-950/50 shadow-glow-indigo'
+                        : 'border-slate-800 bg-slate-900/60 hover:bg-slate-850 hover:border-slate-700'
                     }`}
                   >
-                    {letter}
+                    <div
+                      className={`w-9 h-9 rounded-xl flex items-center justify-center font-bold text-sm shrink-0 transition-all duration-350 ease-soothing ${
+                        isSelected
+                          ? 'bg-indigo-600 text-white shadow-md scale-105'
+                          : 'bg-slate-800 text-slate-300 border border-slate-700'
+                      }`}
+                    >
+                      {letter}
+                    </div>
+                    <span className={`text-base font-medium transition-colors duration-300 ${isSelected ? 'text-white font-semibold' : 'text-slate-200'}`}>
+                      <MathText text={opt} inline />
+                    </span>
                   </div>
-                  <span className={`text-base font-medium transition-colors ${isSelected ? 'text-white font-semibold' : 'text-slate-200'}`}>
-                    <MathText text={opt} inline />
-                  </span>
-                </div>
-              );
-            })}
+                );
+              })}
+            </div>
           </div>
         </div>
 

@@ -585,15 +585,15 @@ export const UniPathMatcherScreen: React.FC<UniPathMatcherScreenProps> = React.m
                           </span>
                         )}
 
-                        <span className="w-7 h-7 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center text-slate-400 font-bold text-xs transition-transform duration-300">
-                          {isExpanded ? '▲' : '▼'}
+                        <span className={`w-7 h-7 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center text-slate-400 font-bold text-xs transition-transform duration-400 ease-soothing ${isExpanded ? 'rotate-180 text-white bg-slate-700' : 'rotate-0'}`}>
+                          ▼
                         </span>
                       </div>
                     </div>
 
                     {/* Smooth Expandable Body */}
                     <div
-                      className={`overflow-hidden transition-all duration-300 ease-in-out ${
+                      className={`overflow-hidden transition-all duration-400 ease-soothing ${
                         isExpanded ? 'max-h-96 opacity-100 mt-4 pt-4 border-t border-slate-800/80' : 'max-h-0 opacity-0 mt-0 pt-0'
                       }`}
                     >

@@ -1,39 +1,89 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth';
+import {
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+  sendPasswordResetEmail
+} from 'firebase/auth';
 import { auth } from '../../services/firebase';
 import { createUserProfile } from '../../services/userService';
 import { Header } from '../../components/common/Header';
 import { LoginForm } from '../../components/auth/LoginForm';
 import { SignUpForm } from '../../components/auth/SignUpForm';
+import { ForgotPasswordForm } from '../../components/auth/ForgotPasswordForm';
 import { AuthMode } from '../../types/auth';
+import { formatAuthError } from '../../utils/authErrors';
 
 export const AuthScreen: React.FC = () => {
   const navigate = useNavigate();
   const [mode, setMode] = useState<AuthMode>('login');
   const [loading, setLoading] = useState<boolean>(false);
+  const [authError, setAuthError] = useState<string | null>(null);
+  const [typedEmail, setTypedEmail] = useState<string>('');
 
-  const handleLogin = async (email: string, pass: string) => {
+  const clearAuthError = () => {
+    if (authError) setAuthError(null);
+  };
+
+  const handleSwitchMode = (newMode: AuthMode) => {
+    setAuthError(null);
+    setMode(newMode);
+  };
+
+  const handleLogin = async (email: string, pass: string): Promise<boolean> => {
     setLoading(true);
+    setAuthError(null);
     try {
       await signInWithEmailAndPassword(auth, email, pass);
+      return true;
     } catch (error: any) {
-      alert('Login Error: ' + error.message);
+      const friendlyMsg = formatAuthError(error);
+      setAuthError(friendlyMsg);
+      return false;
     } finally {
       setLoading(false);
     }
   };
 
-  const handleSignUp = async (name: string, email: string, whatsapp: string, pass: string) => {
+  const handleSignUp = async (
+    name: string,
+    email: string,
+    whatsapp: string,
+    pass: string
+  ): Promise<boolean> => {
     setLoading(true);
+    setAuthError(null);
     try {
       const userCred = await createUserWithEmailAndPassword(auth, email, pass);
       await createUserProfile(userCred.user.uid, { name, email, whatsapp });
+      return true;
     } catch (error: any) {
-      alert('Registration Error: ' + error.message);
+      const friendlyMsg = formatAuthError(error);
+      setAuthError(friendlyMsg);
+      return false;
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleSendResetEmail = async (email: string): Promise<boolean> => {
+    setLoading(true);
+    setAuthError(null);
+    try {
+      await sendPasswordResetEmail(auth, email);
+      return true;
+    } catch (error: any) {
+      const friendlyMsg = formatAuthError(error);
+      setAuthError(friendlyMsg);
+      return false;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleForgotPasswordClick = (currentEmail?: string) => {
+    if (currentEmail) setTypedEmail(currentEmail);
+    handleSwitchMode('forgot');
   };
 
   return (
@@ -46,8 +96,8 @@ export const AuthScreen: React.FC = () => {
         {/* Tab switcher */}
         <div className="flex bg-slate-900/80 p-1.5 rounded-xl border border-slate-800 mb-8">
           <button
-            onClick={() => setMode('login')}
-            className={`flex-1 py-2.5 rounded-lg text-sm font-bold transition-all ${
+            onClick={() => handleSwitchMode('login')}
+            className={`flex-1 py-2.5 rounded-lg text-sm font-bold transition-all duration-350 ease-soothing ${
               mode === 'login'
                 ? 'bg-indigo-600 text-white shadow-md'
                 : 'text-slate-400 hover:text-white'
@@ -56,8 +106,8 @@ export const AuthScreen: React.FC = () => {
             Log In
           </button>
           <button
-            onClick={() => setMode('signup')}
-            className={`flex-1 py-2.5 rounded-lg text-sm font-bold transition-all ${
+            onClick={() => handleSwitchMode('signup')}
+            className={`flex-1 py-2.5 rounded-lg text-sm font-bold transition-all duration-350 ease-soothing ${
               mode === 'signup'
                 ? 'bg-indigo-600 text-white shadow-md'
                 : 'text-slate-400 hover:text-white'
@@ -67,30 +117,56 @@ export const AuthScreen: React.FC = () => {
           </button>
         </div>
 
-        <div className="mb-6 text-center">
-          <h1 className="text-2xl font-extrabold text-white tracking-tight">
-            {mode === 'login' ? 'Welcome Back Student' : 'Join MockLab Portal'}
-          </h1>
-          <p className="text-xs text-slate-400 mt-1">
-            {mode === 'login'
-              ? 'Enter your credentials to access test series'
-              : 'Sign up to start practicing NTS NAT & University MCQs'}
-          </p>
-        </div>
+        <div key={mode} className="animate-page-enter">
+          <div className="mb-6 text-center">
+            <h1 className="text-2xl font-extrabold text-white tracking-tight">
+              {mode === 'login'
+                ? 'Welcome Back Student'
+                : mode === 'signup'
+                ? 'Join MockLab Portal'
+                : 'Reset Your Password'}
+            </h1>
+            <p className="text-xs text-slate-400 mt-1">
+              {mode === 'login'
+                ? 'Enter your credentials to access test series'
+                : mode === 'signup'
+                ? 'Sign up to start practicing NTS NAT & University MCQs'
+                : 'Enter your email address to receive an automated password reset link'}
+            </p>
+          </div>
 
-        {mode === 'login' ? (
-          <LoginForm
-            onLogin={handleLogin}
-            onSwitchToSignUp={() => setMode('signup')}
-            loading={loading}
-          />
-        ) : (
-          <SignUpForm
-            onSignUp={handleSignUp}
-            onSwitchToLogin={() => setMode('login')}
-            loading={loading}
-          />
-        )}
+          {mode === 'login' && (
+            <LoginForm
+              onLogin={handleLogin}
+              onSwitchToSignUp={() => handleSwitchMode('signup')}
+              onForgotPassword={handleForgotPasswordClick}
+              loading={loading}
+              externalError={authError}
+              onClearError={clearAuthError}
+            />
+          )}
+
+          {mode === 'signup' && (
+            <SignUpForm
+              onSignUp={handleSignUp}
+              onSwitchToLogin={() => handleSwitchMode('login')}
+              loading={loading}
+              externalError={authError}
+              onClearError={clearAuthError}
+            />
+          )}
+
+          {mode === 'forgot' && (
+            <ForgotPasswordForm
+              initialEmail={typedEmail}
+              onSendReset={handleSendResetEmail}
+              onBackToLogin={() => handleSwitchMode('login')}
+              loading={loading}
+              externalError={authError}
+              onClearError={clearAuthError}
+            />
+          )}
+        </div>
       </div>
 
       {/* No Sign-Up Required: UniPath Matcher Feature Card */}
@@ -125,4 +201,3 @@ export const AuthScreen: React.FC = () => {
     </div>
   );
 };
-

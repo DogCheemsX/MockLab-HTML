@@ -59,7 +59,7 @@ export const TestResultScreen: React.FC<TestResultScreenProps> = React.memo(({ t
               d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
             />
             <path
-              className="text-emerald-400 transition-all duration-1000 ease-out"
+              className="text-emerald-400 transition-all duration-1200 ease-soothing"
               strokeDasharray={`${percentage}, 100`}
               strokeWidth="3.5"
               strokeLinecap="round"
