@@ -57,7 +57,9 @@ const testData = {
     "BAHRIA": {
         options: [
             { id: "bah-eng", name: "Engineering, CS & IT Tracks (BS CS, SE, IT, AI/DS, EE/CE)" },
-            { id: "bah-bus", name: "Business, Social Sciences & Law (BBA, A&F, Law, Psych, Media)" },
+            { id: "bah-bus", name: "Business, Humanities & Social Sciences (BBA, A&F, Psych, Media)" },
+            { id: "bah-law", name: "Law & Legal Studies Track (LLB 5-Year + LAT)" },
+            { id: "bah-med", name: "Medicine & Allied Health (MBBS, BDS, DPT, Nursing)" },
             { id: "bah-env", name: "Earth & Environmental Sciences (Geology, Geophysics, Environmental)" }
         ],
         infoMap: {
@@ -79,6 +81,25 @@ const testData = {
                     "Verbal Ability (English): 50% (50 MCQs)",
                     "Quantitative Reasoning (Basic Math): 25% (25 MCQs)",
                     "General Knowledge / Analytical: 25% (25 MCQs)"
+                ]
+            },
+            "bah-law": {
+                time: "120 Minutes",
+                marks: "100 Marks (100 MCQs)",
+                breakdown: [
+                    "English Verbal Ability: 40% (40 MCQs)",
+                    "General Knowledge & Current Affairs: 30% (30 MCQs)",
+                    "Analytical Reasoning & IQ: 30% (30 MCQs)"
+                ]
+            },
+            "bah-med": {
+                time: "120 Minutes",
+                marks: "100 Marks (100 MCQs)",
+                breakdown: [
+                    "Biology / Life Sciences: 40% (40 MCQs)",
+                    "Chemistry: 25% (25 MCQs)",
+                    "Physics: 20% (20 MCQs)",
+                    "English Verbal: 15% (15 MCQs)"
                 ]
             },
             "bah-env": {

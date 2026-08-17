@@ -21,6 +21,16 @@
       radial-gradient(at 50% 50%, rgba(139, 92, 246, 0.06) 0px, transparent 50%);
     background-attachment: fixed;
     overflow-x: hidden;
+    transition: background-color 0.4s ease, color 0.4s ease;
+  }
+
+  html.light body {
+    background-color: #f8fafc;
+    background-image: 
+      radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.1) 0px, transparent 50%),
+      radial-gradient(at 100% 100%, rgba(16, 185, 129, 0.08) 0px, transparent 50%),
+      radial-gradient(at 50% 50%, rgba(139, 92, 246, 0.06) 0px, transparent 50%);
+    color: #0f172a;
   }
 }
 
@@ -34,14 +44,26 @@
   background: #0b0f19;
 }
 
+html.light ::-webkit-scrollbar-track {
+  background: #f8fafc;
+}
+
 ::-webkit-scrollbar-thumb {
   background: #1f2b45;
   border-radius: 9999px;
   transition: background 0.2s ease;
 }
 
+html.light ::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+}
+
 ::-webkit-scrollbar-thumb:hover {
   background: #2d3d60;
+}
+
+html.light ::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
 }
 
 /* Glassmorphism helpers */
@@ -50,7 +72,13 @@
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border: 1px solid rgba(255, 255, 255, 0.08);
-  transition: border-color 0.4s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: border-color 0.4s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.4s cubic-bezier(0.22, 1, 0.36, 1), background-color 0.4s ease;
+}
+
+html.light .glass-panel {
+  background: rgba(255, 255, 255, 0.92) !important;
+  border: 1px solid rgba(203, 213, 225, 0.8) !important;
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.08) !important;
 }
 
 .glass-card {
@@ -58,6 +86,13 @@
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border: 1px solid rgba(255, 255, 255, 0.07);
+  transition: background-color 0.38s ease, border-color 0.38s ease;
+}
+
+html.light .glass-card {
+  background: rgba(255, 255, 255, 0.95) !important;
+  border: 1px solid rgba(203, 213, 225, 0.7) !important;
+  box-shadow: 0 4px 16px -4px rgba(0, 0, 0, 0.06) !important;
 }
 
 .glass-card-hover {
@@ -76,9 +111,72 @@
   box-shadow: 0 16px 32px -12px rgba(0, 0, 0, 0.45), 0 0 24px -4px rgba(99, 102, 241, 0.25);
 }
 
+html.light .glass-card-hover:hover {
+  background: rgba(248, 250, 252, 1) !important;
+  border-color: rgba(99, 102, 241, 0.4) !important;
+  box-shadow: 0 12px 28px -10px rgba(99, 102, 241, 0.15) !important;
+}
+
 .glass-card-hover:active {
   transform: translateY(0) scale(0.99);
   box-shadow: 0 4px 12px -4px rgba(0, 0, 0, 0.4);
+}
+
+/* Light Mode Comprehensive Typography & Input Overrides */
+html.light .text-white {
+  color: #0f172a !important;
+}
+
+html.light .text-slate-200 {
+  color: #1e293b !important;
+}
+
+html.light .text-slate-300 {
+  color: #334155 !important;
+}
+
+html.light .text-slate-400 {
+  color: #475569 !important;
+}
+
+html.light .text-slate-500 {
+  color: #64748b !important;
+}
+
+html.light .bg-slate-950,
+html.light .bg-slate-900,
+html.light .bg-slate-900\/90,
+html.light .bg-slate-900\/80,
+html.light .bg-slate-900\/60,
+html.light .bg-slate-950\/80 {
+  background-color: rgba(241, 245, 249, 0.95) !important;
+  color: #0f172a !important;
+}
+
+html.light input,
+html.light select,
+html.light textarea {
+  background-color: #ffffff !important;
+  color: #0f172a !important;
+  border-color: #cbd5e1 !important;
+}
+
+html.light select option {
+  background-color: #ffffff !important;
+  color: #0f172a !important;
+}
+
+html.light .border-slate-800,
+html.light .border-slate-700,
+html.light .border-slate-700\/80,
+html.light .border-slate-700\/60 {
+  border-color: #cbd5e1 !important;
+}
+
+html.light .bg-slate-800,
+html.light .bg-slate-800\/80 {
+  background-color: #e2e8f0 !important;
+  color: #0f172a !important;
 }
 
 /* Page and Modal Soothing Entrance Keyframes */
@@ -119,6 +217,30 @@
   }
 }
 
+@keyframes modalBackdropOut {
+  0% {
+    opacity: 1;
+    backdrop-filter: blur(12px);
+  }
+  100% {
+    opacity: 0;
+    backdrop-filter: blur(0px);
+  }
+}
+
+@keyframes modalContentOut {
+  0% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+    filter: blur(0px);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.96) translateY(12px);
+    filter: blur(4px);
+  }
+}
+
 .animate-page-enter {
   animation: pageFadeIn 0.45s cubic-bezier(0.22, 1, 0.36, 1) forwards;
   will-change: opacity, transform, filter;
@@ -129,9 +251,17 @@
   will-change: opacity, backdrop-filter;
 }
 
+.animate-backdrop-exit {
+  animation: modalBackdropOut 0.25s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  will-change: opacity, backdrop-filter;
+}
+
 .animate-modal-enter {
   animation: modalContentIn 0.4s cubic-bezier(0.22, 1, 0.36, 1) forwards;
   will-change: opacity, transform, filter;
 }
 
-
+.animate-modal-exit {
+  animation: modalContentOut 0.25s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  will-change: opacity, transform, filter;
+}

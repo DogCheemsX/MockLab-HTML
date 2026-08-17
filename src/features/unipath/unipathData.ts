@@ -13,6 +13,11 @@ export interface RawUniversityRule {
   minHsscMed: number;
   minHsscSoc: number;
   minHsscArch: number;
+  minHsscHum?: number;
+  minHsscNatSci?: number;
+  minHsscLaw?: number;
+  minHsscMedia?: number;
+  minHsscEnv?: number;
   minSscGeneral: number;
   requiredTestName: string;
   allowedStreamsForCs: string[];
@@ -21,6 +26,11 @@ export interface RawUniversityRule {
   allowedStreamsForMed: string[];
   allowedStreamsForSoc: string[];
   allowedStreamsForArch: string[];
+  allowedStreamsForHum?: string[];
+  allowedStreamsForNatSci?: string[];
+  allowedStreamsForLaw?: string[];
+  allowedStreamsForMedia?: string[];
+  allowedStreamsForEnv?: string[];
   applicationGuide: string;
   applicationGuideByField?: Partial<Record<FieldCategory, string>>;
   programsByField: Partial<Record<FieldCategory, string[]>>;
@@ -40,6 +50,11 @@ export const UNIVERSITY_RULES: RawUniversityRule[] = [
     minHsscMed: 60,
     minHsscSoc: 60,
     minHsscArch: 60,
+    minHsscHum: 60,
+    minHsscNatSci: 60,
+    minHsscLaw: 60,
+    minHsscMedia: 60,
+    minHsscEnv: 60,
     minSscGeneral: 60,
     requiredTestName: 'NET (NUST Entry Test)',
     allowedStreamsForCs: ['ics', 'pre_eng', 'pre_med'],
@@ -48,6 +63,10 @@ export const UNIVERSITY_RULES: RawUniversityRule[] = [
     allowedStreamsForMed: ['pre_med'],
     allowedStreamsForSoc: ['ics', 'pre_eng', 'pre_med', 'icom', 'arts'],
     allowedStreamsForArch: ['ics', 'pre_eng', 'arts'],
+    allowedStreamsForHum: ['ics', 'pre_eng', 'pre_med', 'icom', 'arts'],
+    allowedStreamsForNatSci: ['pre_eng', 'ics', 'pre_med'],
+    allowedStreamsForMedia: ['ics', 'pre_eng', 'pre_med', 'icom', 'arts'],
+    allowedStreamsForEnv: ['pre_eng', 'ics', 'pre_med'],
     applicationGuide: 'NUST Entry Test (NET) contributes 75% to final merit score, with FSc contributing 15% and Matric 10%.',
     applicationGuideByField: {
       cs: 'NUST Computing NET covers Mathematics, Physics, CS/Chemistry, English, and Intelligence (75% merit weightage).',
@@ -55,15 +74,21 @@ export const UNIVERSITY_RULES: RawUniversityRule[] = [
       business: 'NUST Business & Finance NET covers Quantitative Mathematics, English, and Intelligence (75% merit weightage).',
       architecture: 'NUST Architecture (SADA) requires NET-Architecture covering Math, Physics, Intelligence, and Drawing Test.',
       medical: 'NUST Applied Biosciences NET covers Biology, Chemistry, Physics, English, and Intelligence.',
-      social_sciences: 'NUST Social Sciences NET covers General Math, English, and Intelligence.'
+      social_sciences: 'NUST Social Sciences NET covers General Math, English, and Intelligence.',
+      media_communications: 'NUST Mass Communication requires Social Sciences NET (General Math, English, IQ).',
+      natural_sciences: 'NUST Natural & Basic Sciences requires NET-Engineering (Math, Physics, Chemistry) or NET-Computing.',
+      environmental_sciences: 'NUST Environmental Sciences requires NET-Engineering or NET-Biosciences.'
     },
     programsByField: {
       cs: ['BS Computer Science', 'BS Software Engineering', 'BS Data Science', 'BS Artificial Intelligence'],
-      engineering: ['BS Electrical Engineering', 'BS Mechanical Engineering', 'BS Civil Engineering', 'BS Aerospace Engineering', 'BS Chemical Engineering'],
+      engineering: ['BS Electrical Engineering', 'BS Mechanical Engineering', 'BS Civil Engineering', 'BS Aerospace Engineering', 'BS Chemical Engineering', 'BS Environmental Engineering', 'BS Geoinformatics'],
       business: ['BBA (Honors)', 'BS Accounting & Finance', 'BS Tourism & Hospitality'],
       architecture: ['Bachelor of Architecture (SADA)', 'BS Industrial Design'],
       medical: ['BS Applied Biosciences'],
-      social_sciences: ['BS Economics', 'BS Psychology', 'BS Mass Communication']
+      social_sciences: ['BS Economics', 'BS Psychology'],
+      media_communications: ['BS Mass Communication'],
+      natural_sciences: ['BS Mathematics', 'BS Physics', 'BS Chemistry'],
+      environmental_sciences: ['BS Environmental Sciences', 'BS Environmental Engineering']
     }
   },
   {
@@ -79,26 +104,40 @@ export const UNIVERSITY_RULES: RawUniversityRule[] = [
     minHsscMed: 70,
     minHsscSoc: 70,
     minHsscArch: 70,
+    minHsscHum: 70,
+    minHsscNatSci: 70,
+    minHsscLaw: 70,
+    minHsscMedia: 70,
+    minHsscEnv: 70,
     minSscGeneral: 70,
-    requiredTestName: 'SAT / LCAT + LUMS SBASSE Test',
+    requiredTestName: 'SAT / LCAT + LUMS SBASSE / LAT Test',
     allowedStreamsForCs: ['ics', 'pre_eng', 'pre_med'],
     allowedStreamsForEng: ['pre_eng'],
     allowedStreamsForBus: ['ics', 'pre_eng', 'pre_med', 'icom', 'arts'],
-    allowedStreamsForMed: [],
+    allowedStreamsForMed: ['pre_med'],
     allowedStreamsForSoc: ['ics', 'pre_eng', 'pre_med', 'icom', 'arts'],
     allowedStreamsForArch: [],
+    allowedStreamsForHum: ['ics', 'pre_eng', 'pre_med', 'icom', 'arts'],
+    allowedStreamsForNatSci: ['pre_eng', 'ics', 'pre_med'],
+    allowedStreamsForLaw: ['ics', 'pre_eng', 'pre_med', 'icom', 'arts'],
     applicationGuide: 'Requires minimum 70% in Matric & FSc (or 2Bs & 1C in A-Levels) plus SAT/LCAT scores.',
     applicationGuideByField: {
       cs: 'LUMS SBASSE (CS) requires SAT I / LCAT plus mandatory LUMS SBASSE Scientific Aptitude Test.',
       engineering: 'LUMS SBASSE Engineering requires SAT I / LCAT plus mandatory LUMS SBASSE Scientific Aptitude Test.',
       business: 'LUMS SDSB (BBA/Finance) requires SAT I or LCAT score plus min 70% in Matric/FSc (or 2Bs & 1C in A-Levels).',
-      social_sciences: 'LUMS HSS (Economics/Law/Social Sciences) requires SAT I or LCAT score.'
+      social_sciences: 'LUMS HSS (Economics/Politics) requires SAT I or LCAT score.',
+      law: 'LUMS SAHSOL requires SAT I or LCAT score plus mandatory Law Admission Test (LAT).',
+      humanities_arts: 'LUMS HSS (English/Comparative Literary & Cultural Studies) requires SAT I or LCAT score.',
+      natural_sciences: 'LUMS SBASSE Basic Sciences requires SAT I / LCAT plus LUMS Scientific Aptitude Test.'
     },
     programsByField: {
       cs: ['BS Computer Science'],
       engineering: ['BS Electrical Engineering', 'BS Chemical Engineering'],
       business: ['BBA (Honors)', 'BS Accounting & Finance'],
-      social_sciences: ['BA-LL.B (Honors)', 'BS Economics', 'BS History', 'BS English']
+      social_sciences: ['BS Economics', 'BS Politics & Economics', 'BS History'],
+      law: ['BA-LL.B (Honors)'],
+      humanities_arts: ['BS English', 'BS Comparative Literary & Cultural Studies'],
+      natural_sciences: ['BS Physics', 'BS Chemistry', 'BS Mathematics', 'BS Biology']
     }
   },
   {
@@ -114,6 +153,7 @@ export const UNIVERSITY_RULES: RawUniversityRule[] = [
     minHsscMed: 60,
     minHsscSoc: 50,
     minHsscArch: 60,
+    minHsscMedia: 50,
     minSscGeneral: 60,
     requiredTestName: 'FAST Entry Test / NTS NAT (60%+ cutoff)',
     allowedStreamsForCs: ['ics', 'pre_eng'],
@@ -122,17 +162,21 @@ export const UNIVERSITY_RULES: RawUniversityRule[] = [
     allowedStreamsForMed: [],
     allowedStreamsForSoc: ['ics', 'pre_eng', 'pre_med', 'icom', 'arts'],
     allowedStreamsForArch: [],
-    applicationGuide: 'FAST requires 50-60%+ in FSc depending on computing or business tracks. Math proficiency in FAST test is key.',
+    allowedStreamsForMedia: ['ics', 'pre_eng', 'pre_med', 'icom', 'arts'],
+    applicationGuide: 'FAST requires 50-60%+ in FSc depending on computing, engineering or business/social tracks.',
     applicationGuideByField: {
-      cs: 'FAST Computing (CS/SE/AI/DS) requires min 60% in FSc (Pre-Eng or ICS). Math proficiency in FAST Entry Test is key.',
+      cs: 'FAST Computing (CS/SE/AI/DS/Cyber) requires min 60% in FSc (Pre-Eng or ICS). Math proficiency in FAST Entry Test is key.',
       engineering: 'FAST Electrical/Civil Engineering requires min 60% in FSc Pre-Engineering plus FAST Entry Test.',
       business: 'FAST Business Administration & Finance requires min 50% in FSc/ICS/I.Com. Test covers Basic Math, English & IQ.',
-      social_sciences: 'FAST Social Sciences require min 50% in FSc/Inter plus FAST Entry Test.'
+      social_sciences: 'FAST Social Sciences & Economics require min 50% in FSc/Inter plus FAST Entry Test.',
+      media_communications: 'FAST Media Studies requires min 50% in Intermediate plus FAST Entry Test.'
     },
     programsByField: {
       cs: ['BS Computer Science', 'BS Software Engineering', 'BS Artificial Intelligence', 'BS Data Science', 'BS Cyber Security'],
       engineering: ['BS Electrical Engineering', 'BS Civil Engineering'],
-      business: ['BBA (Bachelor of Business Admin)', 'BS Accounting & Finance', 'BS Business Analytics']
+      business: ['BBA (Bachelor of Business Admin)', 'BS Accounting & Finance', 'BS Business Analytics', 'BS FinTech'],
+      social_sciences: ['BS Economics'],
+      media_communications: ['BS Media Studies']
     }
   },
   {
@@ -148,6 +192,7 @@ export const UNIVERSITY_RULES: RawUniversityRule[] = [
     minHsscMed: 60,
     minHsscSoc: 60,
     minHsscArch: 60,
+    minHsscNatSci: 60,
     minSscGeneral: 60,
     requiredTestName: 'GIKI Engineering Admission Test',
     allowedStreamsForCs: ['ics', 'pre_eng'],
@@ -156,16 +201,19 @@ export const UNIVERSITY_RULES: RawUniversityRule[] = [
     allowedStreamsForMed: [],
     allowedStreamsForSoc: [],
     allowedStreamsForArch: [],
-    applicationGuide: 'GIKI Admission Test evaluates Mathematics and Physics for Engineering and Computer Science applicants.',
+    allowedStreamsForNatSci: ['pre_eng', 'ics'],
+    applicationGuide: 'GIKI Admission Test evaluates Mathematics and Physics for Engineering, CS and Basic Sciences applicants.',
     applicationGuideByField: {
       cs: 'GIKI Test for CS covers Advanced Mathematics, Physics, and English.',
       engineering: 'GIKI Test for Engineering covers Advanced Mathematics, Physics, and English.',
-      business: 'GIKI Test for Management Sciences covers Basic Mathematics, English, and Analytical Reasoning.'
+      business: 'GIKI Test for Management Sciences covers Basic Mathematics, English, and Analytical Reasoning.',
+      natural_sciences: 'GIKI Test for Engineering Physics & Math covers Advanced Mathematics, Physics, and English.'
     },
     programsByField: {
       cs: ['BS Computer Science', 'BS Artificial Intelligence', 'BS Software Engineering', 'BS Data Science'],
-      engineering: ['BS Electrical Engineering', 'BS Mechanical Engineering', 'BS Civil Engineering', 'BS Materials Engineering', 'BS Chemical Engineering'],
-      business: ['BS Management Sciences']
+      engineering: ['BS Electrical Engineering', 'BS Mechanical Engineering', 'BS Civil Engineering', 'BS Materials Engineering', 'BS Chemical Engineering', 'BS Engineering Sciences'],
+      business: ['BS Management Sciences'],
+      natural_sciences: ['BS Engineering Physics', 'BS Mathematics']
     }
   },
   {
@@ -181,6 +229,7 @@ export const UNIVERSITY_RULES: RawUniversityRule[] = [
     minHsscMed: 60,
     minHsscSoc: 60,
     minHsscArch: 60,
+    minHsscNatSci: 60,
     minSscGeneral: 60,
     requiredTestName: 'PIEAS Written Admission Test',
     allowedStreamsForCs: ['ics', 'pre_eng'],
@@ -189,10 +238,17 @@ export const UNIVERSITY_RULES: RawUniversityRule[] = [
     allowedStreamsForMed: [],
     allowedStreamsForSoc: [],
     allowedStreamsForArch: [],
+    allowedStreamsForNatSci: ['pre_eng', 'ics'],
     applicationGuide: 'High-rigor STEM paper pattern focusing heavily on Physics, Mathematics, and Analytical reasoning.',
+    applicationGuideByField: {
+      cs: 'PIEAS Written Test for CS covers English, Mathematics, Physics, and CS.',
+      engineering: 'PIEAS Written Test for Engineering covers English, Mathematics, Physics, and Chemistry.',
+      natural_sciences: 'PIEAS Written Test for Physics, Chemistry & Math covers English, Mathematics, Physics, and Chemistry/Statistics.'
+    },
     programsByField: {
       cs: ['BS Computer Science'],
-      engineering: ['BS Electrical Engineering', 'BS Mechanical Engineering', 'BS Chemical Engineering', 'BS Materials Engineering']
+      engineering: ['BS Electrical Engineering', 'BS Mechanical Engineering', 'BS Chemical Engineering', 'BS Materials Engineering', 'BS Nuclear Engineering'],
+      natural_sciences: ['BS Physics', 'BS Chemistry', 'BS Mathematics']
     }
   },
   {
@@ -208,6 +264,10 @@ export const UNIVERSITY_RULES: RawUniversityRule[] = [
     minHsscMed: 50,
     minHsscSoc: 50,
     minHsscArch: 60,
+    minHsscHum: 50,
+    minHsscNatSci: 50,
+    minHsscMedia: 50,
+    minHsscEnv: 50,
     minSscGeneral: 50,
     requiredTestName: 'NTS NAT-I / COMSATS Special Test',
     allowedStreamsForCs: ['ics', 'pre_eng', 'pre_med'],
@@ -216,22 +276,34 @@ export const UNIVERSITY_RULES: RawUniversityRule[] = [
     allowedStreamsForMed: ['pre_med'],
     allowedStreamsForSoc: ['ics', 'pre_eng', 'pre_med', 'icom', 'arts'],
     allowedStreamsForArch: ['ics', 'pre_eng', 'arts'],
+    allowedStreamsForHum: ['ics', 'pre_eng', 'pre_med', 'icom', 'arts'],
+    allowedStreamsForNatSci: ['pre_eng', 'ics', 'pre_med'],
+    allowedStreamsForMedia: ['ics', 'pre_eng', 'pre_med', 'icom', 'arts'],
+    allowedStreamsForEnv: ['pre_eng', 'pre_med', 'ics'],
     applicationGuide: 'NTS NAT-I score (or COMSATS Special Test) is required. Merit is calculated as 50% NTS + 40% FSc + 10% Matric.',
     applicationGuideByField: {
       cs: 'COMSATS CS/SE/AI requires min 50% in FSc (Pre-Eng/ICS/Pre-Med) plus NTS NAT-I / COMSATS Special Test.',
       engineering: 'COMSATS Engineering requires min 60% in FSc Pre-Engineering plus passing NTS NAT-I / Special Test.',
-      business: 'COMSATS Business Administration & Finance requires min 50% in FSc/ICS/I.Com/Arts plus NTS NAT-I (Management Science paper).',
+      business: 'COMSATS Business Administration & Finance requires min 50% in FSc/ICS/I.Com/Arts plus NTS NAT-I.',
       architecture: 'COMSATS Architecture & Design requires 60%+ in FSc plus passing the COMSATS Creative/Drawing Test.',
       medical: 'COMSATS Biosciences & Bioinformatics require min 50% in FSc Pre-Medical plus NTS NAT-I.',
-      social_sciences: 'COMSATS Social Sciences (Psychology, Economics, English) require min 50% in FSc/Inter plus NTS NAT-I.'
+      social_sciences: 'COMSATS Social Sciences (Psychology, Economics) require min 50% in FSc/Inter plus NTS NAT-I.',
+      humanities_arts: 'COMSATS English Literature & Linguistics requires min 50% in Intermediate plus NTS NAT-IA / NAT-I.',
+      natural_sciences: 'COMSATS Pure Physics, Chemistry, Math & Stats require min 50% in FSc Pre-Eng/ICS/Pre-Med plus NTS NAT-I.',
+      media_communications: 'COMSATS Media & Communication Studies requires min 50% in Intermediate plus NTS NAT-I.',
+      environmental_sciences: 'COMSATS Environmental Sciences & Meteorology require min 50% in FSc Pre-Eng/Pre-Med plus NTS NAT-I.'
     },
     programsByField: {
       cs: ['BS Computer Science', 'BS Software Engineering', 'BS Artificial Intelligence', 'BS Cyber Security', 'BS Data Science'],
-      engineering: ['BS Electrical Engineering', 'BS Computer Engineering', 'BS Chemical Engineering'],
+      engineering: ['BS Electrical Engineering', 'BS Computer Engineering', 'BS Chemical Engineering', 'BS Civil Engineering'],
       business: ['BBA (Bachelor of Business Admin)', 'BS Accounting & Finance', 'BS Business Analytics'],
       architecture: ['Bachelor of Architecture (B.Arch)', 'BS Design / Interior Design'],
       medical: ['BS Biosciences', 'BS Bioinformatics'],
-      social_sciences: ['BS Psychology', 'BS Economics', 'BS English']
+      social_sciences: ['BS Psychology', 'BS Economics'],
+      humanities_arts: ['BS English Literature & Linguistics'],
+      natural_sciences: ['BS Physics', 'BS Mathematics', 'BS Chemistry', 'BS Statistics'],
+      media_communications: ['BS Media & Communication Studies'],
+      environmental_sciences: ['BS Environmental Sciences', 'BS Meteorology / Earth Sciences']
     }
   },
   {
@@ -247,26 +319,38 @@ export const UNIVERSITY_RULES: RawUniversityRule[] = [
     minHsscMed: 50,
     minHsscSoc: 50,
     minHsscArch: 50,
+    minHsscHum: 50,
+    minHsscNatSci: 50,
+    minHsscMedia: 50,
     minSscGeneral: 50,
     requiredTestName: 'AU-CBT Entry Test / NTS NAT',
     allowedStreamsForCs: ['ics', 'pre_eng', 'pre_med'],
     allowedStreamsForEng: ['pre_eng'],
     allowedStreamsForBus: ['ics', 'pre_eng', 'pre_med', 'icom', 'arts'],
-    allowedStreamsForMed: [],
+    allowedStreamsForMed: ['pre_med'],
     allowedStreamsForSoc: ['ics', 'pre_eng', 'pre_med', 'icom', 'arts'],
     allowedStreamsForArch: [],
+    allowedStreamsForHum: ['ics', 'pre_eng', 'pre_med', 'icom', 'arts'],
+    allowedStreamsForNatSci: ['pre_eng', 'ics'],
+    allowedStreamsForMedia: ['ics', 'pre_eng', 'pre_med', 'icom', 'arts'],
     applicationGuide: 'Computer-Based Test (CBT) assessing English, Analytical Reasoning, Mathematics, and Physics.',
     applicationGuideByField: {
       cs: 'AU-CBT for CS covers Physics, Math, English, and Analytical Reasoning.',
       engineering: 'AU-CBT for Engineering covers Physics, Math, Chemistry, and English.',
       business: 'AU-CBT for Business & Finance covers General Math, English, and Analytical Reasoning.',
-      social_sciences: 'AU-CBT for Social Sciences covers English, General Knowledge, and Verbal Reasoning.'
+      social_sciences: 'AU-CBT for Social Sciences covers English, General Knowledge, and Verbal Reasoning.',
+      humanities_arts: 'AU-CBT for English Literature & Linguistics covers English, General Knowledge, and Verbal Reasoning.',
+      natural_sciences: 'AU-CBT for Math & Physics covers Mathematics, Physics, English, and Analytical Reasoning.',
+      media_communications: 'AU-CBT for Media & Mass Communication covers English, General Knowledge, and Media Aptitude.'
     },
     programsByField: {
-      cs: ['BS Computer Science', 'BS Cyber Security', 'BS Software Engineering', 'BS Data Science', 'BS Gaming & Multimedia'],
+      cs: ['BS Computer Science', 'BS Cyber Security', 'BS Software Engineering', 'BS Data Science', 'BS Gaming & Multimedia', 'BS Information Technology'],
       engineering: ['BS Electrical Engineering', 'BS Mechanical Engineering', 'BS Mechatronics Engineering', 'BS Biomedical Engineering'],
       business: ['BBA (Bachelor of Business Admin)', 'BS Accounting & Finance', 'BS Aviation Management'],
-      social_sciences: ['BS Psychology', 'BS International Relations', 'BS English']
+      social_sciences: ['BS Psychology', 'BS International Relations'],
+      humanities_arts: ['BS English Literature & Linguistics'],
+      natural_sciences: ['BS Mathematics', 'BS Physics'],
+      media_communications: ['BS Media & Mass Communication']
     }
   },
   {
@@ -279,29 +363,47 @@ export const UNIVERSITY_RULES: RawUniversityRule[] = [
     minHsscCs: 50,
     minHsscEng: 60,
     minHsscBus: 50,
-    minHsscMed: 50,
+    minHsscMed: 60,
     minHsscSoc: 50,
     minHsscArch: 50,
+    minHsscHum: 50,
+    minHsscLaw: 50,
+    minHsscMedia: 50,
+    minHsscEnv: 50,
     minSscGeneral: 50,
     requiredTestName: 'BUET (Bahria University Entry Test)',
     allowedStreamsForCs: ['ics', 'pre_eng'],
     allowedStreamsForEng: ['pre_eng'],
     allowedStreamsForBus: ['ics', 'pre_eng', 'pre_med', 'icom', 'arts'],
-    allowedStreamsForMed: [],
+    allowedStreamsForMed: ['pre_med'],
     allowedStreamsForSoc: ['ics', 'pre_eng', 'pre_med', 'icom', 'arts'],
     allowedStreamsForArch: [],
-    applicationGuide: 'BUET test covers English, Quantitative Math, Analytical Reasoning, and Physics/CS fundamentals.',
+    allowedStreamsForHum: ['ics', 'pre_eng', 'pre_med', 'icom', 'arts'],
+    allowedStreamsForLaw: ['ics', 'pre_eng', 'pre_med', 'icom', 'arts'],
+    allowedStreamsForMedia: ['ics', 'pre_eng', 'pre_med', 'icom', 'arts'],
+    allowedStreamsForEnv: ['pre_eng', 'pre_med', 'ics'],
+    applicationGuide: 'BUET test covers English, Quantitative Math, Analytical Reasoning, and Physics/CS or General fundamentals.',
     applicationGuideByField: {
       cs: 'BUET for CS covers Maths, Physics/CS, English, and Analytical Reasoning.',
       engineering: 'BUET for Engineering covers Maths, Physics, English, and Analytical Reasoning.',
       business: 'BUET for Business covers General Maths, English, General Knowledge, and Verbal Reasoning.',
-      social_sciences: 'BUET for Social Sciences covers English, General Knowledge, and Analytical Reasoning.'
+      social_sciences: 'BUET for Social Sciences covers English, General Knowledge, and Analytical Reasoning.',
+      law: 'BUET Law track requires passing BUET General Test plus HEC Law Admission Test (LAT).',
+      medical: 'MBBS/BDS requires MDCAT score (55%+ for MBBS, 50%+ for BDS). DPT & Nursing require BUET Bio Test.',
+      humanities_arts: 'BUET for English Literature covers English Verbal Ability, Reading & General Knowledge.',
+      media_communications: 'BUET for Media Studies covers General Knowledge, Media Aptitude, and Verbal Ability.',
+      environmental_sciences: 'BUET Earth & Environmental Sciences test covers Basic Math, English, IQ, and Elective Science.'
     },
     programsByField: {
       cs: ['BS Computer Science', 'BS Information Technology', 'BS Software Engineering', 'BS Artificial Intelligence'],
-      engineering: ['BS Electrical Engineering', 'BS Software Engineering'],
-      business: ['BBA (Bachelor of Business Admin)', 'BS Accounting & Finance', 'BS Maritime Business'],
-      social_sciences: ['BS Psychology', 'BS Media Studies', 'BS Law (LL.B)']
+      engineering: ['BS Electrical Engineering', 'BS Software Engineering', 'BS Computer Engineering'],
+      business: ['BBA (Bachelor of Business Admin)', 'BS Accounting & Finance', 'BS Maritime Business', 'BS Supply Chain'],
+      law: ['LLB (5 Years)'],
+      medical: ['MBBS', 'BDS', 'Doctor of Physical Therapy (DPT)', 'BS Nursing'],
+      social_sciences: ['BS Psychology', 'BS Development Studies'],
+      humanities_arts: ['BS English Literature & Linguistics'],
+      media_communications: ['BS Media Studies / TV Broadcasting'],
+      environmental_sciences: ['BS Environmental Sciences', 'BS Geology', 'BS Geophysics']
     }
   },
   {
@@ -317,6 +419,8 @@ export const UNIVERSITY_RULES: RawUniversityRule[] = [
     minHsscMed: 60,
     minHsscSoc: 50,
     minHsscArch: 60,
+    minHsscNatSci: 60,
+    minHsscEnv: 60,
     minSscGeneral: 60,
     requiredTestName: 'ECAT (Engineering College Admission Test)',
     allowedStreamsForCs: ['ics', 'pre_eng'],
@@ -325,19 +429,24 @@ export const UNIVERSITY_RULES: RawUniversityRule[] = [
     allowedStreamsForMed: [],
     allowedStreamsForSoc: ['ics', 'pre_eng', 'pre_med', 'icom', 'arts'],
     allowedStreamsForArch: ['ics', 'pre_eng'],
-    applicationGuide: 'ECAT is mandatory for Engineering. Merit formula: Matric (17%) + FSc/HSSC (50%) + ECAT (33%).',
+    allowedStreamsForNatSci: ['pre_eng', 'ics'],
+    allowedStreamsForEnv: ['pre_eng', 'ics'],
+    applicationGuide: 'ECAT is mandatory for Engineering & Tech. Merit formula: Matric (17%) + FSc/HSSC (50%) + ECAT (33%).',
     applicationGuideByField: {
       cs: 'UET Computing requires min 60% in FSc (Pre-Eng or ICS). Merit includes ECAT (33%) + FSc (50%) + Matric (17%).',
       engineering: 'UET Engineering requires min 60% in FSc Pre-Engineering & ECAT exam. Merit: FSc (50%) + ECAT (33%) + Matric (17%).',
       business: 'UET Management & Business degrees require min 50-60% in FSc/ICS/I.Com. ECAT is exempt for selected non-engineering tracks.',
-      architecture: 'UET Architectural Engineering & Architecture requires min 60% in FSc Pre-Engineering plus ECAT score.'
+      architecture: 'UET Architectural Engineering & Architecture requires min 60% in FSc Pre-Engineering plus ECAT score.',
+      natural_sciences: 'UET Natural Sciences (Mathematics, Physics, Chemistry) require min 60% in FSc Pre-Engineering/ICS plus ECAT.',
+      environmental_sciences: 'UET Environmental Sciences requires min 60% in FSc Pre-Engineering plus ECAT score.'
     },
     programsByField: {
       cs: ['BS Computer Science', 'BS Artificial Intelligence', 'BS Data Science', 'BS Cyber Security'],
       engineering: ['BE Civil Engineering', 'BE Electrical Engineering', 'BE Mechanical Engineering', 'BE Chemical Engineering', 'BE Computer Engineering', 'BE Software Engineering', 'BE Mechatronics', 'BE Industrial & Manufacturing', 'BE Petroleum & Gas', 'BE Mining', 'BE Metallurgical & Materials', 'BE Automotive Engineering'],
       business: ['BS Business Administration', 'BS Business & IT'],
       architecture: ['Bachelor of Architecture (B.Arch)', 'BE Architectural Engineering', 'BS City & Regional Planning'],
-      social_sciences: ['BS Mathematics', 'BS Physics', 'BS Chemistry']
+      natural_sciences: ['BS Mathematics', 'BS Physics', 'BS Chemistry'],
+      environmental_sciences: ['BS Environmental Sciences']
     }
   },
   {
@@ -353,6 +462,8 @@ export const UNIVERSITY_RULES: RawUniversityRule[] = [
     minHsscMed: 50,
     minHsscSoc: 50,
     minHsscArch: 50,
+    minHsscNatSci: 50,
+    minHsscEnv: 50,
     minSscGeneral: 60,
     requiredTestName: 'IST Admission Test / NTS NAT',
     allowedStreamsForCs: ['ics', 'pre_eng', 'pre_med'],
@@ -361,17 +472,22 @@ export const UNIVERSITY_RULES: RawUniversityRule[] = [
     allowedStreamsForMed: ['pre_med'],
     allowedStreamsForSoc: ['ics', 'pre_eng', 'pre_med', 'icom', 'arts'],
     allowedStreamsForArch: [],
-    applicationGuide: 'Engineering tracks require min 60% in FSc Pre-Engineering & Matric. Computing tracks require min 50%.',
+    allowedStreamsForNatSci: ['pre_eng', 'ics'],
+    allowedStreamsForEnv: ['pre_eng', 'ics', 'pre_med'],
+    applicationGuide: 'Engineering tracks require min 60% in FSc Pre-Engineering & Matric. Computing & Basic Sciences require min 50%.',
     applicationGuideByField: {
       engineering: 'IST Aerospace/Avionics/Electrical/Mechanical Engineering requires min 60% in FSc Pre-Engineering & Matric Science plus IST Test / NAT.',
       cs: 'IST Computing (CS/AI/DS/SE) requires min 50% in FSc (Pre-Eng, ICS, or Pre-Med with Math deficiency course).',
-      medical: 'IST Biotechnology & Nanotechnology require min 50% in FSc Pre-Medical.'
+      medical: 'IST Biotechnology & Nanotechnology require min 50% in FSc Pre-Medical.',
+      natural_sciences: 'IST Physics & Mathematics require min 50% in FSc Pre-Engineering / ICS.',
+      environmental_sciences: 'IST Space Science & Remote Sensing/GIS require min 50% in FSc Pre-Engineering/ICS.'
     },
     programsByField: {
       engineering: ['BE Aerospace Engineering', 'BE Avionics Engineering', 'BE Electrical Engineering', 'BE Mechanical Engineering', 'BE Materials Engineering', 'BE Computer Engineering'],
       cs: ['BS Computer Science', 'BS Artificial Intelligence', 'BS Data Science', 'BS Software Engineering'],
       medical: ['BS Biotechnology', 'BS Nanotechnology (Chemistry)'],
-      social_sciences: ['BS Space Science', 'BS Physics', 'BS Mathematics']
+      natural_sciences: ['BS Physics', 'BS Mathematics'],
+      environmental_sciences: ['BS Space Science', 'BS Remote Sensing & GIS']
     }
   },
   {
@@ -387,26 +503,42 @@ export const UNIVERSITY_RULES: RawUniversityRule[] = [
     minHsscMed: 50,
     minHsscSoc: 50,
     minHsscArch: 50,
+    minHsscHum: 50,
+    minHsscNatSci: 50,
+    minHsscLaw: 50,
+    minHsscMedia: 50,
     minSscGeneral: 50,
-    requiredTestName: 'GCU Entrance Test / GAT',
+    requiredTestName: 'GCU Entrance Test / GAT / LAT',
     allowedStreamsForCs: ['ics', 'pre_eng', 'pre_med'],
     allowedStreamsForEng: ['pre_eng'],
     allowedStreamsForBus: ['ics', 'pre_eng', 'pre_med', 'icom', 'arts'],
     allowedStreamsForMed: ['pre_med'],
     allowedStreamsForSoc: ['ics', 'pre_eng', 'pre_med', 'icom', 'arts'],
     allowedStreamsForArch: [],
+    allowedStreamsForHum: ['ics', 'pre_eng', 'pre_med', 'icom', 'arts'],
+    allowedStreamsForNatSci: ['pre_eng', 'ics', 'pre_med'],
+    allowedStreamsForLaw: ['ics', 'pre_eng', 'pre_med', 'icom', 'arts'],
+    allowedStreamsForMedia: ['ics', 'pre_eng', 'pre_med', 'icom', 'arts'],
     applicationGuide: 'GCU BS entry requires 50%-60% in Intermediate plus departmental test / GCU GAT.',
     applicationGuideByField: {
       cs: 'GCU Computer Science & Data Science require min 50-60% in FSc (ICS / Pre-Eng / Pre-Med) plus GCU Entry Test.',
       business: 'GCU Management Sciences & Commerce require min 50% in Intermediate plus GCU GAT.',
-      medical: 'GCU Natural Sciences (Botany, Zoology, Chemistry) require min 50% in FSc Pre-Medical.',
-      social_sciences: 'GCU Social Sciences, English & Humanities require min 50% in Intermediate.'
+      medical: 'GCU Life Sciences (Botany, Zoology, Biotechnology, Microbiology) require min 50% in FSc Pre-Medical.',
+      social_sciences: 'GCU Social Sciences & Psychology require min 50% in Intermediate.',
+      humanities_arts: 'GCU Humanities, Languages (English, History, Philosophy, Fine Arts) require min 50% in Intermediate plus Aptitude Test for Fine Arts.',
+      natural_sciences: 'GCU Pure Physics, Chemistry, Math & Statistics require min 50% in FSc Pre-Eng/ICS/Pre-Med.',
+      law: 'GCU BA-LL.B (5 Years) requires min 50% in Intermediate plus HEC Law Admission Test (LAT).',
+      media_communications: 'GCU Media & Communication Studies requires min 50% in Intermediate plus GCU Interview.'
     },
     programsByField: {
       cs: ['BS Computer Science', 'BS Data Science'],
       business: ['BBA (Hons)', 'BS Commerce', 'BS Economics'],
-      medical: ['BS Botany', 'BS Zoology', 'BS Chemistry', 'BS Biotechnology'],
-      social_sciences: ['BS Psychology', 'BS English Literature', 'BS History', 'BS Political Science', 'BS Physics', 'BS Mathematics']
+      medical: ['BS Botany', 'BS Zoology', 'BS Chemistry', 'BS Biotechnology', 'BS Microbiology'],
+      social_sciences: ['BS Psychology', 'BS Political Science', 'BS Sociology'],
+      humanities_arts: ['BS English Literature', 'BS History', 'BS Philosophy', 'BS Fine Arts', 'BS Persian/Arabic/Urdu'],
+      natural_sciences: ['BS Physics', 'BS Chemistry', 'BS Mathematics', 'BS Statistics'],
+      law: ['BA-LL.B (5 Years)'],
+      media_communications: ['BS Media & Communication Studies']
     }
   },
   {
@@ -422,6 +554,8 @@ export const UNIVERSITY_RULES: RawUniversityRule[] = [
     minHsscMed: 50,
     minHsscSoc: 50,
     minHsscArch: 60,
+    minHsscHum: 50,
+    minHsscMedia: 50,
     minSscGeneral: 50,
     requiredTestName: 'BNU Aptitude Test & Interview',
     allowedStreamsForCs: ['ics', 'pre_eng', 'pre_med'],
@@ -430,18 +564,24 @@ export const UNIVERSITY_RULES: RawUniversityRule[] = [
     allowedStreamsForMed: [],
     allowedStreamsForSoc: ['ics', 'pre_eng', 'pre_med', 'icom', 'arts'],
     allowedStreamsForArch: ['ics', 'pre_eng', 'arts'],
+    allowedStreamsForHum: ['ics', 'pre_eng', 'pre_med', 'icom', 'arts'],
+    allowedStreamsForMedia: ['ics', 'pre_eng', 'pre_med', 'icom', 'arts'],
     applicationGuide: 'Requires 50%-60% in Intermediate / O-A Levels (min 8 O-Levels & 3 A-Levels).',
     applicationGuideByField: {
-      architecture: 'BNU Bachelor of Architecture (B.Arch) requires min 60% in Intermediate/A-Levels plus BNU Design Aptitude Test & Portfolio.',
+      architecture: 'BNU Bachelor of Architecture (B.Arch) & Interior Design require min 60% in Intermediate/A-Levels plus BNU Design Aptitude Test & Portfolio.',
+      humanities_arts: 'BNU SVAD (Fine Arts, Visual Comm, Textile & Fashion Design) requires min 50% in Inter/A-Levels plus Portfolio & Drawing Test.',
       business: 'BNU BBA & Business Intelligence require min 55-60% in Intermediate/A-Levels plus BNU Test.',
       cs: 'BNU CS/SE/AI requires min 50% in FSc/ICS/A-Levels with Mathematics prerequisite.',
-      social_sciences: 'BNU Media & Social Sciences require min 50% in Intermediate plus interview.'
+      social_sciences: 'BNU Applied Psychology & Liberal Arts require min 50% in Intermediate plus interview.',
+      media_communications: 'BNU SMC (Journalism, Media Studies, Theatre/Film/TV) requires min 50% in Intermediate plus Interview.'
     },
     programsByField: {
-      architecture: ['Bachelor of Architecture (B.Arch)', 'Bachelor of Interior Design (BID)', 'BFA Visual Communication Design', 'BS Textile & Fashion Design'],
+      architecture: ['Bachelor of Architecture (B.Arch)', 'Bachelor of Interior Design (BID)'],
+      humanities_arts: ['Fine Arts (BFA)', 'Visual Communication Design', 'BS Textile & Fashion Design', 'Cultural Studies'],
       cs: ['BS Computer Science', 'BS Software Engineering', 'BS Artificial Intelligence', 'BS Business Computing'],
       business: ['BBA (Hons)', 'BS Business Intelligence & Analytics', 'BS Economics & Finance', 'BS Hospitality Management'],
-      social_sciences: ['BS Journalism & Media Studies', 'BS Communication & Immersive Media', 'BS Theatre, Film & TV', 'BS Applied Psychology', 'BS Liberal Arts']
+      social_sciences: ['BS Applied Psychology', 'BS Liberal Arts'],
+      media_communications: ['BS Journalism & Media Studies', 'BS Communication & Immersive Media', 'BS Theatre, Film & TV']
     }
   },
   {
@@ -457,6 +597,8 @@ export const UNIVERSITY_RULES: RawUniversityRule[] = [
     minHsscMed: 50,
     minHsscSoc: 45,
     minHsscArch: 50,
+    minHsscHum: 45,
+    minHsscMedia: 45,
     minSscGeneral: 45,
     requiredTestName: 'NCA Aptitude Test & Drawing Examination',
     allowedStreamsForCs: [],
@@ -465,14 +607,18 @@ export const UNIVERSITY_RULES: RawUniversityRule[] = [
     allowedStreamsForMed: [],
     allowedStreamsForSoc: ['ics', 'pre_eng', 'pre_med', 'icom', 'arts'],
     allowedStreamsForArch: ['ics', 'pre_eng', 'arts'],
+    allowedStreamsForHum: ['ics', 'pre_eng', 'pre_med', 'icom', 'arts'],
+    allowedStreamsForMedia: ['ics', 'pre_eng', 'pre_med', 'icom', 'arts'],
     applicationGuide: 'NCA requires 45-50% in Intermediate. Selection heavily relies on intensive Drawing/Design Aptitude Test & Interviews.',
     applicationGuideByField: {
-      architecture: 'NCA Bachelor of Architecture requires min 50% in Intermediate plus mandatory NCA Architecture Aptitude & Drawing Test.',
-      social_sciences: 'NCA Cultural Studies & Film require min 45% in Intermediate plus NCA Test & Interview.'
+      architecture: 'NCA Bachelor of Architecture & Interior Design require min 50% in Intermediate plus mandatory NCA Architecture Aptitude & Drawing Test.',
+      humanities_arts: 'NCA Fine Arts, Visual Communication, Textile & Ceramic Design require min 45% in Inter plus Drawing Examination.',
+      media_communications: 'NCA Film & Television & Multimedia Arts require min 45% in Intermediate plus NCA Test & Interview.'
     },
     programsByField: {
-      architecture: ['Bachelor of Architecture (B.Arch)', 'Fine Arts (BFA)', 'Visual Communication Design', 'Textile Design', 'Product Design', 'Ceramic Design'],
-      social_sciences: ['BS Film & Television', 'BS Cultural Studies']
+      architecture: ['Bachelor of Architecture (B.Arch)', 'Bachelor of Interior Design (BID)'],
+      humanities_arts: ['Fine Arts (BFA)', 'Visual Communication Design', 'Textile Design', 'Product Design', 'Ceramic Design', 'Cultural Studies'],
+      media_communications: ['BS Film & Television', 'BS Multimedia Arts']
     }
   },
   {
@@ -488,6 +634,8 @@ export const UNIVERSITY_RULES: RawUniversityRule[] = [
     minHsscMed: 50,
     minHsscSoc: 50,
     minHsscArch: 50,
+    minHsscHum: 50,
+    minHsscMedia: 50,
     minSscGeneral: 50,
     requiredTestName: 'IVS Entrance Test & Interview',
     allowedStreamsForCs: [],
@@ -496,14 +644,18 @@ export const UNIVERSITY_RULES: RawUniversityRule[] = [
     allowedStreamsForMed: [],
     allowedStreamsForSoc: ['ics', 'pre_eng', 'pre_med', 'icom', 'arts'],
     allowedStreamsForArch: ['ics', 'pre_eng', 'arts'],
+    allowedStreamsForHum: ['ics', 'pre_eng', 'pre_med', 'icom', 'arts'],
+    allowedStreamsForMedia: ['ics', 'pre_eng', 'pre_med', 'icom', 'arts'],
     applicationGuide: 'Requires passing Intermediate/A-Levels with IBCC Equivalence plus clearing IVS Admissions Test & Interview.',
     applicationGuideByField: {
-      architecture: 'IVS Architecture & Design require passing Intermediate/A-Levels plus IVS Entrance Test & Foundation Program.',
-      social_sciences: 'IVS Liberal Arts requires passing Intermediate/A-Levels plus IVS Interview.'
+      architecture: 'IVS Architecture & Interior Design require passing Intermediate/A-Levels plus IVS Entrance Test & Foundation Year.',
+      humanities_arts: 'IVS Fine Arts, Communication Design, Textile & Fashion Design require passing Inter/A-Levels plus Entrance Exam & Interview.',
+      media_communications: 'IVS Film & Interactive Media requires passing Intermediate/A-Levels plus IVS Interview.'
     },
     programsByField: {
-      architecture: ['Bachelor of Architecture', 'Interior Design', 'Fine Arts', 'Communication Design', 'Textile / Fashion Design'],
-      social_sciences: ['Bachelor of Liberal Arts']
+      architecture: ['Bachelor of Architecture (B.Arch)', 'Interior Design'],
+      humanities_arts: ['Fine Arts (BFA)', 'Communication Design', 'Textile & Fashion Design', 'Liberal Arts'],
+      media_communications: ['Film & Interactive Media']
     }
   },
   {
@@ -519,6 +671,8 @@ export const UNIVERSITY_RULES: RawUniversityRule[] = [
     minHsscMed: 45,
     minHsscSoc: 45,
     minHsscArch: 50,
+    minHsscHum: 45,
+    minHsscMedia: 45,
     minSscGeneral: 45,
     requiredTestName: 'NUML Entrance Test',
     allowedStreamsForCs: ['ics', 'pre_eng'],
@@ -527,16 +681,22 @@ export const UNIVERSITY_RULES: RawUniversityRule[] = [
     allowedStreamsForMed: [],
     allowedStreamsForSoc: ['ics', 'pre_eng', 'pre_med', 'icom', 'arts'],
     allowedStreamsForArch: [],
+    allowedStreamsForHum: ['ics', 'pre_eng', 'pre_med', 'icom', 'arts'],
+    allowedStreamsForMedia: ['ics', 'pre_eng', 'pre_med', 'icom', 'arts'],
     applicationGuide: 'Requires 45%-60% depending on computing/engineering vs language/humanities faculties.',
     applicationGuideByField: {
       cs: 'NUML Computing requires min 50% in FSc (ICS or Pre-Eng) plus NUML Entrance Test.',
       business: 'NUML BBA & Accounting require min 45-50% in FSc/ICS/I.Com/Arts.',
-      social_sciences: 'NUML Languages, IR & English require min 45% in Intermediate.'
+      social_sciences: 'NUML IR, Psychology & Public Policy require min 45% in Intermediate.',
+      humanities_arts: 'NUML Faculty of Languages (English Literature, Linguistics, Arabic, Chinese, German, French, History) requires min 45% in Intermediate.',
+      media_communications: 'NUML Mass Communication & Media Studies require min 45% in Intermediate.'
     },
     programsByField: {
       cs: ['BS Computer Science', 'BS Software Engineering', 'BS Artificial Intelligence', 'BS Information Technology'],
       business: ['BBA (Bachelor of Business Admin)', 'BS Accounting & Finance', 'BS Economics'],
-      social_sciences: ['BS English Literature', 'BS International Relations', 'BS Mass Communication', 'BS Psychology', 'BS Arabic/Chinese/German/French']
+      social_sciences: ['BS International Relations', 'BS Psychology', 'BS Governance & Public Policy'],
+      humanities_arts: ['BS English Literature', 'BS Linguistics', 'BS Arabic', 'BS Chinese', 'BS German', 'BS French', 'BS History'],
+      media_communications: ['BS Mass Communication', 'BS Media & Journalism']
     }
   },
   {
@@ -552,21 +712,36 @@ export const UNIVERSITY_RULES: RawUniversityRule[] = [
     minHsscMed: 50,
     minHsscSoc: 50,
     minHsscArch: 50,
+    minHsscNatSci: 50,
+    minHsscLaw: 50,
     minSscGeneral: 50,
-    requiredTestName: 'CUST Admission Test / NTS NAT',
+    requiredTestName: 'CUST Admission Test / NTS NAT / LAT',
     allowedStreamsForCs: ['ics', 'pre_eng', 'pre_med'],
     allowedStreamsForEng: ['pre_eng'],
     allowedStreamsForBus: ['ics', 'pre_eng', 'pre_med', 'icom', 'arts'],
     allowedStreamsForMed: ['pre_med'],
     allowedStreamsForSoc: ['ics', 'pre_eng', 'pre_med', 'icom', 'arts'],
     allowedStreamsForArch: [],
+    allowedStreamsForNatSci: ['pre_eng', 'ics', 'pre_med'],
+    allowedStreamsForLaw: ['ics', 'pre_eng', 'pre_med', 'icom', 'arts'],
     applicationGuide: 'CUST Stream-wise entrance exam covering Quantitative Aptitude, English, and General Knowledge.',
+    applicationGuideByField: {
+      cs: 'CUST Computing requires min 50% in FSc (ICS/Pre-Eng/Pre-Med) plus CUST Entrance Test.',
+      engineering: 'CUST Engineering requires min 60% in FSc Pre-Engineering plus CUST Engineering Test.',
+      business: 'CUST Business Administration & Finance requires min 50% in Intermediate plus CUST Business Test.',
+      medical: 'CUST Allied Health & Life Sciences (Pharm-D, DPT, Biosciences) require min 50-60% in FSc Pre-Medical.',
+      social_sciences: 'CUST Psychology requires min 50% in Intermediate.',
+      natural_sciences: 'CUST Mathematics & Physics require min 50% in FSc Pre-Engineering / ICS.',
+      law: 'CUST LL.B (5 Years) requires min 50% in Intermediate plus HEC Law Admission Test (LAT).'
+    },
     programsByField: {
       cs: ['BS Computer Science', 'BS Software Engineering', 'BS Artificial Intelligence'],
       engineering: ['BS Electrical Engineering', 'BS Mechanical Engineering', 'BS Civil Engineering'],
       business: ['BBA (Bachelor of Business Admin)', 'BS Accounting & Finance'],
-      medical: ['BS Biosciences', 'BS Pharm-D'],
-      social_sciences: ['BS Psychology']
+      medical: ['BS Biosciences', 'Pharm-D', 'Doctor of Physical Therapy (DPT)'],
+      social_sciences: ['BS Psychology'],
+      natural_sciences: ['BS Mathematics', 'BS Physics'],
+      law: ['LL.B (5 Years)']
     }
   }
 ];
@@ -670,9 +845,44 @@ export const calculateEligibility = (creds: StudentCredentials): UniversityEligi
       if (rule.allowedStreamsForArch.length > 0 && !rule.allowedStreamsForArch.includes(stream)) {
         fieldAllowed = false;
       }
+    } else if (desiredField === 'humanities_arts') {
+      minReq = rule.minHsscHum ?? 50;
+      fieldPrograms = rule.programsByField.humanities_arts || [];
+      const allowed = rule.allowedStreamsForHum ?? ['ics', 'pre_eng', 'pre_med', 'icom', 'arts'];
+      if (allowed.length > 0 && !allowed.includes(stream)) {
+        fieldAllowed = false;
+      }
+    } else if (desiredField === 'natural_sciences') {
+      minReq = rule.minHsscNatSci ?? 50;
+      fieldPrograms = rule.programsByField.natural_sciences || [];
+      const allowed = rule.allowedStreamsForNatSci ?? ['pre_eng', 'ics', 'pre_med'];
+      if (allowed.length > 0 && !allowed.includes(stream)) {
+        fieldAllowed = false;
+      }
+    } else if (desiredField === 'law') {
+      minReq = rule.minHsscLaw ?? 50;
+      fieldPrograms = rule.programsByField.law || [];
+      const allowed = rule.allowedStreamsForLaw ?? ['ics', 'pre_eng', 'pre_med', 'icom', 'arts'];
+      if (allowed.length > 0 && !allowed.includes(stream)) {
+        fieldAllowed = false;
+      }
+    } else if (desiredField === 'media_communications') {
+      minReq = rule.minHsscMedia ?? 50;
+      fieldPrograms = rule.programsByField.media_communications || [];
+      const allowed = rule.allowedStreamsForMedia ?? ['ics', 'pre_eng', 'pre_med', 'icom', 'arts'];
+      if (allowed.length > 0 && !allowed.includes(stream)) {
+        fieldAllowed = false;
+      }
+    } else if (desiredField === 'environmental_sciences') {
+      minReq = rule.minHsscEnv ?? 50;
+      fieldPrograms = rule.programsByField.environmental_sciences || [];
+      const allowed = rule.allowedStreamsForEnv ?? ['pre_eng', 'pre_med', 'ics'];
+      if (allowed.length > 0 && !allowed.includes(stream)) {
+        fieldAllowed = false;
+      }
     } else {
       // 'any'
-      minReq = Math.min(rule.minHsscCs, rule.minHsscEng, rule.minHsscBus);
+      minReq = Math.min(rule.minHsscCs, rule.minHsscEng, rule.minHsscBus, rule.minHsscSoc);
       fieldPrograms = Object.values(rule.programsByField).flat();
     }
 
@@ -692,7 +902,7 @@ export const calculateEligibility = (creds: StudentCredentials): UniversityEligi
 
     let reason = '';
     if (!fieldAllowed) {
-      reason = `Required background (Pre-Engineering/ICS/Arts) not matched for ${desiredField.toUpperCase()} program.`;
+      reason = `Required academic stream background not matched for ${desiredField.replace('_', ' ').toUpperCase()} program.`;
     } else if (rule.uniKey === 'LUMS' && creds.system === 'alevels' && creds.aLevelGrades && !lumsGradePass) {
       reason = `Ineligible for LUMS: A-Level grades (${creds.aLevelGrades.g1}, ${creds.aLevelGrades.g2}, ${creds.aLevelGrades.g3}) do not meet LUMS's minimum grade requirement (must be at least 2Bs & 1C or an official allowed combination).`;
     } else if (!hsscPass) {

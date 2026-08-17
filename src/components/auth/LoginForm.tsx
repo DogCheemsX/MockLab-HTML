@@ -151,7 +151,7 @@ export const LoginForm: React.FC<LoginFormProps> = React.memo(
         <button
           type="submit"
           disabled={loading}
-          className="w-full bg-gradient-to-r from-indigo-600 to-indigo-500 hover:from-indigo-500 hover:to-indigo-400 text-white font-extrabold text-base py-3.5 rounded-xl mt-2 transition-all shadow-glow-indigo disabled:opacity-50 flex items-center justify-center gap-2 border border-indigo-400/30"
+          className="w-full bg-gradient-to-r from-indigo-600 to-indigo-500 hover:from-indigo-500 hover:to-indigo-400 text-white font-extrabold text-base py-3.5 rounded-xl mt-2 transition-all duration-350 ease-soothing shadow-glow-indigo disabled:opacity-75 disabled:cursor-not-allowed flex items-center justify-center gap-2 border border-indigo-400/30 active:scale-[0.98]"
         >
           {loading ? (
             <>

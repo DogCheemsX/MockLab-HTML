@@ -8,9 +8,10 @@ interface IntroScreenProps {
   user: User | null;
   userData: UserProfile | null;
   onLogout: () => void;
+  onOpenSettings?: () => void;
 }
 
-export const IntroScreen: React.FC<IntroScreenProps> = React.memo(({ user, userData, onLogout }) => {
+export const IntroScreen: React.FC<IntroScreenProps> = React.memo(({ user, userData, onLogout, onOpenSettings }) => {
   const navigate = useNavigate();
   const isAdmin = user?.email === ADMIN_EMAIL;
   const isPremium = userData?.isPremium;
@@ -62,12 +63,24 @@ export const IntroScreen: React.FC<IntroScreenProps> = React.memo(({ user, userD
             </p>
           </div>
         </div>
-        <button
-          onClick={onLogout}
-          className="text-xs font-semibold text-rose-400 hover:text-rose-300 px-3 py-1.5 rounded-lg bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/20 transition-all"
-        >
-          Sign Out
-        </button>
+        <div className="flex items-center gap-2">
+          {onOpenSettings && (
+            <button
+              type="button"
+              onClick={onOpenSettings}
+              className="text-xs font-semibold text-slate-300 hover:text-white px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700 transition-all flex items-center gap-1 focus-visible:ring-2 focus-visible:ring-indigo-400"
+            >
+              <span>⚙️</span> Settings
+            </button>
+          )}
+          <button
+            type="button"
+            onClick={onLogout}
+            className="text-xs font-semibold text-rose-400 hover:text-rose-300 px-3 py-1.5 rounded-lg bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/20 transition-all"
+          >
+            Sign Out
+          </button>
+        </div>
       </div>
 
       {/* Feature Highlights Cards */}

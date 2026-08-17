@@ -44,3 +44,8 @@ export async function updateUserPremiumStatus(uid: string, isPremium: boolean): 
   const userRef = doc(db, 'users', uid);
   await updateDoc(userRef, { isPremium });
 }
+
+export async function updateUserProfile(uid: string, updates: Partial<UserProfile>): Promise<void> {
+  const userRef = doc(db, 'users', uid);
+  await updateDoc(userRef, updates);
+}

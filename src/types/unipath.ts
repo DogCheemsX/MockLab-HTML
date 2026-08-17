@@ -7,7 +7,12 @@ export type FieldCategory =
   | 'business'
   | 'medical'
   | 'social_sciences'
-  | 'architecture';
+  | 'architecture'
+  | 'humanities_arts'
+  | 'natural_sciences'
+  | 'law'
+  | 'media_communications'
+  | 'environmental_sciences';
 
 export interface StudentCredentials {
   system: AcademicSystem;

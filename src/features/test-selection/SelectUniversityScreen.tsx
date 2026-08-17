@@ -20,7 +20,7 @@ const UNIVERSITIES: UniversityOption[] = [
     badge: 'NTS',
     logo: 'logos/nts.png',
     tag: 'NAT-I Standard',
-    desc: 'General NTS NAT prep for all affiliated institutes',
+    desc: 'Engineering, Medical, CS, Basic Sciences, Commerce & Humanities',
     color: 'from-amber-600 to-orange-600',
   },
   {
@@ -29,7 +29,7 @@ const UNIVERSITIES: UniversityOption[] = [
     badge: 'CU',
     logo: 'logos/comsats.jpg',
     tag: 'NTS NAT Pattern',
-    desc: 'Pre-Eng, Pre-Med, ICS, General Science & Commerce',
+    desc: 'CS, Engineering, Business, Basic Sciences, Humanities, Media & Bio',
     color: 'from-blue-600 to-indigo-600',
   },
   {
@@ -38,7 +38,7 @@ const UNIVERSITIES: UniversityOption[] = [
     badge: 'PI',
     logo: 'logos/pieas.png',
     tag: 'Engineering / Physics',
-    desc: 'High-rigor STEM paper pattern for Islamabad campus',
+    desc: 'High-rigor STEM & Basic Sciences paper pattern for Islamabad campus',
     color: 'from-purple-600 to-indigo-600',
   },
   {
@@ -47,7 +47,7 @@ const UNIVERSITIES: UniversityOption[] = [
     badge: 'AU',
     logo: 'logos/air.png',
     tag: 'AU-CBT Pattern',
-    desc: 'Computing, Engineering & Management streams',
+    desc: 'Computing, Engineering, Business, Basic Sciences & Humanities',
     color: 'from-cyan-600 to-blue-600',
   },
   {
@@ -56,7 +56,7 @@ const UNIVERSITIES: UniversityOption[] = [
     badge: 'BU',
     logo: 'logos/bahria.png',
     tag: 'BUET Exam',
-    desc: 'CS, IT, Engineering & Social Sciences pattern',
+    desc: 'CS, Engineering, Law, Medicine/Allied Health, Earth/Env & Business',
     color: 'from-emerald-600 to-teal-600',
   },
   {
@@ -65,7 +65,7 @@ const UNIVERSITIES: UniversityOption[] = [
     badge: 'CUST',
     logo: 'logos/cust.jpg',
     tag: 'UG Entry Test',
-    desc: 'Computing, Engineering & Business streams',
+    desc: 'Computing, Engineering, Law, Pharm-D/Allied Health & Business',
     color: 'from-fuchsia-600 to-violet-600',
   },
 ];
@@ -84,13 +84,15 @@ export const SelectUniversityScreen: React.FC = React.memo(() => {
         <div className="flex items-center gap-2">
           <button
             onClick={() => navigate('/')}
-            className="inline-flex items-center gap-2 text-xs font-bold text-slate-400 hover:text-white transition-colors bg-slate-800/80 px-3 py-1.5 rounded-lg border border-slate-700/60"
+            aria-label="Back to Dashboard"
+            className="inline-flex items-center gap-2 text-xs font-bold text-slate-400 hover:text-white transition-colors bg-slate-800/80 px-3 py-1.5 rounded-lg border border-slate-700/60 focus-visible:ring-2 focus-visible:ring-indigo-400"
           >
             <span>←</span> Dashboard
           </button>
           <button
             onClick={() => navigate('/unipath')}
-            className="inline-flex items-center gap-1.5 text-xs font-bold text-emerald-300 hover:text-white transition-colors bg-emerald-500/10 px-3 py-1.5 rounded-lg border border-emerald-500/30"
+            aria-label="Go to UniPath Matcher"
+            className="inline-flex items-center gap-1.5 text-xs font-bold text-emerald-300 hover:text-white transition-colors bg-emerald-500/10 px-3 py-1.5 rounded-lg border border-emerald-500/30 focus-visible:ring-2 focus-visible:ring-emerald-400"
           >
             <span>🎯</span> UniPath Matcher
           </button>
@@ -109,12 +111,15 @@ export const SelectUniversityScreen: React.FC = React.memo(() => {
         </p>
       </div>
 
-      <div className="w-full space-y-3">
+      {/* Universities List */}
+      <div className="w-full space-y-3" role="list">
         {UNIVERSITIES.map((u) => (
           <button
             key={u.key}
+            role="listitem"
             onClick={() => handleSelectUniversity(u.key)}
-            className="w-full glass-card glass-card-hover rounded-2xl p-4 sm:p-5 text-left flex items-center justify-between group transition-all"
+            aria-label={`Select ${u.name}`}
+            className="w-full glass-card glass-card-hover rounded-2xl p-4 sm:p-5 text-left flex items-center justify-between group transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400"
           >
             <div className="flex items-center gap-4">
               <div className="w-12 h-12 rounded-xl bg-white p-1.5 flex items-center justify-center shadow-md group-hover:scale-105 transition-transform shrink-0 border border-slate-200/80 overflow-hidden">
@@ -130,6 +135,7 @@ export const SelectUniversityScreen: React.FC = React.memo(() => {
                 <h3 className="font-bold text-white text-base sm:text-lg group-hover:text-indigo-300 transition-colors">
                   {u.name}
                 </h3>
+                <p className="text-xs text-slate-400 mt-0.5 line-clamp-1">{u.desc}</p>
               </div>
             </div>
             <div className="w-8 h-8 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center text-slate-400 group-hover:text-white group-hover:bg-indigo-600 group-hover:border-indigo-500 transition-all shrink-0 ml-2">
@@ -196,7 +202,7 @@ export const SelectUniversityScreen: React.FC = React.memo(() => {
             href={PAYMENT_INFO.whatsappUrl}
             target="_blank"
             rel="noreferrer"
-            className="w-full max-w-md bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-sm sm:text-base py-3.5 px-6 rounded-xl shadow-glow-emerald transition-all transform hover:-translate-y-0.5 active:translate-y-0 flex items-center justify-center gap-2.5 border border-emerald-400/30 text-center"
+            className="w-full max-w-md bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-sm sm:text-base py-3.5 px-6 rounded-xl shadow-glow-emerald transition-all transform hover:-translate-y-0.5 active:translate-y-0 flex items-center justify-center gap-2.5 border border-emerald-400/30 text-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400"
           >
             <img src="whatsapp.png" alt="WhatsApp" className="w-5 h-5 object-contain shrink-0" />
             <span>Contact Admin on WhatsApp</span>
@@ -208,4 +214,3 @@ export const SelectUniversityScreen: React.FC = React.memo(() => {
 });
 
 SelectUniversityScreen.displayName = 'SelectUniversityScreen';
-

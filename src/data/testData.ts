@@ -108,7 +108,9 @@ export const testData: TestDataMap = {
   BAHRIA: {
     options: [
       { id: "bah-eng", name: "Engineering, CS & IT Tracks (BS CS, SE, IT, AI/DS, EE/CE)" },
-      { id: "bah-bus", name: "Business, Social Sciences & Law (BBA, A&F, Law, Psych, Media)" },
+      { id: "bah-bus", name: "Business, Humanities & Social Sciences (BBA, A&F, Psych, Media)" },
+      { id: "bah-law", name: "Law & Legal Studies Track (LLB 5-Year + LAT)" },
+      { id: "bah-med", name: "Medicine & Allied Health (MBBS, BDS, DPT, Nursing)" },
       { id: "bah-env", name: "Earth & Environmental Sciences (Geology, Geophysics, Environmental)" }
     ],
     infoMap: {
@@ -132,6 +134,25 @@ export const testData: TestDataMap = {
           "General Knowledge / Analytical: 25% (25 MCQs)"
         ]
       },
+      "bah-law": {
+        time: "120 Minutes",
+        marks: "100 Marks (100 MCQs)",
+        breakdown: [
+          "English Verbal Ability: 40% (40 MCQs)",
+          "General Knowledge & Current Affairs: 30% (30 MCQs)",
+          "Analytical Reasoning & IQ: 30% (30 MCQs)"
+        ]
+      },
+      "bah-med": {
+        time: "120 Minutes",
+        marks: "100 Marks (100 MCQs)",
+        breakdown: [
+          "Biology / Life Sciences: 40% (40 MCQs)",
+          "Chemistry: 25% (25 MCQs)",
+          "Physics: 20% (20 MCQs)",
+          "English Verbal: 15% (15 MCQs)"
+        ]
+      },
       "bah-env": {
         time: "120 Minutes",
         marks: "100 Marks (100 MCQs)",
@@ -148,7 +169,9 @@ export const testData: TestDataMap = {
     options: [
       { id: "cust-comp", name: "Computing & General Track" },
       { id: "cust-eng", name: "Engineering Programs" },
-      { id: "cust-bus", name: "Business & Social Sciences" }
+      { id: "cust-bus", name: "Business, Humanities & Social Sciences" },
+      { id: "cust-med", name: "Pharm-D, Physical Therapy (DPT) & Biosciences" },
+      { id: "cust-law", name: "Law & Legal Studies (LL.B Track)" }
     ],
     infoMap: {
       "cust-comp": {
@@ -177,6 +200,25 @@ export const testData: TestDataMap = {
           "Quantitative Reasoning: 50% (30 MCQs)",
           "English Aptitude: 25% (15 MCQs)",
           "General Knowledge: 17% (10 MCQs)"
+        ]
+      },
+      "cust-med": {
+        time: "90 Minutes",
+        marks: "60 Marks (60 MCQs)",
+        breakdown: [
+          "Biology / Life Sciences: 40% (24 MCQs)",
+          "Chemistry: 30% (18 MCQs)",
+          "Physics: 15% (9 MCQs)",
+          "English: 15% (9 MCQs)"
+        ]
+      },
+      "cust-law": {
+        time: "90 Minutes",
+        marks: "60 Marks (60 MCQs)",
+        breakdown: [
+          "General Knowledge & Pak Studies: 40% (24 MCQs)",
+          "English Verbal: 35% (21 MCQs)",
+          "Analytical & Logical Reasoning: 25% (15 MCQs)"
         ]
       }
     }
