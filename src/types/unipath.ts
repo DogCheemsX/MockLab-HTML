@@ -15,6 +15,7 @@ export interface StudentCredentials {
   hsscPercentage: number;
   stream: string;
   desiredField: FieldCategory;
+  aLevelGrades?: { g1: string; g2: string; g3: string };
 }
 
 export interface UniversityEligibility {
@@ -30,4 +31,5 @@ export interface UniversityEligibility {
   mockLabTestKey?: string;
   applicationGuide: string;
   recommendedFields: string[];
+  rankingTier?: number;
 }

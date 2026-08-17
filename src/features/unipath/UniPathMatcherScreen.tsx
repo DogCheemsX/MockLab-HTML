@@ -32,8 +32,8 @@ export const UniPathMatcherScreen: React.FC<UniPathMatcherScreenProps> = React.m
   const [olevelInputMode, setOlevelInputMode] = useState<'grades' | 'percentage'>('grades');
 
   // Percentage inputs
-  const [sscPercentage, setSscPercentage] = useState<number>(82);
-  const [hsscPercentage, setHsscPercentage] = useState<number>(72);
+  const [sscPercentage, setSscPercentage] = useState<string>('82');
+  const [hsscPercentage, setHsscPercentage] = useState<string>('72');
 
   // O/A Level Grade State
   const [aLevelGrades, setALevelGrades] = useState<{ g1: string; g2: string; g3: string }>({
@@ -42,25 +42,32 @@ export const UniPathMatcherScreen: React.FC<UniPathMatcherScreenProps> = React.m
     g3: 'C'
   });
   const [oLevelGradesCount, setOLevelGradesCount] = useState<{
-    numAStar: number;
-    numA: number;
-    numB: number;
-    numC: number;
-    numD: number;
-    numE: number;
+    numAStar: string;
+    numA: string;
+    numB: string;
+    numC: string;
+    numD: string;
+    numE: string;
   }>({
-    numAStar: 0,
-    numA: 4,
-    numB: 4,
-    numC: 0,
-    numD: 0,
-    numE: 0
+    numAStar: '',
+    numA: '4',
+    numB: '4',
+    numC: '',
+    numD: '',
+    numE: ''
   });
 
   // Calculate O-Level Obtained Marks (out of 800)
   const oLevelObtainedMarks = useMemo(() => {
     const { numAStar, numA, numB, numC, numD, numE } = oLevelGradesCount;
-    return (numAStar * 90) + (numA * 85) + (numB * 75) + (numC * 65) + (numD * 55) + (numE * 45);
+    return (
+      (Number(numAStar) || 0) * 90 +
+      (Number(numA) || 0) * 85 +
+      (Number(numB) || 0) * 75 +
+      (Number(numC) || 0) * 65 +
+      (Number(numD) || 0) * 55 +
+      (Number(numE) || 0) * 45
+    );
   }, [oLevelGradesCount]);
 
   // Calculate A-Level Obtained Marks (out of 300)
@@ -102,8 +109,8 @@ export const UniPathMatcherScreen: React.FC<UniPathMatcherScreenProps> = React.m
   const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    let finalSsc = sscPercentage;
-    let finalHssc = hsscPercentage;
+    let finalSsc = sscPercentage === '' ? 0 : parseFloat(sscPercentage) || 0;
+    let finalHssc = hsscPercentage === '' ? 0 : parseFloat(hsscPercentage) || 0;
 
     if (system === 'alevels' && olevelInputMode === 'grades') {
       finalSsc = calculatedOLevelEquivalence;
@@ -115,7 +122,8 @@ export const UniPathMatcherScreen: React.FC<UniPathMatcherScreenProps> = React.m
       sscPercentage: Math.min(100, Math.max(0, finalSsc)),
       hsscPercentage: Math.min(100, Math.max(0, finalHssc)),
       stream,
-      desiredField
+      desiredField,
+      aLevelGrades: system === 'alevels' ? aLevelGrades : undefined
     };
 
     const calculated = calculateEligibility(creds);
@@ -268,10 +276,11 @@ export const UniPathMatcherScreen: React.FC<UniPathMatcherScreenProps> = React.m
                             min="0"
                             max="8"
                             value={oLevelGradesCount.numAStar}
+                            placeholder="0"
                             onChange={(e) =>
                               setOLevelGradesCount((prev) => ({
                                 ...prev,
-                                numAStar: parseInt(e.target.value) || 0
+                                numAStar: e.target.value
                               }))
                             }
                             className="w-full bg-slate-950 border border-slate-700 rounded-lg px-2 py-1 text-white font-bold text-xs text-center"
@@ -284,10 +293,11 @@ export const UniPathMatcherScreen: React.FC<UniPathMatcherScreenProps> = React.m
                             min="0"
                             max="8"
                             value={oLevelGradesCount.numA}
+                            placeholder="0"
                             onChange={(e) =>
                               setOLevelGradesCount((prev) => ({
                                 ...prev,
-                                numA: parseInt(e.target.value) || 0
+                                numA: e.target.value
                               }))
                             }
                             className="w-full bg-slate-950 border border-slate-700 rounded-lg px-2 py-1 text-white font-bold text-xs text-center"
@@ -300,10 +310,11 @@ export const UniPathMatcherScreen: React.FC<UniPathMatcherScreenProps> = React.m
                             min="0"
                             max="8"
                             value={oLevelGradesCount.numB}
+                            placeholder="0"
                             onChange={(e) =>
                               setOLevelGradesCount((prev) => ({
                                 ...prev,
-                                numB: parseInt(e.target.value) || 0
+                                numB: e.target.value
                               }))
                             }
                             className="w-full bg-slate-950 border border-slate-700 rounded-lg px-2 py-1 text-white font-bold text-xs text-center"
@@ -316,10 +327,11 @@ export const UniPathMatcherScreen: React.FC<UniPathMatcherScreenProps> = React.m
                             min="0"
                             max="8"
                             value={oLevelGradesCount.numC}
+                            placeholder="0"
                             onChange={(e) =>
                               setOLevelGradesCount((prev) => ({
                                 ...prev,
-                                numC: parseInt(e.target.value) || 0
+                                numC: e.target.value
                               }))
                             }
                             className="w-full bg-slate-950 border border-slate-700 rounded-lg px-2 py-1 text-white font-bold text-xs text-center"
@@ -332,10 +344,11 @@ export const UniPathMatcherScreen: React.FC<UniPathMatcherScreenProps> = React.m
                             min="0"
                             max="8"
                             value={oLevelGradesCount.numD}
+                            placeholder="0"
                             onChange={(e) =>
                               setOLevelGradesCount((prev) => ({
                                 ...prev,
-                                numD: parseInt(e.target.value) || 0
+                                numD: e.target.value
                               }))
                             }
                             className="w-full bg-slate-950 border border-slate-700 rounded-lg px-2 py-1 text-white font-bold text-xs text-center"
@@ -348,10 +361,11 @@ export const UniPathMatcherScreen: React.FC<UniPathMatcherScreenProps> = React.m
                             min="0"
                             max="8"
                             value={oLevelGradesCount.numE}
+                            placeholder="0"
                             onChange={(e) =>
                               setOLevelGradesCount((prev) => ({
                                 ...prev,
-                                numE: parseInt(e.target.value) || 0
+                                numE: e.target.value
                               }))
                             }
                             className="w-full bg-slate-950 border border-slate-700 rounded-lg px-2 py-1 text-white font-bold text-xs text-center"
@@ -409,7 +423,7 @@ export const UniPathMatcherScreen: React.FC<UniPathMatcherScreenProps> = React.m
                         min="0"
                         max="100"
                         value={sscPercentage}
-                        onChange={(e) => setSscPercentage(parseFloat(e.target.value) || 0)}
+                        onChange={(e) => setSscPercentage(e.target.value)}
                         className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white font-bold text-xs"
                         placeholder="e.g. 80"
                       />
@@ -421,7 +435,7 @@ export const UniPathMatcherScreen: React.FC<UniPathMatcherScreenProps> = React.m
                         min="0"
                         max="100"
                         value={hsscPercentage}
-                        onChange={(e) => setHsscPercentage(parseFloat(e.target.value) || 0)}
+                        onChange={(e) => setHsscPercentage(e.target.value)}
                         className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white font-bold text-xs"
                         placeholder="e.g. 77.73"
                       />
@@ -440,7 +454,7 @@ export const UniPathMatcherScreen: React.FC<UniPathMatcherScreenProps> = React.m
                     min="0"
                     max="100"
                     value={sscPercentage}
-                    onChange={(e) => setSscPercentage(parseFloat(e.target.value) || 0)}
+                    onChange={(e) => setSscPercentage(e.target.value)}
                     className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3.5 py-2.5 text-white font-bold text-xs sm:text-sm focus:outline-none focus:border-indigo-500"
                     placeholder="e.g. 80"
                     required
@@ -456,7 +470,7 @@ export const UniPathMatcherScreen: React.FC<UniPathMatcherScreenProps> = React.m
                     min="0"
                     max="100"
                     value={hsscPercentage}
-                    onChange={(e) => setHsscPercentage(parseFloat(e.target.value) || 0)}
+                    onChange={(e) => setHsscPercentage(e.target.value)}
                     className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3.5 py-2.5 text-white font-bold text-xs sm:text-sm focus:outline-none focus:border-indigo-500"
                     placeholder="e.g. 72"
                     required
