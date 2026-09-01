@@ -23,6 +23,20 @@ export interface Question {
   ans: number;
 }
 
+export interface TestInstance {
+  id: string;
+  instanceNumber: number;
+  title: string;
+  tag: string;
+  badgeText: string;
+  difficulty: 'Standard' | 'Challenging' | 'High-Rigor' | 'Mastery';
+  isLocked: boolean;
+  isFree: boolean;
+  questionCount: number;
+  durationMinutes: number;
+  description: string;
+}
+
 export type TestDataMap = Record<UniversityKey, UniversityData>;
 export type QuestionBankMap = Record<string, Question[]>;
 
@@ -39,3 +53,4 @@ export type AppScreen =
   | 'test-info'
   | 'active-test'
   | 'result';
+

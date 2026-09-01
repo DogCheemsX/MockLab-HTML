@@ -197,7 +197,7 @@ export const UniPathMatcherScreen: React.FC<UniPathMatcherScreenProps> = React.m
           <span>←</span> Back to Home
         </button>
         <span className="text-xs font-semibold text-emerald-400 bg-emerald-500/10 px-3 py-1 rounded-full border border-emerald-500/20">
-          Instant UniPath Matcher • Saved to Device
+          Instant Eligibility Checker • Saved to Device
         </span>
       </div>
 
@@ -207,7 +207,7 @@ export const UniPathMatcherScreen: React.FC<UniPathMatcherScreenProps> = React.m
           <span>🎯</span> University & Program Eligibility Finder
         </div>
         <h1 className="text-3xl sm:text-4xl font-black font-display tracking-tight text-white mb-2">
-          UniPath Matcher 2.0
+          University Eligibility Checker
         </h1>
         <p className="text-sm text-slate-300 max-w-lg leading-relaxed">
           Enter your background and marks or letter grades to instantly check which top Pakistani universities you qualify for.

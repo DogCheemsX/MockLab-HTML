@@ -18,7 +18,7 @@ const UNIVERSITIES: UniversityOption[] = [
     key: 'NTS',
     name: 'NTS National Aptitude Test',
     badge: 'NTS',
-    logo: 'logos/nts.png',
+    logo: '/logos/nts.png',
     tag: 'NAT-I Standard',
     desc: 'Engineering, Medical, CS, Basic Sciences, Commerce & Humanities',
     color: 'from-amber-600 to-orange-600',
@@ -27,7 +27,7 @@ const UNIVERSITIES: UniversityOption[] = [
     key: 'COMSATS',
     name: 'COMSATS Admission Test',
     badge: 'CU',
-    logo: 'logos/comsats.jpg',
+    logo: '/logos/comsats.jpg',
     tag: 'NTS NAT Pattern',
     desc: 'CS, Engineering, Business, Basic Sciences, Humanities, Media & Bio',
     color: 'from-blue-600 to-indigo-600',
@@ -36,7 +36,7 @@ const UNIVERSITIES: UniversityOption[] = [
     key: 'PIEAS',
     name: 'PIEAS Admission Test',
     badge: 'PI',
-    logo: 'logos/pieas.png',
+    logo: '/logos/pieas.png',
     tag: 'Engineering / Physics',
     desc: 'High-rigor STEM & Basic Sciences paper pattern for Islamabad campus',
     color: 'from-purple-600 to-indigo-600',
@@ -45,7 +45,7 @@ const UNIVERSITIES: UniversityOption[] = [
     key: 'AIR',
     name: 'Air University Test',
     badge: 'AU',
-    logo: 'logos/air.png',
+    logo: '/logos/air.png',
     tag: 'AU-CBT Pattern',
     desc: 'Computing, Engineering, Business, Basic Sciences & Humanities',
     color: 'from-cyan-600 to-blue-600',
@@ -54,7 +54,7 @@ const UNIVERSITIES: UniversityOption[] = [
     key: 'BAHRIA',
     name: 'Bahria University Test',
     badge: 'BU',
-    logo: 'logos/bahria.png',
+    logo: '/logos/bahria.png',
     tag: 'BUET Exam',
     desc: 'CS, Engineering, Law, Medicine/Allied Health, Earth/Env & Business',
     color: 'from-emerald-600 to-teal-600',
@@ -63,7 +63,7 @@ const UNIVERSITIES: UniversityOption[] = [
     key: 'CUST',
     name: 'CUST Admission Test',
     badge: 'CUST',
-    logo: 'logos/cust.jpg',
+    logo: '/logos/cust.jpg',
     tag: 'UG Entry Test',
     desc: 'Computing, Engineering, Law, Pharm-D/Allied Health & Business',
     color: 'from-fuchsia-600 to-violet-600',
@@ -91,10 +91,10 @@ export const SelectUniversityScreen: React.FC = React.memo(() => {
           </button>
           <button
             onClick={() => navigate('/unipath')}
-            aria-label="Go to UniPath Matcher"
+            aria-label="Go to University Eligibility Checker"
             className="inline-flex items-center gap-1.5 text-xs font-bold text-emerald-300 hover:text-white transition-colors bg-emerald-500/10 px-3 py-1.5 rounded-lg border border-emerald-500/30 focus-visible:ring-2 focus-visible:ring-emerald-400"
           >
-            <span>🎯</span> UniPath Matcher
+            <span>🎯</span> University Eligibility Checker
           </button>
         </div>
         <span className="text-xs font-semibold text-indigo-400 bg-indigo-500/10 px-3 py-1 rounded-full border border-indigo-500/20">
@@ -145,27 +145,27 @@ export const SelectUniversityScreen: React.FC = React.memo(() => {
         ))}
       </div>
 
-      {/* Join Premium Pass Section */}
+      {/* Premium Pass Section */}
       <div className="w-full glass-panel rounded-3xl p-6 sm:p-8 mt-8 border border-amber-500/30 shadow-xl relative overflow-hidden text-center">
         <div className="absolute top-0 right-0 w-32 h-32 bg-amber-500/10 rounded-full blur-2xl pointer-events-none"></div>
         <div className="relative z-10 flex flex-col items-center">
           <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30 text-xs font-bold uppercase tracking-wider mb-3">
-            <span>👑</span> Premium Pass Unlock
+            <span>👑</span> Premium Pass
           </span>
           <h2 className="text-2xl sm:text-3xl font-extrabold font-display text-white mb-2">
-            Get Lifetime Unlimited Access
+            Get Lifetime Access
           </h2>
           <p className="text-xs sm:text-sm text-slate-300 max-w-md mb-6 leading-relaxed">
-            Unlock all premium test categories across NTS NAT, ECAT, MDCAT, PIEAS, Air, Bahria & CUST test banks on all devices.
+            Unlock all premium tests across NTS NAT, ECAT, MDCAT, PIEAS, Air, Bahria & CUST test banks on all devices.
           </p>
 
           {/* QR Code Container */}
           <div className="flex flex-col items-center justify-center mb-6">
             <div className="bg-white p-3 rounded-2xl shadow-glow-indigo border-2 border-indigo-400 mb-3 transition-transform hover:scale-105 duration-300">
-              <img src="qr.png" alt="NayaPay QR Code" className="w-36 h-36 object-contain rounded-lg" />
+              <img src="/qr.png" alt="NayaPay QR Code" className="w-36 h-36 object-contain rounded-lg" />
             </div>
             <span className="text-[11px] sm:text-xs font-bold text-indigo-300 uppercase tracking-widest bg-indigo-950/80 px-3.5 py-1.5 rounded-full border border-indigo-500/40 shadow-sm">
-              Scan to Pay Via NayaPay / JazzCash / EasyPaisa
+              Scan to Pay via NayaPay
             </span>
           </div>
 
@@ -176,7 +176,7 @@ export const SelectUniversityScreen: React.FC = React.memo(() => {
                 1
               </div>
               <p className="text-xs sm:text-sm font-medium text-slate-300 leading-relaxed">
-                Transfer <b className="text-emerald-400 font-bold">{PAYMENT_INFO.amount}</b> to account <b className="text-white font-bold">{PAYMENT_INFO.accountNumber}</b> ({PAYMENT_INFO.bankName}).
+                Send <b className="text-emerald-400 font-bold">{PAYMENT_INFO.amount}</b> to <b className="text-white font-bold">{PAYMENT_INFO.accountNumber}</b> (NayaPay).
               </p>
             </div>
             <div className="flex items-start">
@@ -184,7 +184,7 @@ export const SelectUniversityScreen: React.FC = React.memo(() => {
                 2
               </div>
               <p className="text-xs sm:text-sm font-medium text-slate-300 leading-relaxed">
-                Send your registered email & receipt screenshot to our WhatsApp admin.
+                Send your payment screenshot to WhatsApp admin.
               </p>
             </div>
             <div className="flex items-start">
@@ -204,8 +204,8 @@ export const SelectUniversityScreen: React.FC = React.memo(() => {
             rel="noreferrer"
             className="w-full max-w-md bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-sm sm:text-base py-3.5 px-6 rounded-xl shadow-glow-emerald transition-all transform hover:-translate-y-0.5 active:translate-y-0 flex items-center justify-center gap-2.5 border border-emerald-400/30 text-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400"
           >
-            <img src="whatsapp.png" alt="WhatsApp" className="w-5 h-5 object-contain shrink-0" />
-            <span>Contact Admin on WhatsApp</span>
+            <img src="/whatsapp.png" alt="WhatsApp" className="w-5 h-5 object-contain shrink-0" />
+            <span>Confirm Payment on WhatsApp</span>
           </a>
         </div>
       </div>

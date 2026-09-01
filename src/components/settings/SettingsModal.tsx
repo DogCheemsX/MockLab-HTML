@@ -348,7 +348,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, o
             <div className="p-4 rounded-2xl bg-slate-950 border border-slate-800 flex items-center justify-between">
               <div>
                 <h4 className="font-bold text-white text-sm">Reset Local Cache & Preferences</h4>
-                <p className="text-slate-400 text-xs">Clear saved UniPath inputs & search filters</p>
+                <p className="text-slate-400 text-xs">Clear saved Eligibility Checker inputs & search filters</p>
               </div>
               <button
                 type="button"

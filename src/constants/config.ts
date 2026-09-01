@@ -12,14 +12,25 @@ export const ADMIN_EMAIL = import.meta.env.VITE_ADMIN_EMAIL || "alisherahsan@gma
 
 export const PAYMENT_INFO = {
   amount: import.meta.env.VITE_PAYMENT_AMOUNT || "PKR 500",
+  originalPrice: "PKR 1,500",
+  discountPercent: "67% OFF",
   accountNumber: import.meta.env.VITE_PAYMENT_ACCOUNT_NUMBER || "03465939277",
-  bankName: import.meta.env.VITE_PAYMENT_BANK_NAME || "Bank NayaPay",
-  whatsappUrl: import.meta.env.VITE_PAYMENT_WHATSAPP_URL || "https://wa.me/923465939277"
+  accountTitle: "MockLab Official",
+  bankName: import.meta.env.VITE_PAYMENT_BANK_NAME || "NayaPay",
+  whatsappUrl: import.meta.env.VITE_PAYMENT_WHATSAPP_URL || "https://wa.me/923465939277",
+  qrImage: "/qr.png"
 };
+
 
 export const FREE_TEST_ID = 'nat-ics';
 
-export const isTestUnlocked = (typeId: string, isPremium?: boolean): boolean => {
+/**
+ * Access Control Rule:
+ * - Free tier users get access to exactly one baseline test (instanceIndex === 0) per stream.
+ * - Premium users unlock all test instances across all streams.
+ */
+export const isTestUnlocked = (_typeId?: string, isPremium?: boolean, instanceIndex: number = 0): boolean => {
   if (isPremium) return true;
-  return typeId === FREE_TEST_ID;
+  return instanceIndex === 0;
 };
+
