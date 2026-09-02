@@ -47,7 +47,7 @@ export const IntroScreen: React.FC<IntroScreenProps> = React.memo(({ user, userD
           </h1>
 
           <p className="text-xs sm:text-base text-slate-300 mb-5 max-w-xl font-normal leading-relaxed">
-            Timed exam simulations, instant score reports, and full length past papers tailored for <strong className="text-indigo-300 font-semibold">NTS NAT, PIEAS, CUST, Air University</strong>, and <strong className="text-indigo-300 font-semibold">Bahria</strong>.
+            Timed exam simulations, instant score reports, and full length past papers tailored for <strong className="text-indigo-300 font-semibold">NTS NAT, PIEAS, CUST, Air University</strong>, <strong className="text-indigo-300 font-semibold">Bahria</strong>, and more!
           </p>
 
           {/* Account Status Pill */}

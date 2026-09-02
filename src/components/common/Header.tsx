@@ -42,7 +42,7 @@ export const Header: React.FC = React.memo(() => {
 
 
       <p className="text-slate-300 font-medium text-sm sm:text-base max-w-md leading-relaxed">
-        Pakistan's premier computer-based test portal for top engineering, computing, medical & business universities.
+        Pakistan's 1st all in one university entrance test platform
       </p>
     </div>
   );

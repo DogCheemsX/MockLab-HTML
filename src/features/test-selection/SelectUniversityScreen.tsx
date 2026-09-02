@@ -84,7 +84,7 @@ export const SelectUniversityScreen: React.FC<SelectUniversityScreenProps> = Rea
           Select Target University
         </h1>
         <p className="text-xs sm:text-base text-slate-300 max-w-lg mx-auto">
-          Start taking free practice tests immediately, no credit card required.
+          Start taking free practice tests immediately.
         </p>
       </div>
 
@@ -171,7 +171,7 @@ export const SelectUniversityScreen: React.FC<SelectUniversityScreenProps> = Rea
                   Unlock Unlimited Full Length Past Papers
                 </h2>
                 <p className="text-xs sm:text-sm text-slate-300 max-w-md mb-5 leading-relaxed">
-                  Get full lifetime access to unlimited CBT past papers across all universities.
+                  Get full lifetime access to unlimited past papers across all universities.
                 </p>
 
                 {/* Lifetime Access Offer Card Box */}

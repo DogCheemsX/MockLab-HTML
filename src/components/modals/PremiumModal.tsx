@@ -52,7 +52,7 @@ export const PremiumModal: React.FC<PremiumModalProps> = React.memo(({ isOpen, o
             Unlock Unlimited Full Length Past Papers
           </h2>
           <p className="text-xs sm:text-sm text-slate-300 mt-1 max-w-sm mx-auto leading-relaxed">
-            Generate infinite on-demand CBT past papers across all universities.
+            Generate infinite on-demand past papers across all universities.
           </p>
         </div>
 
