@@ -37,7 +37,7 @@ export const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = React.memo(
 
       const success = await onSendReset(email.trim());
       if (success) {
-        setSuccessMessage('Check your inbox for the password reset link.');
+        setSuccessMessage('Please check your Inbox (and Spam / Junk folder if it doesn\'t appear within 1–2 minutes).');
         setFieldHasError(false);
       } else {
         setFieldHasError(true);
@@ -61,11 +61,14 @@ export const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = React.memo(
       <form onSubmit={handleSubmit} className="space-y-4">
         {/* Success Feedback Banner */}
         {successMessage && (
-          <div className="p-3.5 rounded-xl bg-emerald-950/40 border border-emerald-500/40 text-emerald-300 text-xs font-semibold flex items-center gap-2.5 animate-page-enter shadow-sm">
-            <svg className="w-4 h-4 text-emerald-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
+          <div className="p-4 rounded-2xl bg-emerald-950/60 border border-emerald-500/50 text-emerald-300 text-xs font-medium flex items-start gap-3 animate-page-enter shadow-lg text-left">
+            <svg className="w-5 h-5 text-emerald-400 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
-            <span>{successMessage}</span>
+            <div className="flex flex-col gap-1">
+              <span className="font-extrabold text-white text-xs sm:text-sm">Password Reset Email Sent! ✉️</span>
+              <span className="leading-relaxed text-emerald-200">{successMessage}</span>
+            </div>
           </div>
         )}
 
@@ -115,6 +118,10 @@ export const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = React.memo(
             'Send Reset Link 📧'
           )}
         </button>
+
+        <p className="text-xs text-slate-400 mt-3 text-center leading-relaxed">
+          Please check your Spam or Junk folder if the email doesn't appear in your inbox within 1–2 minutes.
+        </p>
 
         <button
           type="button"

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Question } from '../../types/test';
 import { MathText } from '../common/MathText';
+import { getOfficialSectionTitle } from '../../utils/sectionUtils';
 
 interface QuestionCardProps {
   question: Question;
@@ -10,9 +11,9 @@ interface QuestionCardProps {
   isReview: boolean;
   answeredCount: number;
   reviewCount: number;
+  typeId?: string;
   onSelectOption: (optionIndex: number) => void;
   onToggleReview: () => void;
-  onJumpToQuestion: (index: number) => void;
   onJumpToNextSection: () => void;
   onPrevSection?: () => void;
   onOpenOverview: () => void;
@@ -32,9 +33,9 @@ export const QuestionCard: React.FC<QuestionCardProps> = React.memo(
     isReview,
     answeredCount,
     reviewCount,
+    typeId,
     onSelectOption,
     onToggleReview,
-
     onJumpToNextSection,
     onPrevSection,
     onOpenOverview,
@@ -42,6 +43,8 @@ export const QuestionCard: React.FC<QuestionCardProps> = React.memo(
     onNext,
     onSubmit
   }) => {
+    const officialSectionTitle = getOfficialSectionTitle(typeId, question.subject);
+
     return (
       <div className="w-full flex flex-col gap-4 py-3">
         {/* Sub-Header Toolbar */}
@@ -98,7 +101,7 @@ export const QuestionCard: React.FC<QuestionCardProps> = React.memo(
               </span>
               <span className="text-[11px] sm:text-xs font-extrabold text-emerald-300 bg-emerald-950/60 px-3 sm:px-3.5 py-1 rounded-full border border-emerald-500/30 uppercase tracking-wider flex items-center gap-1.5 shadow-sm">
                 <span className="w-2 h-2 rounded-full bg-emerald-400"></span>
-                Current Section: {question.subject || 'General'}
+                Current Section: {officialSectionTitle}
               </span>
             </div>
 
@@ -155,7 +158,6 @@ export const QuestionCard: React.FC<QuestionCardProps> = React.memo(
             </div>
           </div>
         </div>
-
 
         {/* Navigation Buttons Footer */}
         <div className="flex justify-between items-center border-t border-slate-800 pt-6 mt-4">

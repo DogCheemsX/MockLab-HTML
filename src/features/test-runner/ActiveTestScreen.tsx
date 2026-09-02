@@ -6,6 +6,7 @@ import { TestHeader } from '../../components/test/TestHeader';
 import { QuestionCard } from '../../components/test/QuestionCard';
 import { OverviewGridModal } from '../../components/test/OverviewGridModal';
 import { ExitConfirmModal } from '../../components/modals/ExitConfirmModal';
+import { getOfficialSectionTitle } from '../../utils/sectionUtils';
 
 interface ActiveTestScreenProps {
   testSession: UseTestSessionReturn;
@@ -80,13 +81,17 @@ export const ActiveTestScreen: React.FC<ActiveTestScreenProps> = React.memo(({ t
     }
   }, [currentQIndex, prevQuestion, setSearchParams]);
 
+  const typeId = storedSession?.typeId;
+
+  // Circular Next Section Handler: Wraps automatically from final section to first section (index 0)
   const handleNextSection = React.useCallback(() => {
     if (activeQuestions.length === 0) return;
-    const currentSubject = activeQuestions[currentQIndex]?.subject;
+    const currentSubjectTitle = getOfficialSectionTitle(typeId, activeQuestions[currentQIndex]?.subject);
     
     let targetIndex = -1;
     for (let i = currentQIndex + 1; i < activeQuestions.length; i++) {
-      if (activeQuestions[i].subject !== currentSubject) {
+      const itemSubjectTitle = getOfficialSectionTitle(typeId, activeQuestions[i].subject);
+      if (itemSubjectTitle !== currentSubjectTitle) {
         targetIndex = i;
         break;
       }
@@ -96,20 +101,27 @@ export const ActiveTestScreen: React.FC<ActiveTestScreenProps> = React.memo(({ t
       jumpToQuestion(targetIndex);
       setSearchParams({ q: (targetIndex + 1).toString() });
     } else {
-      alert('You are currently in the final subject section of the test.');
+      // Circular wrap around to index 0 (Question 1)
+      jumpToQuestion(0);
+      setSearchParams({ q: '1' });
     }
-  }, [currentQIndex, activeQuestions, jumpToQuestion, setSearchParams]);
+  }, [currentQIndex, activeQuestions, typeId, jumpToQuestion, setSearchParams]);
 
+  // Circular Prev Section Handler: Wraps automatically from first section to start of final section
   const handlePrevSection = React.useCallback(() => {
-    if (activeQuestions.length === 0 || currentQIndex === 0) return;
-    const currentSubject = activeQuestions[currentQIndex]?.subject;
+    if (activeQuestions.length === 0) return;
+    const currentSubjectTitle = getOfficialSectionTitle(typeId, activeQuestions[currentQIndex]?.subject);
     
     let targetIndex = -1;
     for (let i = currentQIndex - 1; i >= 0; i--) {
-      if (activeQuestions[i].subject !== currentSubject) {
-        const prevSubject = activeQuestions[i].subject;
+      const itemSubjectTitle = getOfficialSectionTitle(typeId, activeQuestions[i].subject);
+      if (itemSubjectTitle !== currentSubjectTitle) {
+        const prevSubjectTitle = itemSubjectTitle;
         let startOfPrevBlock = i;
-        while (startOfPrevBlock > 0 && activeQuestions[startOfPrevBlock - 1].subject === prevSubject) {
+        while (
+          startOfPrevBlock > 0 &&
+          getOfficialSectionTitle(typeId, activeQuestions[startOfPrevBlock - 1].subject) === prevSubjectTitle
+        ) {
           startOfPrevBlock--;
         }
         targetIndex = startOfPrevBlock;
@@ -121,9 +133,20 @@ export const ActiveTestScreen: React.FC<ActiveTestScreenProps> = React.memo(({ t
       jumpToQuestion(targetIndex);
       setSearchParams({ q: (targetIndex + 1).toString() });
     } else {
-      alert('You are currently in the first subject section of the test.');
+      // Circular wrap around to start of final section block
+      const lastQIndex = activeQuestions.length - 1;
+      const lastSubjectTitle = getOfficialSectionTitle(typeId, activeQuestions[lastQIndex]?.subject);
+      let startOfLastBlock = lastQIndex;
+      while (
+        startOfLastBlock > 0 &&
+        getOfficialSectionTitle(typeId, activeQuestions[startOfLastBlock - 1].subject) === lastSubjectTitle
+      ) {
+        startOfLastBlock--;
+      }
+      jumpToQuestion(startOfLastBlock);
+      setSearchParams({ q: (startOfLastBlock + 1).toString() });
     }
-  }, [currentQIndex, activeQuestions, jumpToQuestion, setSearchParams]);
+  }, [currentQIndex, activeQuestions, typeId, jumpToQuestion, setSearchParams]);
 
   // Open custom Exit Confirmation Modal
   const handleExitClick = React.useCallback(() => {
@@ -190,9 +213,9 @@ export const ActiveTestScreen: React.FC<ActiveTestScreenProps> = React.memo(({ t
           isReview={isReview}
           answeredCount={answeredCount}
           reviewCount={reviewCount}
+          typeId={typeId}
           onSelectOption={saveAnswer}
           onToggleReview={toggleReview}
-          onJumpToQuestion={handleJump}
           onJumpToNextSection={handleNextSection}
           onPrevSection={handlePrevSection}
           onOpenOverview={() => setIsOverviewOpen(true)}

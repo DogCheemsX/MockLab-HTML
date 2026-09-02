@@ -1,5 +1,6 @@
 import { Question, TestInstance } from '../types/test';
 import { questionBank } from '../data/questionBank';
+import { getOfficialSectionTitle } from '../utils/sectionUtils';
 
 /**
  * Seeded deterministic permutation generator to guarantee
@@ -33,7 +34,7 @@ export interface InstanceMeta {
 const INSTANCE_DEFINITIONS: InstanceMeta[] = [
   {
     title: "Free Full Length Past Paper",
-    subtitle: "Baseline practice paper.",
+    subtitle: "Full length past paper based on official exam pattern.",
     badgeText: "FREE TEST",
     difficulty: "Standard"
   },
@@ -97,15 +98,15 @@ export function generateOnDemandSimulation(typeId: string, seed?: number): Quest
 
   const activeSeed = seed || (Date.now() + Math.floor(Math.random() * 1000000));
 
-  // Group questions by subject to preserve strict sequential subject order
+  // Group questions by official section title to preserve strict sequential subject order
   const subjectGroups: { subject: string; questions: Question[] }[] = [];
   baseQuestions.forEach((q) => {
-    const subj = q.subject || 'General';
+    const officialSubj = getOfficialSectionTitle(typeId, q.subject);
     const lastGroup = subjectGroups[subjectGroups.length - 1];
-    if (lastGroup && lastGroup.subject === subj) {
+    if (lastGroup && lastGroup.subject === officialSubj) {
       lastGroup.questions.push(q);
     } else {
-      subjectGroups.push({ subject: subj, questions: [q] });
+      subjectGroups.push({ subject: officialSubj, questions: [q] });
     }
   });
 

@@ -2,6 +2,7 @@ import React from 'react';
 import { useNavigate, Navigate } from 'react-router-dom';
 import { UseTestSessionReturn } from '../../hooks/useTestSession';
 import { getScoreMessage } from '../../utils/formatters';
+import { getOfficialSectionTitle } from '../../utils/sectionUtils';
 
 interface TestResultScreenProps {
   testSession: UseTestSessionReturn;
@@ -21,6 +22,29 @@ export const TestResultScreen: React.FC<TestResultScreenProps> = React.memo(({ t
 
   const percentage = totalQuestions > 0 ? Math.round((finalScore / totalQuestions) * 100) : 0;
   const msg = getScoreMessage(finalScore, totalQuestions);
+
+  const subjectBreakdown = React.useMemo(() => {
+    if (!storedSession || !storedSession.activeQuestions) return [];
+    const map: Record<string, { correct: number; total: number }> = {};
+
+    storedSession.activeQuestions.forEach((q, idx) => {
+      const officialTitle = getOfficialSectionTitle(storedSession.typeId, q.subject);
+      if (!map[officialTitle]) {
+        map[officialTitle] = { correct: 0, total: 0 };
+      }
+      map[officialTitle].total += 1;
+      if (storedSession.userAnswers && storedSession.userAnswers[idx] === q.ans) {
+        map[officialTitle].correct += 1;
+      }
+    });
+
+    return Object.entries(map).map(([title, stats]) => ({
+      title,
+      correct: stats.correct,
+      total: stats.total,
+      pct: stats.total > 0 ? Math.round((stats.correct / stats.total) * 100) : 0
+    }));
+  }, [storedSession]);
 
   const handleReturnHome = () => {
     clearSession();
@@ -47,7 +71,7 @@ export const TestResultScreen: React.FC<TestResultScreenProps> = React.memo(({ t
       {/* Universal PC Responsive 2-Column Horizontal Layout Grid */}
       <div className="w-full grid grid-cols-1 lg:grid-cols-12 gap-8 items-start text-left">
         {/* Left Column: Main Score Glass Card & Circular Badge */}
-        <div className="lg:col-span-6 flex flex-col items-center">
+        <div className="lg:col-span-6 flex flex-col items-center w-full">
           <div className="w-full glass-panel rounded-3xl p-6 sm:p-8 shadow-glass border border-slate-700/80 text-center relative overflow-hidden">
             <div className="absolute top-0 right-0 -mt-10 -mr-10 w-40 h-40 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
 
@@ -86,13 +110,13 @@ export const TestResultScreen: React.FC<TestResultScreenProps> = React.memo(({ t
         </div>
 
         {/* Right Column: Score Breakdown Grid & Action Buttons */}
-        <div className="lg:col-span-6 flex flex-col items-center gap-6">
-          <div className="w-full glass-panel p-6 rounded-3xl border border-slate-700/80 space-y-4">
+        <div className="lg:col-span-6 flex flex-col items-center gap-6 w-full">
+          <div className="w-full glass-panel p-6 rounded-3xl border border-slate-700/80 space-y-4 text-left">
             <h3 className="text-base font-black font-display text-white mb-2">
-              Performance Summary
+              Official Section Breakdown
             </h3>
 
-            <div className="grid grid-cols-2 gap-3 bg-slate-900/80 p-4 rounded-2xl border border-slate-800">
+            <div className="grid grid-cols-2 gap-3 bg-slate-900/80 p-4 rounded-2xl border border-slate-800 mb-4">
               <div>
                 <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Correct Answers</p>
                 <p id="final-score" className="text-2xl font-extrabold text-emerald-400">
@@ -103,6 +127,23 @@ export const TestResultScreen: React.FC<TestResultScreenProps> = React.memo(({ t
                 <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Total Evaluated</p>
                 <p className="text-2xl font-extrabold text-white">{totalQuestions} MCQs</p>
               </div>
+            </div>
+
+            {/* Official Subject Breakdown Cards */}
+            <div className="space-y-2.5">
+              {subjectBreakdown.map((item, idx) => (
+                <div key={idx} className="bg-slate-900/70 p-3 rounded-xl border border-slate-800 flex items-center justify-between gap-3">
+                  <div className="flex items-center gap-2.5">
+                    <span className="w-2.5 h-2.5 rounded-full bg-indigo-400 shrink-0"></span>
+                    <span className="text-xs sm:text-sm font-bold text-white">{item.title}</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs font-extrabold text-indigo-300 bg-indigo-950 px-2.5 py-0.5 rounded-full border border-indigo-500/30">
+                      {item.correct}/{item.total} ({item.pct}%)
+                    </span>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
 
