@@ -21,6 +21,7 @@ export interface Question {
   q: string;
   options: string[];
   ans: number;
+  subject?: string;
 }
 
 export interface TestInstance {

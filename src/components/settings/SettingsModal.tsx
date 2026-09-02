@@ -169,7 +169,8 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, o
                 : 'text-slate-400 hover:text-white'
             }`}
           >
-            👑 Pass & Rank
+            PRO Pass & Rank
+
           </button>
           <button
             type="button"
@@ -289,8 +290,9 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, o
                 <span className="text-slate-400 font-bold uppercase tracking-wider">Account Membership Tier</span>
                 {userData?.isPremium ? (
                   <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/40 font-extrabold">
-                    <span>👑</span> PREMIUM PASS ACTIVE
+                    PREMIUM PASS ACTIVE
                   </span>
+
                 ) : (
                   <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-800 text-slate-300 border border-slate-700 font-semibold">
                     <span>🌱</span> FREE ACCESS TIER

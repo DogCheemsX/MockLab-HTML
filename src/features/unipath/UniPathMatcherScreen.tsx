@@ -188,18 +188,19 @@ export const UniPathMatcherScreen: React.FC<UniPathMatcherScreenProps> = React.m
   return (
     <div className="w-full max-w-3xl flex flex-col items-center py-2 animate-page-enter">
       {/* Top Header & Breadcrumb */}
-      <div className="w-full flex items-center justify-between mb-6">
+      <div className="w-full flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2.5 mb-6 mt-2 sm:mt-0">
         <button
           onClick={() => navigate('/')}
           aria-label="Back to Home"
-          className="inline-flex items-center gap-2 text-xs font-bold text-slate-400 hover:text-white transition-colors bg-slate-800/80 px-3 py-1.5 rounded-lg border border-slate-700/60 focus-visible:ring-2 focus-visible:ring-indigo-400"
+          className="inline-flex items-center justify-center sm:justify-start gap-2 text-xs font-bold text-slate-400 hover:text-white transition-colors bg-slate-800/80 px-3.5 py-2 sm:py-1.5 rounded-xl border border-slate-700/60 truncate focus-visible:ring-2 focus-visible:ring-indigo-400"
         >
-          <span>←</span> Back to Home
+          <span>←</span> <span className="truncate">Back to Home</span>
         </button>
-        <span className="text-xs font-semibold text-emerald-400 bg-emerald-500/10 px-3 py-1 rounded-full border border-emerald-500/20">
+        <span className="text-[11px] sm:text-xs font-semibold text-emerald-400 bg-emerald-500/10 px-3 py-1.5 rounded-full border border-emerald-500/20 text-center truncate">
           Instant Eligibility Checker • Saved to Device
         </span>
       </div>
+
 
       {/* Screen Title */}
       <div className="text-center mb-8">
@@ -740,8 +741,9 @@ export const UniPathMatcherScreen: React.FC<UniPathMatcherScreenProps> = React.m
                       <div className="glass-panel p-5 rounded-2xl border border-amber-500/40 bg-gradient-to-r from-amber-950/20 via-slate-900/80 to-indigo-950/20 shadow-lg flex flex-col sm:flex-row items-center justify-between gap-4">
                         <div className="flex items-center gap-3.5 text-left">
                           <div className="w-11 h-11 rounded-xl bg-amber-500/20 text-amber-300 border border-amber-500/30 flex items-center justify-center font-bold text-xl shrink-0">
-                            👑
+                            🎓
                           </div>
+
                           <div>
                             <h4 className="font-extrabold text-white text-sm sm:text-base">Want to crack your entry test?</h4>
                             <p className="text-xs text-slate-300">

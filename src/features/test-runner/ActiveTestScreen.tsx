@@ -5,6 +5,7 @@ import { useTimer } from '../../hooks/useTimer';
 import { TestHeader } from '../../components/test/TestHeader';
 import { QuestionCard } from '../../components/test/QuestionCard';
 import { OverviewGridModal } from '../../components/test/OverviewGridModal';
+import { ExitConfirmModal } from '../../components/modals/ExitConfirmModal';
 
 interface ActiveTestScreenProps {
   testSession: UseTestSessionReturn;
@@ -14,6 +15,7 @@ export const ActiveTestScreen: React.FC<ActiveTestScreenProps> = React.memo(({ t
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const [isOverviewOpen, setIsOverviewOpen] = React.useState(false);
+  const [isExitModalOpen, setIsExitModalOpen] = React.useState(false);
 
   const {
     activeQuestions,
@@ -26,6 +28,7 @@ export const ActiveTestScreen: React.FC<ActiveTestScreenProps> = React.memo(({ t
     jumpToQuestion,
     nextQuestion,
     prevQuestion,
+    clearSession,
     calculateFinalScore
   } = testSession;
 
@@ -78,13 +81,75 @@ export const ActiveTestScreen: React.FC<ActiveTestScreenProps> = React.memo(({ t
   }, [currentQIndex, prevQuestion, setSearchParams]);
 
   const handleNextSection = React.useCallback(() => {
-    let nextBoundary = Math.floor(currentQIndex / 20) * 20 + 20;
-    if (nextBoundary >= activeQuestions.length) {
-      nextBoundary = activeQuestions.length - 1;
+    if (activeQuestions.length === 0) return;
+    const currentSubject = activeQuestions[currentQIndex]?.subject;
+    
+    let targetIndex = -1;
+    for (let i = currentQIndex + 1; i < activeQuestions.length; i++) {
+      if (activeQuestions[i].subject !== currentSubject) {
+        targetIndex = i;
+        break;
+      }
     }
-    jumpToQuestion(nextBoundary);
-    setSearchParams({ q: (nextBoundary + 1).toString() });
-  }, [currentQIndex, activeQuestions.length, jumpToQuestion, setSearchParams]);
+
+    if (targetIndex !== -1) {
+      jumpToQuestion(targetIndex);
+      setSearchParams({ q: (targetIndex + 1).toString() });
+    } else {
+      alert('You are currently in the final subject section of the test.');
+    }
+  }, [currentQIndex, activeQuestions, jumpToQuestion, setSearchParams]);
+
+  const handlePrevSection = React.useCallback(() => {
+    if (activeQuestions.length === 0 || currentQIndex === 0) return;
+    const currentSubject = activeQuestions[currentQIndex]?.subject;
+    
+    let targetIndex = -1;
+    for (let i = currentQIndex - 1; i >= 0; i--) {
+      if (activeQuestions[i].subject !== currentSubject) {
+        const prevSubject = activeQuestions[i].subject;
+        let startOfPrevBlock = i;
+        while (startOfPrevBlock > 0 && activeQuestions[startOfPrevBlock - 1].subject === prevSubject) {
+          startOfPrevBlock--;
+        }
+        targetIndex = startOfPrevBlock;
+        break;
+      }
+    }
+
+    if (targetIndex !== -1) {
+      jumpToQuestion(targetIndex);
+      setSearchParams({ q: (targetIndex + 1).toString() });
+    } else {
+      alert('You are currently in the first subject section of the test.');
+    }
+  }, [currentQIndex, activeQuestions, jumpToQuestion, setSearchParams]);
+
+  // Open custom Exit Confirmation Modal
+  const handleExitClick = React.useCallback(() => {
+    setIsExitModalOpen(true);
+  }, []);
+
+  // Confirm Exit Handler
+  const handleConfirmExit = React.useCallback(() => {
+    setIsExitModalOpen(false);
+    stopTimer();
+    clearSession();
+    navigate('/select-university');
+  }, [stopTimer, clearSession, navigate]);
+
+  // Submit Test Handler
+  const handleSubmitClick = React.useCallback(() => {
+    const unanswered = activeQuestions.length - Object.keys(userAnswers).length;
+    if (unanswered > 0) {
+      if (!window.confirm(`You still have ${unanswered} unanswered questions. Are you sure you want to submit?`)) {
+        return;
+      }
+    }
+    stopTimer();
+    calculateFinalScore();
+    navigate('/results');
+  }, [activeQuestions.length, userAnswers, stopTimer, calculateFinalScore, navigate]);
 
   // Start / Resume timer on session mount
   useEffect(() => {
@@ -107,21 +172,14 @@ export const ActiveTestScreen: React.FC<ActiveTestScreenProps> = React.memo(({ t
   const reviewCount = Object.values(reviewStatus).filter(Boolean).length;
   const isReview = !!reviewStatus[currentQIndex];
 
-  const handleSubmitClick = () => {
-    const unanswered = activeQuestions.length - Object.keys(userAnswers).length;
-    if (unanswered > 0) {
-      if (!window.confirm(`You still have ${unanswered} unanswered questions. Are you sure you want to submit?`)) {
-        return;
-      }
-    }
-    stopTimer();
-    calculateFinalScore();
-    navigate('/results');
-  };
-
   return (
-    <div id="screen-test" className="w-full max-w-4xl flex flex-col py-2">
-      <TestHeader timeLeft={timeLeft} />
+    <div id="screen-test" className="w-full max-w-5xl lg:max-w-6xl flex flex-col py-2">
+      <TestHeader
+        timeLeft={timeLeft}
+        testTitle={storedSession.typeName}
+        onExit={handleExitClick}
+        onSubmit={handleSubmitClick}
+      />
 
       {currentQuestion && (
         <QuestionCard
@@ -136,6 +194,7 @@ export const ActiveTestScreen: React.FC<ActiveTestScreenProps> = React.memo(({ t
           onToggleReview={toggleReview}
           onJumpToQuestion={handleJump}
           onJumpToNextSection={handleNextSection}
+          onPrevSection={handlePrevSection}
           onOpenOverview={() => setIsOverviewOpen(true)}
           onPrev={handlePrev}
           onNext={handleNext}
@@ -151,6 +210,12 @@ export const ActiveTestScreen: React.FC<ActiveTestScreenProps> = React.memo(({ t
         isOpen={isOverviewOpen}
         onSelectQuestion={handleJump}
         onClose={() => setIsOverviewOpen(false)}
+      />
+
+      <ExitConfirmModal
+        isOpen={isExitModalOpen}
+        onCancel={() => setIsExitModalOpen(false)}
+        onConfirmExit={handleConfirmExit}
       />
     </div>
   );

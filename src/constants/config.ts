@@ -1,3 +1,6 @@
+import { User } from 'firebase/auth';
+import { UserProfile } from '../types/auth';
+
 export const FIREBASE_CONFIG = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY || "AIzaSyBdP5JcEGJzkgM6O6BDxsQcNyPQ2nc_cQs",
   authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN || "mocklab-5f062.firebaseapp.com",
@@ -21,6 +24,28 @@ export const PAYMENT_INFO = {
   qrImage: "/qr.png"
 };
 
+/**
+ * General support inquiry URL for footer and Help buttons.
+ */
+export const SUPPORT_WHATSAPP_URL =
+  "https://wa.me/923465939277?text=" +
+  encodeURIComponent("Hi MockLab! I have a question regarding the entry test prep portal.");
+
+/**
+ * Generates dynamic payment verification WhatsApp link pre-filled with Name, Email, and Phone Number.
+ */
+export function getPaymentVerificationWhatsappUrl(
+  user?: User | null,
+  userData?: UserProfile | null
+): string {
+  const name = userData?.name || user?.displayName || "";
+  const email = userData?.email || user?.email || "";
+  const phone = userData?.whatsapp || user?.phoneNumber || "";
+
+  const text = `Hi Admin, I have paid PKR 500 via NayaPay for MockLab Lifetime Access. Please activate my account.\n\nName: ${name}\nEmail: ${email}\nPhone Number: ${phone}`;
+
+  return `https://wa.me/923465939277?text=${encodeURIComponent(text)}`;
+}
 
 export const FREE_TEST_ID = 'nat-ics';
 
@@ -33,4 +58,3 @@ export const isTestUnlocked = (_typeId?: string, isPremium?: boolean, instanceIn
   if (isPremium) return true;
   return instanceIndex === 0;
 };
-

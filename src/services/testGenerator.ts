@@ -32,35 +32,35 @@ export interface InstanceMeta {
 
 const INSTANCE_DEFINITIONS: InstanceMeta[] = [
   {
-    title: "Free Test",
-    subtitle: "Complimentary practice test paper.",
+    title: "Free Full Length Past Paper",
+    subtitle: "Baseline practice paper.",
     badgeText: "FREE TEST",
     difficulty: "Standard"
   },
   {
-    title: "Premium Test 1",
-    subtitle: "Full practice test paper.",
-    badgeText: "PREMIUM TEST",
+    title: "Full Length Past Paper #1",
+    subtitle: "Randomized paper draw with exact subject weightage.",
+    badgeText: "FULL LENGTH PAST PAPER",
     difficulty: "Standard"
   },
   {
-    title: "Premium Test 2",
-    subtitle: "Full practice test paper.",
-    badgeText: "PREMIUM TEST",
+    title: "Full Length Past Paper #2",
+    subtitle: "Randomized paper draw with exact subject weightage.",
+    badgeText: "FULL LENGTH PAST PAPER",
     difficulty: "Standard"
   },
   {
-    title: "Premium Test 3",
-    subtitle: "Full practice test paper.",
-    badgeText: "PREMIUM TEST",
+    title: "Full Length Past Paper #3",
+    subtitle: "Randomized paper draw with exact subject weightage.",
+    badgeText: "FULL LENGTH PAST PAPER",
     difficulty: "Standard"
   }
 ];
 
 /**
  * Returns the list of test instances for a given university stream.
- * - Instance 1 (Free Test) is strictly free for all users.
- * - Instances 2+ (Premium Test 1, 2, 3) are locked for unpaid users, and unlocked for PRO users.
+ * - Instance 1 (Free Full Length Past Paper) is free for all users.
+ * - Instances 2+ are unlocked for PRO users.
  */
 export function getTestInstances(typeId: string, isPremium?: boolean): TestInstance[] {
   const baseQuestions = questionBank[typeId] || [];
@@ -88,24 +88,49 @@ export function getTestInstances(typeId: string, isPremium?: boolean): TestInsta
 }
 
 /**
- * Retrieves the unique question set for a specific test instance.
- * Ensures that each mock test paper has a distinct, non-identical permutation.
+ * Generates an on-demand, dynamically shuffled past paper.
+ * Preserves strict subject block ordering, section headers, and mark counts.
  */
-export function getQuestionsForTestInstance(typeId: string, instanceIndex: number): Question[] {
+export function generateOnDemandSimulation(typeId: string, seed?: number): Question[] {
   const baseQuestions = questionBank[typeId] || [];
   if (baseQuestions.length === 0) return [];
 
-  // Instance 0 (Free Test) returns the baseline curated question set
-  if (instanceIndex === 0) {
-    return baseQuestions;
-  }
+  const activeSeed = seed || (Date.now() + Math.floor(Math.random() * 1000000));
 
-  // Instances 1, 2, 3 return distinct seeded permutations
+  // Group questions by subject to preserve strict sequential subject order
+  const subjectGroups: { subject: string; questions: Question[] }[] = [];
+  baseQuestions.forEach((q) => {
+    const subj = q.subject || 'General';
+    const lastGroup = subjectGroups[subjectGroups.length - 1];
+    if (lastGroup && lastGroup.subject === subj) {
+      lastGroup.questions.push(q);
+    } else {
+      subjectGroups.push({ subject: subj, questions: [q] });
+    }
+  });
+
+  // Shuffle within each subject block separately
+  const shuffledQuestions: Question[] = [];
+  subjectGroups.forEach((group, idx) => {
+    const groupSeed = activeSeed + (idx + 1) * 3137;
+    const shuffledBlock = createSeededShuffle(group.questions, groupSeed);
+    shuffledQuestions.push(...shuffledBlock);
+  });
+
+  return shuffledQuestions;
+}
+
+/**
+ * Retrieves the unique question set for a specific test instance.
+ */
+export function getQuestionsForTestInstance(typeId: string, instanceIndex: number): Question[] {
+  if (instanceIndex === 0) {
+    return questionBank[typeId] || [];
+  }
   let seedValue = 0;
   for (let i = 0; i < typeId.length; i++) {
     seedValue += typeId.charCodeAt(i) * (i + 1);
   }
   seedValue += (instanceIndex + 1) * 7919;
-
-  return createSeededShuffle(baseQuestions, seedValue);
+  return generateOnDemandSimulation(typeId, seedValue);
 }

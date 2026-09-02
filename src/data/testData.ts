@@ -195,13 +195,14 @@ export const testData: TestDataMap = {
       },
       "cust-bus": {
         time: "90 Minutes",
-        marks: "55 Marks (55 MCQs)",
+        marks: "60 Marks (60 MCQs)",
         breakdown: [
           "Quantitative Reasoning: 30 MCQs",
-          "English Aptitude: 15 MCQs",
+          "English Aptitude: 20 MCQs",
           "General Knowledge: 10 MCQs"
         ]
       },
+
       "cust-med": {
         time: "90 Minutes",
         marks: "60 Marks (60 MCQs)",

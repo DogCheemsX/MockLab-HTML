@@ -16,8 +16,9 @@ export const UserListItem: React.FC<UserListItemProps> = React.memo(({ user, onT
           <h3 className="text-base font-bold text-white">{user.name || 'Unknown Student'}</h3>
           {isPrem ? (
             <span className="text-[10px] font-extrabold px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/30">
-              PRO 👑
+              PRO
             </span>
+
           ) : (
             <span className="text-[10px] font-semibold px-2 py-0.5 rounded bg-slate-800 text-slate-400 border border-slate-700">
               FREE

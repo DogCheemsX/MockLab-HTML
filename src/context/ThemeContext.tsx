@@ -18,8 +18,9 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     } catch (e) {
       console.warn('Error reading theme from localStorage', e);
     }
-    return 'dark'; // Default to dark mode
+    return 'light'; // Default to light mode on first load
   });
+
 
   const applyTheme = useCallback((newTheme: Theme) => {
     const root = document.documentElement;

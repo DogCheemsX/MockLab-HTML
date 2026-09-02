@@ -54,17 +54,18 @@ export const AdminScreen: React.FC = React.memo(() => {
   return (
     <div id="screen-admin" className="w-full max-w-4xl flex flex-col items-center py-2">
       {/* Top Header */}
-      <div className="w-full flex items-center justify-between mb-6">
+      <div className="w-full flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2.5 mb-6 mt-2 sm:mt-0">
         <button
           onClick={() => navigate('/')}
-          className="inline-flex items-center gap-2 text-xs font-bold text-slate-400 hover:text-white transition-colors bg-slate-800/80 px-3.5 py-2 rounded-xl border border-slate-700/60"
+          className="inline-flex items-center justify-center sm:justify-start gap-2 text-xs font-bold text-slate-400 hover:text-white transition-colors bg-slate-800/80 px-3.5 py-2 sm:py-1.5 rounded-xl border border-slate-700/60 truncate"
         >
-          <span>←</span> Back to Portal
+          <span>←</span> <span className="truncate">Back to Portal</span>
         </button>
-        <span className="text-xs font-bold text-rose-400 bg-rose-500/10 px-3 py-1 rounded-full border border-rose-500/20">
-          👑 Admin Console
+        <span className="text-xs font-bold text-rose-400 bg-rose-500/10 px-3 py-1.5 rounded-full border border-rose-500/20 text-center truncate">
+          Admin Console
         </span>
       </div>
+
 
       <div className="text-center mb-8">
         <h1 className="text-3xl sm:text-4xl font-extrabold font-display tracking-tight text-white mb-2">
@@ -82,7 +83,8 @@ export const AdminScreen: React.FC = React.memo(() => {
           <p className="text-2xl font-black text-white mt-1">{users.length}</p>
         </div>
         <div className="glass-card p-4 rounded-2xl border border-amber-500/30 bg-amber-950/10">
-          <p className="text-xs font-semibold text-amber-400 uppercase tracking-wider">PRO Members 👑</p>
+          <p className="text-xs font-semibold text-amber-400 uppercase tracking-wider">PRO Members</p>
+
           <p className="text-2xl font-black text-amber-300 mt-1">{premiumCount}</p>
         </div>
         <div className="glass-card p-4 rounded-2xl border border-slate-700/60">
