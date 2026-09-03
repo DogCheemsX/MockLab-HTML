@@ -94,7 +94,7 @@ export const SelectUniversityScreen: React.FC<SelectUniversityScreenProps> = Rea
         <div className="lg:col-span-7 flex flex-col gap-3.5">
           <div className="flex items-center justify-between mb-0.5">
             <h2 className="text-base sm:text-lg font-black font-display text-white">
-              Available Entrance Test Banks
+              Available Entry Tests
             </h2>
             <span className="text-[11px] sm:text-xs font-bold text-emerald-400 bg-emerald-500/10 px-2.5 py-0.5 rounded-full border border-emerald-500/20">
               🎁 FREE TESTS READY
@@ -113,8 +113,8 @@ export const SelectUniversityScreen: React.FC<SelectUniversityScreenProps> = Rea
                   <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center p-1 sm:p-1.5 shrink-0 bg-white/95 border border-slate-700/80 shadow-md group-hover:scale-105 transition-transform">
                     <img src={u.logo} alt={u.name} className="w-full h-full object-contain rounded" />
                   </div>
-                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
-                    FREE TEST READY
+                  <span className="text-xs font-extrabold px-2.5 py-1 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-400/40 shadow-sm">
+                    Free FLP Available
                   </span>
                 </div>
 
@@ -184,7 +184,7 @@ export const SelectUniversityScreen: React.FC<SelectUniversityScreenProps> = Rea
                       <span className="text-2xl font-black font-display text-amber-300">
                         {PAYMENT_INFO.amount}
                       </span>
-                      <span className="line-through text-slate-400 text-sm font-semibold font-mono">
+                      <span className="line-through text-slate-400 text-lg sm:text-xl font-bold font-mono ml-1.5 opacity-85 decoration-rose-500/80 decoration-2">
                         PKR 1000
                       </span>
                     </div>

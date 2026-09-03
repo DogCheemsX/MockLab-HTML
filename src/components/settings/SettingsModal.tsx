@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { sendPasswordResetEmail, signOut } from 'firebase/auth';
+import { sendPasswordResetEmail, signOut, updateProfile } from 'firebase/auth';
 import { auth } from '../../services/firebase';
 import { useAuth } from '../../hooks/useAuth';
 import { useTheme } from '../../context/ThemeContext';
 import { useToast } from '../../context/ToastContext';
 import { updateUserProfile } from '../../services/userService';
 import { PAYMENT_INFO } from '../../constants/config';
+import { getUserInitials } from '../../utils/formatters';
+import { CropPhotoModal } from '../modals/CropPhotoModal';
 
 interface SettingsModalProps {
   isOpen: boolean;
@@ -25,14 +27,21 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, o
   // Profile Form State
   const [name, setName] = useState(userData?.name || '');
   const [whatsapp, setWhatsapp] = useState(userData?.whatsapp || '');
+  const [photoURL, setPhotoURL] = useState(userData?.photoURL || user?.photoURL || '');
+  const [photoUploading, setPhotoUploading] = useState(false);
   const [saving, setSaving] = useState(false);
+
+  // Photo Crop State
+  const [rawImageForCrop, setRawImageForCrop] = useState<string | null>(null);
+  const [isCropModalOpen, setIsCropModalOpen] = useState(false);
 
   useEffect(() => {
     if (userData) {
       setName(userData.name || '');
       setWhatsapp(userData.whatsapp || '');
+      setPhotoURL(userData.photoURL || user?.photoURL || '');
     }
-  }, [userData]);
+  }, [userData, user]);
 
   useEffect(() => {
     if (isOpen) {
@@ -42,6 +51,80 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, o
   }, [isOpen]);
 
   if (!isOpen && !isClosing) return null;
+
+  const handlePhotoSelected = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file || !user) return;
+    if (!file.type.startsWith('image/')) {
+      showToast('Please select a valid image file (PNG, JPG, WebP)', 'error');
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      const result = ev.target?.result as string;
+      if (result) {
+        setRawImageForCrop(result);
+        setIsCropModalOpen(true);
+      }
+    };
+    reader.readAsDataURL(file);
+    e.target.value = '';
+  };
+
+  const handleSaveCroppedPhoto = async (croppedDataUrl: string) => {
+    if (!user) return;
+    setPhotoUploading(true);
+    try {
+      setPhotoURL(croppedDataUrl);
+      
+      // Save directly to Firestore user document
+      await updateUserProfile(user.uid, { photoURL: croppedDataUrl });
+
+      // Optional sync to Firebase Auth user object (silently catch if Auth rejects data URLs)
+      if (auth.currentUser) {
+        try {
+          await updateProfile(auth.currentUser, { photoURL: croppedDataUrl });
+        } catch {
+          // Firestore contains the source of truth for photoURL
+        }
+      }
+
+      await refreshUserData();
+      setIsCropModalOpen(false);
+      setRawImageForCrop(null);
+      showToast('Profile photo cropped & updated successfully! 📷', 'success');
+    } catch (err) {
+      console.error('Error saving cropped photo:', err);
+      showToast('Failed to save profile photo.', 'error');
+    } finally {
+      setPhotoUploading(false);
+    }
+  };
+
+  const handleRemovePhoto = async () => {
+    if (!user) return;
+    setPhotoUploading(true);
+    try {
+      setPhotoURL('');
+      await updateUserProfile(user.uid, { photoURL: '' });
+
+      if (auth.currentUser) {
+        try {
+          await updateProfile(auth.currentUser, { photoURL: '' });
+        } catch {
+          // ignore
+        }
+      }
+
+      await refreshUserData();
+      showToast('Profile photo removed. Reverted to name initials.', 'info');
+    } catch (err) {
+      console.error('Error removing photo:', err);
+      showToast('Failed to remove profile photo.', 'error');
+    } finally {
+      setPhotoUploading(false);
+    }
+  };
 
   const handleSmoothClose = () => {
     if (isClosing) return;
@@ -199,7 +282,60 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, o
         {/* Tab Content */}
         {activeTab === 'profile' && (
           <form onSubmit={handleSaveProfile} className="space-y-4">
-            <div className="flex items-center justify-between mb-2">
+            {/* Profile Photo Uploader */}
+            <div className="flex items-center gap-4 p-4 rounded-2xl bg-slate-950 border border-slate-800">
+              <div className="relative shrink-0">
+                {photoURL ? (
+                  <img
+                    src={photoURL}
+                    alt={name || 'Student'}
+                    className="w-14 h-14 rounded-full object-cover border-2 border-indigo-500/60 shadow-lg"
+                  />
+                ) : (
+                  <div className={`w-14 h-14 rounded-full flex items-center justify-center font-black text-lg border-2 border-indigo-500/60 ${userData?.isPremium ? 'bg-gradient-to-br from-amber-500 to-orange-500 text-slate-950 shadow-glow-amber' : 'bg-gradient-to-br from-indigo-600 to-purple-600 text-white shadow-glow-indigo'}`}>
+                    {getUserInitials(name || user?.email?.split('@')[0])}
+                  </div>
+                )}
+              </div>
+
+              <div className="flex flex-col gap-1 flex-1">
+                <div className="flex items-center justify-between">
+                  <h4 className="text-xs sm:text-sm font-extrabold text-white">Profile Photo</h4>
+                  <span className="text-[10px] font-bold text-slate-400">
+                    {photoURL ? 'Custom Picture' : 'Name Initials Active'}
+                  </span>
+                </div>
+                <p className="text-[11px] text-slate-400">
+                  Upload a custom photo or remove to show your name initials.
+                </p>
+
+                <div className="flex items-center gap-2 mt-1">
+                  <label className={`cursor-pointer inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs transition-all shadow-sm ${photoUploading ? 'opacity-50 cursor-not-allowed' : ''}`}>
+                    <span>📷</span> {photoUploading ? 'Updating...' : 'Upload Photo'}
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={handlePhotoSelected}
+                      disabled={photoUploading}
+                      className="hidden"
+                    />
+                  </label>
+
+                  {photoURL && (
+                    <button
+                      type="button"
+                      onClick={handleRemovePhoto}
+                      disabled={photoUploading}
+                      className="px-3 py-1.5 rounded-lg bg-rose-500/20 hover:bg-rose-500/30 text-rose-300 border border-rose-500/40 text-xs font-bold transition-all"
+                    >
+                      Remove Photo
+                    </button>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            <div className="flex items-center justify-between mb-2 pt-1">
               <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">Account Credentials</span>
               {!isEditing && (
                 <button
@@ -390,6 +526,35 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, o
             </div>
           </div>
         )}
+
+        {/* Modal Footer Actions */}
+        <div className="pt-5 mt-6 border-t border-slate-800 flex items-center justify-between gap-3">
+          <button
+            type="button"
+            onClick={handleSignOut}
+            className="px-4 py-2.5 rounded-xl bg-rose-600/20 hover:bg-rose-600/30 text-rose-300 border border-rose-500/40 font-bold text-xs sm:text-sm transition-all flex items-center gap-2 hover:scale-[1.02] active:scale-95"
+          >
+            <span>🚪</span> Sign Out
+          </button>
+          <button
+            type="button"
+            onClick={handleSmoothClose}
+            className="px-5 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white font-bold text-xs sm:text-sm transition-all"
+          >
+            Close
+          </button>
+        </div>
+
+        {/* Crop Photo Modal */}
+        <CropPhotoModal
+          isOpen={isCropModalOpen}
+          imageSrc={rawImageForCrop || ''}
+          onClose={() => {
+            setIsCropModalOpen(false);
+            setRawImageForCrop(null);
+          }}
+          onCropSave={handleSaveCroppedPhoto}
+        />
       </div>
     </div>
   );

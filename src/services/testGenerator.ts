@@ -33,7 +33,7 @@ export interface InstanceMeta {
 
 const INSTANCE_DEFINITIONS: InstanceMeta[] = [
   {
-    title: "Free Full Length Past Paper",
+    title: "Free FLP",
     subtitle: "Full length past paper based on official exam pattern.",
     badgeText: "FREE TEST",
     difficulty: "Standard"

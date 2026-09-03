@@ -148,6 +148,62 @@ export const ActiveTestScreen: React.FC<ActiveTestScreenProps> = React.memo(({ t
     }
   }, [currentQIndex, activeQuestions, typeId, jumpToQuestion, setSearchParams]);
 
+  const [focusedOptionIndex, setFocusedOptionIndex] = React.useState<number>(0);
+
+  // Sync focused option ring when question or answer changes
+  useEffect(() => {
+    const currentAns = userAnswers[currentQIndex];
+    setFocusedOptionIndex(currentAns !== undefined ? currentAns : 0);
+  }, [currentQIndex, userAnswers]);
+
+  // Keyboard Shortcuts:
+  // - Left (←) / Right (→): Navigate Previous / Next Question
+  // - Up (↑) / Down (↓): Move focus highlight through MCQs Options (A, B, C, D)
+  // - Enter: Select focused option (turns green, stays on same question)
+  // - Number Keys (1-5): Select option directly (turns green, stays on same question)
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (isOverviewOpen || isExitModalOpen) return;
+      const target = e.target as HTMLElement;
+      if (target && (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable)) {
+        return;
+      }
+
+      if (e.key === 'ArrowRight') {
+        e.preventDefault();
+        handleNext();
+      } else if (e.key === 'ArrowLeft') {
+        e.preventDefault();
+        handlePrev();
+      } else if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        const numOptions = activeQuestions[currentQIndex]?.options?.length || 4;
+        setFocusedOptionIndex((prev) => (prev + 1) % numOptions);
+      } else if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        const numOptions = activeQuestions[currentQIndex]?.options?.length || 4;
+        setFocusedOptionIndex((prev) => (prev - 1 + numOptions) % numOptions);
+      } else if (['1', '2', '3', '4', '5'].includes(e.key)) {
+        const optIndex = parseInt(e.key, 10) - 1;
+        const numOptions = activeQuestions[currentQIndex]?.options?.length || 4;
+        if (optIndex >= 0 && optIndex < numOptions) {
+          setFocusedOptionIndex(optIndex);
+          saveAnswer(optIndex);
+        }
+      } else if (e.key === 'Enter') {
+        e.preventDefault();
+        const numOptions = activeQuestions[currentQIndex]?.options?.length || 4;
+        const targetOpt = focusedOptionIndex >= 0 && focusedOptionIndex < numOptions ? focusedOptionIndex : 0;
+        saveAnswer(targetOpt);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [handleNext, handlePrev, activeQuestions, currentQIndex, focusedOptionIndex, saveAnswer, isOverviewOpen, isExitModalOpen]);
+
   // Open custom Exit Confirmation Modal
   const handleExitClick = React.useCallback(() => {
     setIsExitModalOpen(true);
@@ -210,11 +266,15 @@ export const ActiveTestScreen: React.FC<ActiveTestScreenProps> = React.memo(({ t
           questionIndex={currentQIndex}
           totalQuestions={activeQuestions.length}
           selectedOption={userAnswers[currentQIndex]}
+          focusedOption={focusedOptionIndex}
           isReview={isReview}
           answeredCount={answeredCount}
           reviewCount={reviewCount}
           typeId={typeId}
-          onSelectOption={saveAnswer}
+          onSelectOption={(idx) => {
+            setFocusedOptionIndex(idx);
+            saveAnswer(idx);
+          }}
           onToggleReview={toggleReview}
           onJumpToNextSection={handleNextSection}
           onPrevSection={handlePrevSection}

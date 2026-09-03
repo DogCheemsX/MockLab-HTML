@@ -202,6 +202,8 @@ export function useTestSession(): UseTestSessionReturn {
     if (storedSession) {
       const completedSession: StoredSession = {
         ...storedSession,
+        activeQuestions,
+        userAnswers,
         score: finalScore,
         completed: true
       };

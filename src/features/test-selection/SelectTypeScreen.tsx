@@ -46,7 +46,7 @@ export const SelectTypeScreen: React.FC<SelectTypeScreenProps> = React.memo(({ u
 
       <div className="text-center mb-8">
         <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 text-xs font-bold uppercase tracking-widest mb-3 shadow-sm">
-          <span>🎁</span> FREE TESTS AVAILABLE FOR ALL DEGREES
+          <span>🎁</span> FREE FLP AVAILABLE FOR ALL DEGREES
         </div>
         <h1 className="text-3xl sm:text-4xl font-extrabold font-display tracking-tight text-white mb-2">
           Select Field/Degree
@@ -84,15 +84,10 @@ export const SelectTypeScreen: React.FC<SelectTypeScreenProps> = React.memo(({ u
                     <h3 className="font-bold text-white text-base sm:text-lg group-hover:text-indigo-300 transition-colors">
                       {opt.name}
                     </h3>
-                    <div className="flex items-center gap-2 flex-wrap">
-                      <span className="text-[10px] font-extrabold px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
-                        FREE TEST READY
+                    <div className="flex items-center gap-2 flex-wrap mt-0.5">
+                      <span className="text-xs sm:text-sm font-extrabold px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-400/40 shadow-sm">
+                        Free FLP Available
                       </span>
-                      {!isUserPremium && (
-                        <span className="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-amber-500/15 text-amber-400 border border-amber-500/30">
-                          + UNLIMITED FULL LENGTH PAST PAPERS
-                        </span>
-                      )}
                     </div>
                   </div>
                 </div>
@@ -124,7 +119,7 @@ export const SelectTypeScreen: React.FC<SelectTypeScreenProps> = React.memo(({ u
                     <span className="text-2xl sm:text-3xl font-black font-display text-amber-300">
                       PKR 500
                     </span>
-                    <span className="line-through text-slate-400 text-sm font-semibold font-mono">
+                    <span className="line-through text-slate-400 text-lg sm:text-xl font-bold font-mono ml-1.5 opacity-85 decoration-rose-500/80 decoration-2">
                       PKR 1000
                     </span>
                   </div>

@@ -3,6 +3,7 @@ export interface UserProfile {
   email: string;
   whatsapp: string;
   isPremium: boolean;
+  photoURL?: string;
   dateCreated?: any;
 }
 

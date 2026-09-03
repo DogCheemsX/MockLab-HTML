@@ -8,6 +8,7 @@ interface QuestionCardProps {
   questionIndex: number;
   totalQuestions: number;
   selectedOption?: number;
+  focusedOption?: number;
   isReview: boolean;
   answeredCount: number;
   reviewCount: number;
@@ -30,6 +31,7 @@ export const QuestionCard: React.FC<QuestionCardProps> = React.memo(
     questionIndex,
     totalQuestions,
     selectedOption,
+    focusedOption,
     isReview,
     answeredCount,
     reviewCount,
@@ -128,6 +130,7 @@ export const QuestionCard: React.FC<QuestionCardProps> = React.memo(
             <div className="space-y-2.5 sm:space-y-3 mb-6 sm:mb-8">
               {question.options.map((opt, idx) => {
                 const isSelected = selectedOption === idx;
+                const isFocused = focusedOption === idx;
                 const letter = OPTION_LETTERS[idx] || (idx + 1).toString();
 
                 return (
@@ -136,20 +139,24 @@ export const QuestionCard: React.FC<QuestionCardProps> = React.memo(
                     onClick={() => onSelectOption(idx)}
                     className={`flex items-center gap-3 sm:gap-4 p-3 sm:p-4 rounded-xl border-2 cursor-pointer transition-all duration-350 ease-soothing active:scale-[0.99] ${
                       isSelected
-                        ? 'border-indigo-500 bg-indigo-950/50 shadow-glow-indigo'
+                        ? 'border-emerald-400 bg-emerald-950/60 shadow-[0_0_22px_rgba(16,185,129,0.4)]'
+                        : isFocused
+                        ? 'border-indigo-400/90 bg-indigo-950/30 shadow-[0_0_15px_rgba(99,102,241,0.25)]'
                         : 'border-slate-800 bg-slate-900/60 hover:bg-slate-850 hover:border-slate-700'
                     }`}
                   >
                     <div
-                      className={`w-7 h-7 sm:w-9 sm:h-9 rounded-lg sm:rounded-xl flex items-center justify-center font-bold text-xs sm:text-sm shrink-0 transition-all duration-350 ease-soothing ${
+                      className={`w-7 h-7 sm:w-9 sm:h-9 rounded-lg sm:rounded-xl flex items-center justify-center font-extrabold text-xs sm:text-sm shrink-0 transition-all duration-350 ease-soothing ${
                         isSelected
-                          ? 'bg-indigo-600 text-white shadow-md scale-105'
+                          ? 'bg-gradient-to-br from-emerald-400 to-teal-500 text-slate-950 shadow-md scale-105 border border-emerald-300'
+                          : isFocused
+                          ? 'bg-indigo-600 text-white border border-indigo-400 scale-105'
                           : 'bg-slate-800 text-slate-300 border border-slate-700'
                       }`}
                     >
                       {letter}
                     </div>
-                    <span className={`text-sm sm:text-base font-medium transition-colors duration-300 ${isSelected ? 'text-white font-semibold' : 'text-slate-200'}`}>
+                    <span className={`text-sm sm:text-base font-medium transition-colors duration-300 ${isSelected ? 'text-white font-bold' : isFocused ? 'text-white font-semibold' : 'text-slate-200'}`}>
                       <MathText text={opt} inline />
                     </span>
                   </div>

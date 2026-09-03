@@ -4,6 +4,7 @@ import { User } from 'firebase/auth';
 import { UserProfile } from '../../types/auth';
 import { useTheme } from '../../context/ThemeContext';
 import { useToast } from '../../context/ToastContext';
+import { getUserInitials } from '../../utils/formatters';
 
 interface ThemeToggleProps {
   user?: User | null;
@@ -24,7 +25,8 @@ export const ThemeToggle: React.FC<ThemeToggleProps> = React.memo(({ user, userD
   };
 
   const displayName = userData?.name || user?.displayName || user?.email?.split('@')[0] || 'Student';
-  const initial = displayName.charAt(0).toUpperCase();
+  const initials = getUserInitials(displayName);
+  const photo = userData?.photoURL || user?.photoURL;
   const isPremium = userData?.isPremium === true;
 
   return (
@@ -53,15 +55,15 @@ export const ThemeToggle: React.FC<ThemeToggleProps> = React.memo(({ user, userD
             title={`Logged in as ${displayName}`}
           >
             <div className="relative">
-              {user.photoURL ? (
+              {photo ? (
                 <img
-                  src={user.photoURL}
+                  src={photo}
                   alt={displayName}
                   className="w-7 h-7 sm:w-8 sm:h-8 rounded-full object-cover border border-indigo-500/40"
                 />
               ) : (
-                <div className={`w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center font-extrabold text-xs sm:text-sm ${isPremium ? 'bg-gradient-to-br from-amber-500 to-orange-500 text-slate-950 shadow-glow-amber' : 'bg-gradient-to-br from-indigo-600 to-purple-600 text-white shadow-glow-indigo'}`}>
-                  {initial}
+                <div className={`w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center font-extrabold text-[10px] sm:text-xs tracking-tight shrink-0 ${isPremium ? 'bg-gradient-to-br from-amber-500 to-orange-500 text-slate-950 shadow-glow-amber' : 'bg-gradient-to-br from-indigo-600 to-purple-600 text-white shadow-glow-indigo'}`}>
+                  {initials}
                 </div>
               )}
               <span className={`absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full border-2 border-slate-950 ${isPremium ? 'bg-amber-400' : 'bg-emerald-400'}`}></span>

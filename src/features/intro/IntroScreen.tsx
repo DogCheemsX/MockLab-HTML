@@ -26,6 +26,8 @@ export const IntroScreen: React.FC<IntroScreenProps> = React.memo(({ user, userD
     { name: 'CUST', logo: '/logos/cust.jpg' }
   ];
 
+  const photo = userData?.photoURL || user?.photoURL;
+
   return (
     <div id="screen-intro" className="w-full max-w-6xl lg:max-w-7xl flex flex-col items-center text-center py-4">
       {/* Universal PC Responsive 2-Column Horizontal Layout Grid */}
@@ -53,9 +55,17 @@ export const IntroScreen: React.FC<IntroScreenProps> = React.memo(({ user, userD
           {/* Account Status Pill */}
           <div className="glass-panel rounded-2xl px-5 py-3 mb-6 flex flex-wrap items-center justify-between gap-4 w-full max-w-md shadow-lg border border-slate-700/60">
             <div className="flex items-center gap-3 text-left">
-              <div className={`w-9 h-9 rounded-xl flex items-center justify-center font-bold text-sm ${isPremium ? 'bg-amber-500/20 text-amber-300 border border-amber-500/30' : 'bg-indigo-500/20 text-indigo-300 border border-indigo-500/30'}`}>
-                🎓
-              </div>
+              {photo ? (
+                <img
+                  src={photo}
+                  alt={userData?.name || 'Student'}
+                  className="w-9 h-9 rounded-xl object-cover border border-indigo-500/40 shadow-sm shrink-0"
+                />
+              ) : (
+                <div className={`w-9 h-9 rounded-xl flex items-center justify-center font-bold text-sm shrink-0 ${isPremium ? 'bg-amber-500/20 text-amber-300 border border-amber-500/30' : 'bg-indigo-500/20 text-indigo-300 border border-indigo-500/30'}`}>
+                  🎓
+                </div>
+              )}
               <div>
                 <p className="text-xs text-slate-400 uppercase tracking-wider font-semibold">Student Account</p>
                 <p className="text-sm font-bold text-white flex items-center gap-1.5">

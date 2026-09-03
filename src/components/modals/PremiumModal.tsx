@@ -62,7 +62,7 @@ export const PremiumModal: React.FC<PremiumModalProps> = React.memo(({ isOpen, o
             <span className="text-[10px] font-extrabold text-amber-400 uppercase tracking-widest">Lifetime Access Offer</span>
             <div className="flex items-baseline gap-2 mt-0.5">
               <span className="text-2xl font-black text-amber-300">{PAYMENT_INFO.amount}</span>
-              <span className="line-through text-slate-400 text-sm font-semibold font-mono">PKR 1000</span>
+              <span className="line-through text-slate-400 text-lg sm:text-xl font-bold font-mono ml-1.5 opacity-85 decoration-rose-500/80 decoration-2">PKR 1000</span>
             </div>
           </div>
           <span className="text-[11px] font-extrabold px-3 py-1.5 rounded-full bg-amber-500 text-slate-950 shadow-sm uppercase tracking-wider">

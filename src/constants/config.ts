@@ -20,7 +20,7 @@ export const PAYMENT_INFO = {
   accountNumber: import.meta.env.VITE_PAYMENT_ACCOUNT_NUMBER || "03465939277",
   accountTitle: "MockLab Official",
   bankName: import.meta.env.VITE_PAYMENT_BANK_NAME || "NayaPay",
-  whatsappUrl: import.meta.env.VITE_PAYMENT_WHATSAPP_URL || "https://wa.me/923465939277",
+  whatsappUrl: import.meta.env.VITE_PAYMENT_WHATSAPP_URL || "https://wa.me/923305939277",
   qrImage: "/qr.png"
 };
 
@@ -28,7 +28,7 @@ export const PAYMENT_INFO = {
  * General support inquiry URL for footer and Help buttons.
  */
 export const SUPPORT_WHATSAPP_URL =
-  "https://wa.me/923465939277?text=" +
+  "https://wa.me/923305939277?text=" +
   encodeURIComponent("Hi MockLab! I have a question regarding the entry test prep portal.");
 
 /**
@@ -44,7 +44,7 @@ export function getPaymentVerificationWhatsappUrl(
 
   const text = `Hi Admin, I have paid PKR 500 via NayaPay for MockLab Lifetime Access. Please activate my account.\n\nName: ${name}\nEmail: ${email}\nPhone Number: ${phone}`;
 
-  return `https://wa.me/923465939277?text=${encodeURIComponent(text)}`;
+  return `https://wa.me/923305939277?text=${encodeURIComponent(text)}`;
 }
 
 export const FREE_TEST_ID = 'nat-ics';

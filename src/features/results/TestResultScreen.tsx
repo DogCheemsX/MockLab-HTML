@@ -1,7 +1,11 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useNavigate, Navigate } from 'react-router-dom';
+import { auth } from '../../services/firebase';
+import { getUserProfile } from '../../services/userService';
 import { UseTestSessionReturn } from '../../hooks/useTestSession';
-import { getScoreMessage } from '../../utils/formatters';
+import { useAuth } from '../../hooks/useAuth';
+import { saveTestResult } from '../../services/testResultService';
+import { getScoreMessage, formatDurationHHMMSS } from '../../utils/formatters';
 import { getOfficialSectionTitle } from '../../utils/sectionUtils';
 
 interface TestResultScreenProps {
@@ -10,18 +14,23 @@ interface TestResultScreenProps {
 
 export const TestResultScreen: React.FC<TestResultScreenProps> = React.memo(({ testSession }) => {
   const navigate = useNavigate();
-  const { score, storedSession, clearSession } = testSession;
+  const { userData } = useAuth();
+  const { score, userAnswers, storedSession, clearSession } = testSession;
+  const savedRef = useRef(false);
 
   const finalScore = score || storedSession?.score || 0;
   const totalQuestions = storedSession?.activeQuestions?.length || 0;
   const testName = storedSession?.typeName || 'Entry Test';
 
-  if (!storedSession && totalQuestions === 0) {
-    return <Navigate to="/select-university" replace />;
-  }
-
   const percentage = totalQuestions > 0 ? Math.round((finalScore / totalQuestions) * 100) : 0;
   const msg = getScoreMessage(finalScore, totalQuestions);
+
+  const actualUserAnswers = React.useMemo(() => {
+    if (userAnswers && Object.keys(userAnswers).length > 0) {
+      return userAnswers;
+    }
+    return storedSession?.userAnswers || {};
+  }, [userAnswers, storedSession]);
 
   const subjectBreakdown = React.useMemo(() => {
     if (!storedSession || !storedSession.activeQuestions) return [];
@@ -33,7 +42,8 @@ export const TestResultScreen: React.FC<TestResultScreenProps> = React.memo(({ t
         map[officialTitle] = { correct: 0, total: 0 };
       }
       map[officialTitle].total += 1;
-      if (storedSession.userAnswers && storedSession.userAnswers[idx] === q.ans) {
+      const userChoice = actualUserAnswers[idx];
+      if (userChoice !== undefined && Number(userChoice) === Number(q.ans)) {
         map[officialTitle].correct += 1;
       }
     });
@@ -44,7 +54,71 @@ export const TestResultScreen: React.FC<TestResultScreenProps> = React.memo(({ t
       total: stats.total,
       pct: stats.total > 0 ? Math.round((stats.correct / stats.total) * 100) : 0
     }));
-  }, [storedSession]);
+  }, [storedSession, actualUserAnswers]);
+
+  // Auto-save student score to Firestore database once per test attempt
+  useEffect(() => {
+    if (!storedSession || totalQuestions === 0 || savedRef.current) return;
+    savedRef.current = true;
+
+    const performSave = async () => {
+      let studentName = 'Student';
+      let studentPhone = 'No Phone';
+      let studentEmail = '';
+      let studentPhoto = '';
+      let uid = 'guest-user';
+
+      const currentUser = auth.currentUser;
+      if (currentUser) {
+        uid = currentUser.uid;
+        studentEmail = currentUser.email || '';
+        studentPhoto = currentUser.photoURL || '';
+        studentName = currentUser.displayName || studentEmail.split('@')[0] || studentName;
+        studentPhone = currentUser.phoneNumber || studentPhone;
+
+        const profile = await getUserProfile(uid);
+        if (profile) {
+          studentName = profile.name || studentName;
+          studentPhone = profile.whatsapp || studentPhone;
+          studentPhoto = profile.photoURL || studentPhoto;
+          studentEmail = profile.email || studentEmail;
+        }
+      } else if (userData) {
+        studentName = userData.name || studentName;
+        studentPhone = userData.whatsapp || studentPhone;
+        studentEmail = userData.email || studentEmail;
+        studentPhoto = userData.photoURL || studentPhoto;
+      }
+
+      const elapsedSeconds = storedSession?.startTime
+        ? Math.max(1, Math.round((Date.now() - storedSession.startTime) / 1000))
+        : 0;
+      const formattedDuration = formatDurationHHMMSS(elapsedSeconds);
+
+      saveTestResult({
+        userId: uid,
+        userName: studentName,
+        userPhone: studentPhone,
+        userEmail: studentEmail,
+        userPhotoURL: studentPhoto,
+        testTitle: testName,
+        uniKey: storedSession.uniKey || '',
+        typeId: storedSession.typeId || '',
+        score: finalScore,
+        totalQuestions,
+        percentage,
+        timeTakenSeconds: elapsedSeconds,
+        timeTakenFormatted: formattedDuration,
+        subjectBreakdown
+      });
+    };
+
+    performSave();
+  }, [userData, storedSession, totalQuestions, finalScore, percentage, testName, subjectBreakdown]);
+
+  if (!storedSession && totalQuestions === 0) {
+    return <Navigate to="/select-university" replace />;
+  }
 
   const handleReturnHome = () => {
     clearSession();
