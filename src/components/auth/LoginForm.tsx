@@ -75,8 +75,8 @@ export const LoginForm: React.FC<LoginFormProps> = React.memo(
       <form onSubmit={handleSubmit} className="space-y-4">
         {/* Clean High-Contrast Error Feedback Banner */}
         {activeError && (
-          <div className="p-3.5 rounded-xl bg-red-950/40 border border-red-500/40 text-red-300 text-xs font-semibold flex items-center gap-2.5 animate-page-enter shadow-sm">
-            <svg className="w-4 h-4 text-red-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div className="p-3.5 rounded-xl bg-red-50 border border-red-200 text-red-800 dark:bg-red-950/40 dark:border-red-500/40 dark:text-red-300 text-xs font-semibold flex items-center gap-2.5 animate-page-enter shadow-sm">
+            <svg className="w-4 h-4 text-red-500 dark:text-red-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
             <span>{activeError}</span>
@@ -84,7 +84,7 @@ export const LoginForm: React.FC<LoginFormProps> = React.memo(
         )}
 
         <div>
-          <label className="block text-xs font-semibold text-slate-300 mb-1.5 uppercase tracking-wider">
+          <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5 uppercase tracking-wider">
             Email Address
           </label>
           <div className="relative">
@@ -93,10 +93,10 @@ export const LoginForm: React.FC<LoginFormProps> = React.memo(
               placeholder="student@example.com"
               value={email}
               onChange={handleEmailChange}
-              className={`w-full bg-slate-900/90 border rounded-xl px-4 py-3 text-white placeholder-slate-500 focus:outline-none transition-all text-sm font-medium ${
+              className={`w-full bg-slate-50 border rounded-xl px-4 py-3 text-slate-900 placeholder-slate-400 dark:bg-slate-900/90 dark:text-white dark:placeholder-slate-500 focus:outline-none transition-all text-sm font-medium ${
                 fieldErrors.email || (activeError && !fieldErrors.password)
                   ? 'border-red-500/60 ring-1 ring-red-500/40 focus:border-red-500'
-                  : 'border-slate-700 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500'
+                  : 'border-slate-200 dark:border-slate-700 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500'
               }`}
             />
           </div>
@@ -104,13 +104,13 @@ export const LoginForm: React.FC<LoginFormProps> = React.memo(
 
         <div>
           <div className="flex justify-between items-center mb-1.5">
-            <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider">
+            <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
               Password
             </label>
             <button
               type="button"
               onClick={() => onForgotPassword(email)}
-              className="text-xs font-semibold text-indigo-400 hover:text-indigo-300 transition-colors"
+              className="text-xs font-semibold text-indigo-600 hover:text-indigo-800 dark:text-indigo-400 dark:hover:text-indigo-300 transition-colors"
             >
               Forgot password?
             </button>
@@ -122,16 +122,16 @@ export const LoginForm: React.FC<LoginFormProps> = React.memo(
               placeholder="••••••••"
               value={password}
               onChange={handlePasswordChange}
-              className={`w-full bg-slate-900/90 border rounded-xl pl-4 pr-11 py-3 text-white placeholder-slate-500 focus:outline-none transition-all text-sm font-medium ${
+              className={`w-full bg-slate-50 border rounded-xl pl-4 pr-11 py-3 text-slate-900 placeholder-slate-400 dark:bg-slate-900/90 dark:text-white dark:placeholder-slate-500 focus:outline-none transition-all text-sm font-medium ${
                 fieldErrors.password || activeError
                   ? 'border-red-500/60 ring-1 ring-red-500/40 focus:border-red-500'
-                  : 'border-slate-700 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500'
+                  : 'border-slate-200 dark:border-slate-700 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500'
               }`}
             />
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-200 transition-colors p-1"
+              className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 transition-colors p-1"
               title={showPassword ? 'Hide password' : 'Show password'}
             >
               {showPassword ? (
@@ -162,17 +162,17 @@ export const LoginForm: React.FC<LoginFormProps> = React.memo(
               Logging In...
             </>
           ) : (
-            'Log In 🚀'
+            'Log In'
           )}
         </button>
 
-        <p className="text-center text-xs text-slate-400 mt-6 font-medium">
+        <p className="text-center text-xs text-slate-600 dark:text-slate-400 mt-6 font-medium">
           New student?{' '}
           <span
             onClick={onSwitchToSignUp}
-            className="text-indigo-400 font-bold cursor-pointer hover:text-indigo-300 transition-colors"
+            className="text-indigo-600 dark:text-indigo-400 font-bold cursor-pointer hover:text-indigo-800 dark:hover:text-indigo-300 transition-colors"
           >
-            Create an account
+            Create new account
           </span>
         </p>
       </form>

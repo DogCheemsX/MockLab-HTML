@@ -23,7 +23,7 @@ export const QRCodeMagnifier: React.FC<QRCodeMagnifierProps> = React.memo(({ src
             </span>
           </div>
         </div>
-        <span className="text-[11px] font-bold text-indigo-300 uppercase tracking-widest bg-indigo-950/80 px-3.5 py-1 rounded-full border border-indigo-500/40 shadow-sm mt-2">
+        <span className="text-[11px] font-bold text-indigo-700 bg-indigo-50 border border-indigo-200 dark:text-indigo-300 dark:bg-indigo-950/80 dark:border-indigo-500/40 px-3.5 py-1 rounded-full shadow-sm mt-2">
           Scan to Pay via NayaPay
         </span>
       </div>
@@ -31,25 +31,25 @@ export const QRCodeMagnifier: React.FC<QRCodeMagnifierProps> = React.memo(({ src
       {/* Full-Screen Lightbox Modal for Mobile & PC */}
       {isModalOpen && (
         <div
-          className="fixed inset-0 z-50 bg-slate-950/90 backdrop-blur-md flex items-center justify-center p-4 animate-backdrop-enter"
+          className="fixed inset-0 z-50 bg-slate-900/60 dark:bg-slate-950/90 backdrop-blur-md flex items-center justify-center p-4 animate-backdrop-enter"
           onClick={() => setIsModalOpen(false)}
         >
           <div
-            className="glass-panel p-6 rounded-3xl border border-indigo-500/50 shadow-2xl flex flex-col items-center max-w-sm w-full relative animate-modal-enter text-center"
+            className="bg-white border border-indigo-200 shadow-2xl dark:bg-slate-900 dark:border-indigo-500/50 p-6 rounded-3xl flex flex-col items-center max-w-sm w-full relative animate-modal-enter text-center"
             onClick={(e) => e.stopPropagation()}
           >
             <button
               onClick={() => setIsModalOpen(false)}
-              className="absolute top-3 right-3 text-slate-400 hover:text-white bg-slate-800 rounded-full w-8 h-8 flex items-center justify-center font-bold text-sm border border-slate-700 transition-colors"
+              className="absolute top-3 right-3 text-slate-500 hover:text-slate-900 bg-slate-100 hover:bg-slate-200 border border-slate-200 dark:text-slate-400 dark:hover:text-white dark:bg-slate-800 dark:border-slate-700 rounded-full w-8 h-8 flex items-center justify-center font-bold text-sm transition-colors"
             >
               ✕
             </button>
-            <h3 className="text-lg font-black text-white mb-3">Scan NayaPay QR Code</h3>
+            <h3 className="text-lg font-black text-slate-900 dark:text-white mb-3">Scan NayaPay QR Code</h3>
             <div className="bg-white p-4 rounded-2xl border-4 border-indigo-500 shadow-2xl mb-4">
               <img src={src} alt={alt} className="w-64 h-64 sm:w-72 sm:h-72 object-contain rounded-xl" />
             </div>
-            <p className="text-xs font-semibold text-slate-300">
-              Open your <b className="text-white">NayaPay App</b> scanner to complete payment.
+            <p className="text-xs font-semibold text-slate-600 dark:text-slate-300">
+              Open your <b className="text-slate-900 dark:text-white">NayaPay App</b> scanner to complete payment.
             </p>
           </div>
         </div>

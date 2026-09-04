@@ -204,26 +204,26 @@ export const UniPathMatcherScreen: React.FC<UniPathMatcherScreenProps> = React.m
 
       {/* Screen Title */}
       <div className="text-center mb-8">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-xs font-extrabold text-indigo-400 uppercase tracking-widest mb-3">
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-50 border border-indigo-200 text-xs font-extrabold text-indigo-700 dark:bg-indigo-500/10 dark:border-indigo-500/20 dark:text-indigo-400 uppercase tracking-widest mb-3">
           <span>🎯</span> University & Program Eligibility Finder
         </div>
-        <h1 className="text-3xl sm:text-4xl font-black font-display tracking-tight text-white mb-2">
+        <h1 className="text-3xl sm:text-4xl font-black font-display tracking-tight text-slate-900 dark:text-white mb-2">
           University Eligibility Checker
         </h1>
-        <p className="text-sm text-slate-300 max-w-lg leading-relaxed">
+        <p className="text-sm text-slate-600 dark:text-slate-300 max-w-lg leading-relaxed">
           Enter your background and marks or letter grades to instantly check which top Pakistani universities you qualify for.
         </p>
       </div>
 
       {/* Form Panel */}
-      <div className="w-full glass-panel rounded-3xl p-6 sm:p-8 shadow-xl border border-slate-700/60 mb-8">
-        <div className="flex items-center justify-between mb-6 border-b border-slate-800 pb-4">
-          <h2 className="text-sm font-extrabold uppercase tracking-wider text-slate-300">Student Academic Profile</h2>
+      <div className="w-full bg-white border border-slate-200/80 shadow-sm dark:bg-slate-900/60 dark:border-slate-700/60 rounded-3xl p-6 sm:p-8 mb-8">
+        <div className="flex items-center justify-between mb-6 border-b border-slate-200 dark:border-slate-800 pb-4">
+          <h2 className="text-sm font-extrabold uppercase tracking-wider text-slate-700 dark:text-slate-300">Student Academic Profile</h2>
           <button
             type="button"
             onClick={handleResetForm}
             aria-label="Reset form fields"
-            className="text-xs font-bold text-slate-400 hover:text-rose-400 transition-colors flex items-center gap-1 focus-visible:ring-2 focus-visible:ring-rose-400 rounded px-2 py-0.5"
+            className="text-xs font-bold text-slate-500 dark:text-slate-400 hover:text-rose-600 dark:hover:text-rose-400 transition-colors flex items-center gap-1 focus-visible:ring-2 focus-visible:ring-rose-400 rounded px-2 py-0.5"
           >
             <span>🔄</span> Reset Inputs
           </button>
@@ -232,7 +232,7 @@ export const UniPathMatcherScreen: React.FC<UniPathMatcherScreenProps> = React.m
         <form onSubmit={handleFormSubmit} className="space-y-6 text-left">
           {/* System Switcher */}
           <div>
-            <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-2">
+            <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-2">
               Academic Education System
             </label>
             <div className="grid grid-cols-2 gap-3" role="radiogroup" aria-label="Academic Education System">
@@ -243,8 +243,8 @@ export const UniPathMatcherScreen: React.FC<UniPathMatcherScreenProps> = React.m
                 onClick={() => setSystem('fsc')}
                 className={`py-3 px-4 rounded-xl font-bold text-xs sm:text-sm border transition-all focus-visible:ring-2 focus-visible:ring-indigo-400 ${
                   system === 'fsc'
-                    ? 'bg-indigo-600 text-white border-indigo-500 shadow-glow-indigo'
-                    : 'bg-slate-900/60 text-slate-400 border-slate-800 hover:text-white'
+                    ? 'bg-indigo-600 text-white border-indigo-500 shadow-md'
+                    : 'bg-slate-50 text-slate-600 border-slate-200 hover:text-slate-900 dark:bg-slate-900/60 dark:text-slate-400 dark:border-slate-800 dark:hover:text-white'
                 }`}
               >
                 Matric / FSc (Inter)
@@ -256,8 +256,8 @@ export const UniPathMatcherScreen: React.FC<UniPathMatcherScreenProps> = React.m
                 onClick={() => setSystem('alevels')}
                 className={`py-3 px-4 rounded-xl font-bold text-xs sm:text-sm border transition-all focus-visible:ring-2 focus-visible:ring-indigo-400 ${
                   system === 'alevels'
-                    ? 'bg-indigo-600 text-white border-indigo-500 shadow-glow-indigo'
-                    : 'bg-slate-900/60 text-slate-400 border-slate-800 hover:text-white'
+                    ? 'bg-indigo-600 text-white border-indigo-500 shadow-md'
+                    : 'bg-slate-50 text-slate-600 border-slate-200 hover:text-slate-900 dark:bg-slate-900/60 dark:text-slate-400 dark:border-slate-800 dark:hover:text-white'
                 }`}
               >
                 O-Levels / A-Levels

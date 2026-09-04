@@ -1,6 +1,8 @@
 import React from 'react';
+import { useTheme } from '../../context/ThemeContext';
 
 export const Header: React.FC = React.memo(() => {
+  const { theme } = useTheme();
   const LOGOS = [
     { name: 'COMSATS', logo: '/logos/comsats.jpg' },
     { name: 'NTS', logo: '/logos/nts.png' },
@@ -35,7 +37,7 @@ export const Header: React.FC = React.memo(() => {
 
       {/* Brand Logo */}
       <img
-        src="MockLab.png"
+        src={theme === 'light' ? '/MockLab-light.png' : '/MockLab.png'}
         alt="MockLab Logo"
         className="w-32 sm:w-52 h-auto mb-3 filter drop-shadow-[0_10px_25px_rgba(99,102,241,0.25)] transition-transform duration-300 hover:scale-105"
       />

@@ -193,7 +193,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, o
 
   return (
     <div
-      className={`fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md overflow-y-auto ${
+      className={`fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 dark:bg-slate-950/80 backdrop-blur-md overflow-y-auto ${
         isClosing ? 'animate-backdrop-exit' : 'animate-backdrop-enter'
       }`}
       onClick={handleSmoothClose}
@@ -202,43 +202,43 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, o
       aria-labelledby="settings-title"
     >
       <div
-        className={`w-full max-w-xl glass-panel rounded-3xl p-6 sm:p-8 shadow-2xl border border-slate-700/80 relative overflow-hidden my-auto text-left ${
+        className={`w-full max-w-xl bg-white border border-slate-200/80 shadow-2xl dark:bg-slate-900 dark:border-slate-700/80 rounded-3xl p-6 sm:p-8 relative overflow-hidden my-auto text-left ${
           isClosing ? 'animate-modal-exit' : 'animate-modal-enter'
         }`}
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="flex items-center justify-between border-b border-slate-800 pb-4 mb-6">
+        <div className="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-4 mb-6">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-indigo-600/20 text-indigo-300 border border-indigo-500/30 flex items-center justify-center font-bold text-xl shrink-0">
+            <div className="w-10 h-10 rounded-xl bg-indigo-50 border border-indigo-200 text-indigo-700 dark:bg-indigo-600/20 dark:text-indigo-300 dark:border-indigo-500/30 flex items-center justify-center font-bold text-xl shrink-0">
               ⚙️
             </div>
             <div>
-              <h2 id="settings-title" className="text-xl font-extrabold text-white tracking-tight">
+              <h2 id="settings-title" className="text-xl font-extrabold text-slate-900 dark:text-white tracking-tight">
                 User Settings & Preferences
               </h2>
-              <p className="text-xs text-slate-400">Manage your profile, personal details, and security</p>
+              <p className="text-xs text-slate-500 dark:text-slate-400">Manage your profile, personal details, and security</p>
             </div>
           </div>
           <button
             type="button"
             onClick={handleSmoothClose}
             aria-label="Close Settings"
-            className="w-8 h-8 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white flex items-center justify-center transition-colors text-sm font-bold focus-visible:ring-2 focus-visible:ring-indigo-400"
+            className="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 hover:text-slate-900 dark:bg-slate-800 dark:hover:bg-slate-700 dark:text-slate-400 dark:hover:text-white flex items-center justify-center transition-colors text-sm font-bold focus-visible:ring-2 focus-visible:ring-indigo-400"
           >
             ✕
           </button>
         </div>
 
         {/* Tab Navigation */}
-        <div className="flex bg-slate-950 p-1 rounded-xl border border-slate-800 mb-6 text-xs font-bold gap-1 overflow-x-auto">
+        <div className="flex bg-slate-100 dark:bg-slate-950 p-1 rounded-xl border border-slate-200 dark:border-slate-800 mb-6 text-xs font-bold gap-1 overflow-x-auto">
           <button
             type="button"
             onClick={() => setActiveTab('profile')}
             className={`flex-1 py-2 px-3 rounded-lg transition-all whitespace-nowrap ${
               activeTab === 'profile'
                 ? 'bg-indigo-600 text-white shadow-sm'
-                : 'text-slate-400 hover:text-white'
+                : 'text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white'
             }`}
           >
             👤 Personal Info
@@ -249,11 +249,10 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, o
             className={`flex-1 py-2 px-3 rounded-lg transition-all whitespace-nowrap ${
               activeTab === 'account'
                 ? 'bg-indigo-600 text-white shadow-sm'
-                : 'text-slate-400 hover:text-white'
+                : 'text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white'
             }`}
           >
             PRO Pass & Rank
-
           </button>
           <button
             type="button"
@@ -261,7 +260,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, o
             className={`flex-1 py-2 px-3 rounded-lg transition-all whitespace-nowrap ${
               activeTab === 'preferences'
                 ? 'bg-indigo-600 text-white shadow-sm'
-                : 'text-slate-400 hover:text-white'
+                : 'text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white'
             }`}
           >
             🎨 Display & Theme
@@ -272,7 +271,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, o
             className={`flex-1 py-2 px-3 rounded-lg transition-all whitespace-nowrap ${
               activeTab === 'security'
                 ? 'bg-indigo-600 text-white shadow-sm'
-                : 'text-slate-400 hover:text-white'
+                : 'text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white'
             }`}
           >
             🔒 Security
@@ -283,7 +282,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, o
         {activeTab === 'profile' && (
           <form onSubmit={handleSaveProfile} className="space-y-4">
             {/* Profile Photo Uploader */}
-            <div className="flex items-center gap-4 p-4 rounded-2xl bg-slate-950 border border-slate-800">
+            <div className="flex items-center gap-4 p-4 rounded-2xl bg-slate-50 border border-slate-200 dark:bg-slate-950 dark:border-slate-800">
               <div className="relative shrink-0">
                 {photoURL ? (
                   <img
@@ -300,12 +299,12 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, o
 
               <div className="flex flex-col gap-1 flex-1">
                 <div className="flex items-center justify-between">
-                  <h4 className="text-xs sm:text-sm font-extrabold text-white">Profile Photo</h4>
-                  <span className="text-[10px] font-bold text-slate-400">
+                  <h4 className="text-xs sm:text-sm font-extrabold text-slate-900 dark:text-white">Profile Photo</h4>
+                  <span className="text-[10px] font-bold text-slate-500 dark:text-slate-400">
                     {photoURL ? 'Custom Picture' : 'Name Initials Active'}
                   </span>
                 </div>
-                <p className="text-[11px] text-slate-400">
+                <p className="text-[11px] text-slate-500 dark:text-slate-400">
                   Upload a custom photo or remove to show your name initials.
                 </p>
 
@@ -326,7 +325,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, o
                       type="button"
                       onClick={handleRemovePhoto}
                       disabled={photoUploading}
-                      className="px-3 py-1.5 rounded-lg bg-rose-500/20 hover:bg-rose-500/30 text-rose-300 border border-rose-500/40 text-xs font-bold transition-all"
+                      className="px-3 py-1.5 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 dark:bg-rose-500/20 dark:hover:bg-rose-500/30 dark:text-rose-300 dark:border-rose-500/40 text-xs font-bold transition-all"
                     >
                       Remove Photo
                     </button>
@@ -336,12 +335,12 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, o
             </div>
 
             <div className="flex items-center justify-between mb-2 pt-1">
-              <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">Account Credentials</span>
+              <span className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Account Credentials</span>
               {!isEditing && (
                 <button
                   type="button"
                   onClick={() => setIsEditing(true)}
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-indigo-600/20 hover:bg-indigo-600/30 text-indigo-300 border border-indigo-500/40 text-xs font-bold transition-all"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200 dark:bg-indigo-600/20 dark:hover:bg-indigo-600/30 dark:text-indigo-300 dark:border-indigo-500/40 text-xs font-bold transition-all"
                 >
                   <span>✏️</span> Edit Details
                 </button>
@@ -349,7 +348,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, o
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-1">
+              <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1">
                 Full Name
               </label>
               <input
@@ -360,27 +359,27 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, o
                 placeholder="Your Full Name"
                 className={`w-full border rounded-xl px-3.5 py-2.5 font-medium text-xs sm:text-sm transition-all ${
                   isEditing
-                    ? 'bg-slate-950 border-indigo-500 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500/30'
-                    : 'bg-slate-900/60 border-slate-800 text-slate-300 cursor-not-allowed'
+                    ? 'bg-white border-indigo-500 text-slate-900 dark:bg-slate-950 dark:border-indigo-500 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500/30'
+                    : 'bg-slate-100 border-slate-200 text-slate-600 dark:bg-slate-900/60 dark:border-slate-800 dark:text-slate-300 cursor-not-allowed'
                 }`}
                 required
               />
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-1">
+              <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1">
                 Registered Email
               </label>
               <input
                 type="email"
                 value={user?.email || userData?.email || 'Guest User'}
                 disabled
-                className="w-full bg-slate-900/60 border border-slate-800 rounded-xl px-3.5 py-2.5 text-slate-400 font-medium text-xs sm:text-sm cursor-not-allowed"
+                className="w-full bg-slate-100 border border-slate-200 text-slate-500 dark:bg-slate-900/60 dark:border-slate-800 dark:text-slate-400 rounded-xl px-3.5 py-2.5 font-medium text-xs sm:text-sm cursor-not-allowed"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-1">
+              <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1">
                 WhatsApp Contact Number
               </label>
               <input
@@ -391,8 +390,8 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, o
                 placeholder="0300 1234567"
                 className={`w-full border rounded-xl px-3.5 py-2.5 font-medium text-xs sm:text-sm transition-all ${
                   isEditing
-                    ? 'bg-slate-950 border-indigo-500 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500/30'
-                    : 'bg-slate-900/60 border-slate-800 text-slate-300 cursor-not-allowed'
+                    ? 'bg-white border-indigo-500 text-slate-900 dark:bg-slate-950 dark:border-indigo-500 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500/30'
+                    : 'bg-slate-100 border-slate-200 text-slate-600 dark:bg-slate-900/60 dark:border-slate-800 dark:text-slate-300 cursor-not-allowed'
                 }`}
               />
             </div>
@@ -410,7 +409,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, o
                   type="button"
                   onClick={handleCancelEditing}
                   disabled={saving}
-                  className="px-4 py-3 bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-sm rounded-xl transition-all border border-slate-700"
+                  className="px-4 py-3 bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 dark:text-slate-300 dark:border-slate-700 font-bold text-sm rounded-xl transition-all"
                 >
                   Cancel
                 </button>
@@ -421,35 +420,34 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, o
 
         {activeTab === 'account' && (
           <div className="space-y-4 text-xs">
-            <div className="p-4 rounded-2xl bg-slate-950 border border-slate-800 space-y-3">
+            <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 dark:bg-slate-950 dark:border-slate-800 space-y-3">
               <div className="flex items-center justify-between">
-                <span className="text-slate-400 font-bold uppercase tracking-wider">Account Membership Tier</span>
+                <span className="text-slate-500 dark:text-slate-400 font-bold uppercase tracking-wider">Account Membership Tier</span>
                 {userData?.isPremium ? (
-                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/40 font-extrabold">
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-50 text-amber-800 border border-amber-200 dark:bg-amber-500/20 dark:text-amber-300 dark:border-amber-500/40 font-extrabold">
                     PREMIUM PASS ACTIVE
                   </span>
-
                 ) : (
-                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-800 text-slate-300 border border-slate-700 font-semibold">
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-100 text-slate-700 border border-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:border-slate-700 font-semibold">
                     <span>🌱</span> FREE ACCESS TIER
                   </span>
                 )}
               </div>
-              <p className="text-slate-300 leading-relaxed">
+              <p className="text-slate-600 dark:text-slate-300 leading-relaxed">
                 {userData?.isPremium
                   ? 'You have unlimited lifetime access to all FLP mock tests and question banks across NTS, COMSATS, PIEAS, Air, Bahria & CUST.'
                   : 'Upgrade to MockLab Premium Pass for lifetime access to all full-length paper simulations and answer keys.'}
               </p>
             </div>
 
-            <div className="p-4 rounded-2xl bg-slate-950 border border-slate-800 space-y-2">
+            <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 dark:bg-slate-950 dark:border-slate-800 space-y-2">
               <div className="flex items-center justify-between">
-                <span className="text-slate-400 font-semibold">Student Account ID:</span>
-                <span className="font-mono text-indigo-300 font-bold text-[11px] truncate max-w-[200px]">{user?.uid || 'Guest'}</span>
+                <span className="text-slate-500 dark:text-slate-400 font-semibold">Student Account ID:</span>
+                <span className="font-mono text-indigo-700 dark:text-indigo-300 font-bold text-[11px] truncate max-w-[200px]">{user?.uid || 'Guest'}</span>
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-slate-400 font-semibold">Account Email:</span>
-                <span className="text-slate-200 font-semibold">{user?.email || 'N/A'}</span>
+                <span className="text-slate-500 dark:text-slate-400 font-semibold">Account Email:</span>
+                <span className="text-slate-900 dark:text-slate-200 font-semibold">{user?.email || 'N/A'}</span>
               </div>
             </div>
 
@@ -469,29 +467,29 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, o
 
         {activeTab === 'preferences' && (
           <div className="space-y-4 text-xs">
-            <div className="p-4 rounded-2xl bg-slate-950 border border-slate-800 flex items-center justify-between">
+            <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 dark:bg-slate-950 dark:border-slate-800 flex items-center justify-between">
               <div>
-                <h4 className="font-bold text-white text-sm">Theme Appearance</h4>
-                <p className="text-slate-400 text-xs">Choose between Dark Mode or Light Mode</p>
+                <h4 className="font-bold text-slate-900 dark:text-white text-sm">Theme Appearance</h4>
+                <p className="text-slate-500 dark:text-slate-400 text-xs">Choose between Dark Mode or Light Mode</p>
               </div>
               <button
                 type="button"
                 onClick={toggleTheme}
-                className="px-4 py-2 rounded-xl bg-indigo-600/20 hover:bg-indigo-600/30 text-indigo-300 border border-indigo-500/40 font-bold flex items-center gap-2 transition-all"
+                className="px-4 py-2 rounded-xl bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200 dark:bg-indigo-600/20 dark:hover:bg-indigo-600/30 dark:text-indigo-300 dark:border-indigo-500/40 font-bold flex items-center gap-2 transition-all"
               >
                 <span>{theme === 'dark' ? '🌙 Dark Mode' : '☀️ Light Mode'}</span>
               </button>
             </div>
 
-            <div className="p-4 rounded-2xl bg-slate-950 border border-slate-800 flex items-center justify-between">
+            <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 dark:bg-slate-950 dark:border-slate-800 flex items-center justify-between">
               <div>
-                <h4 className="font-bold text-white text-sm">Reset Local Cache & Preferences</h4>
-                <p className="text-slate-400 text-xs">Clear saved Eligibility Checker inputs & search filters</p>
+                <h4 className="font-bold text-slate-900 dark:text-white text-sm">Reset Local Cache & Preferences</h4>
+                <p className="text-slate-500 dark:text-slate-400 text-xs">Clear saved Eligibility Checker inputs & search filters</p>
               </div>
               <button
                 type="button"
                 onClick={handleClearCache}
-                className="px-4 py-2 rounded-xl bg-rose-500/20 hover:bg-rose-500/30 text-rose-300 border border-rose-500/40 font-bold transition-all"
+                className="px-4 py-2 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 dark:bg-rose-500/20 dark:hover:bg-rose-500/30 dark:text-rose-300 dark:border-rose-500/40 font-bold transition-all"
               >
                 Clear Storage 🗑️
               </button>
@@ -501,15 +499,15 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, o
 
         {activeTab === 'security' && (
           <div className="space-y-4 text-xs">
-            <div className="p-4 rounded-2xl bg-slate-950 border border-slate-800 space-y-3">
+            <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 dark:bg-slate-950 dark:border-slate-800 space-y-3">
               <div>
-                <h4 className="font-bold text-white text-sm">Password Security</h4>
-                <p className="text-slate-400 text-xs">Request an automated password reset link via email</p>
+                <h4 className="font-bold text-slate-900 dark:text-white text-sm">Password Security</h4>
+                <p className="text-slate-500 dark:text-slate-400 text-xs">Request an automated password reset link via email</p>
               </div>
               <button
                 type="button"
                 onClick={handleSendResetPassword}
-                className="w-full bg-slate-800 hover:bg-slate-700 text-indigo-300 font-bold py-2.5 px-4 rounded-xl border border-slate-700 transition-all text-center"
+                className="w-full bg-slate-100 hover:bg-slate-200 text-indigo-700 border border-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 dark:text-indigo-300 dark:border-slate-700 font-bold py-2.5 px-4 rounded-xl transition-all text-center"
               >
                 Send Password Reset Email 📧
               </button>
@@ -519,7 +517,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, o
               <button
                 type="button"
                 onClick={handleSignOut}
-                className="w-full bg-rose-600/20 hover:bg-rose-600/30 text-rose-300 font-bold py-3 px-4 rounded-xl border border-rose-500/40 transition-all flex items-center justify-center gap-2"
+                className="w-full bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 dark:bg-rose-600/20 dark:hover:bg-rose-600/30 dark:text-rose-300 dark:border-rose-500/40 font-bold py-3 px-4 rounded-xl transition-all flex items-center justify-center gap-2"
               >
                 <span>🚪</span> Sign Out of MockLab Account
               </button>
@@ -528,18 +526,18 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, o
         )}
 
         {/* Modal Footer Actions */}
-        <div className="pt-5 mt-6 border-t border-slate-800 flex items-center justify-between gap-3">
+        <div className="pt-5 mt-6 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between gap-3">
           <button
             type="button"
             onClick={handleSignOut}
-            className="px-4 py-2.5 rounded-xl bg-rose-600/20 hover:bg-rose-600/30 text-rose-300 border border-rose-500/40 font-bold text-xs sm:text-sm transition-all flex items-center gap-2 hover:scale-[1.02] active:scale-95"
+            className="px-4 py-2.5 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 dark:bg-rose-600/20 dark:hover:bg-rose-600/30 dark:text-rose-300 dark:border-rose-500/40 font-bold text-xs sm:text-sm transition-all flex items-center gap-2 hover:scale-[1.02] active:scale-95"
           >
             <span>🚪</span> Sign Out
           </button>
           <button
             type="button"
             onClick={handleSmoothClose}
-            className="px-5 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white font-bold text-xs sm:text-sm transition-all"
+            className="px-5 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 hover:text-slate-900 dark:bg-slate-800 dark:hover:bg-slate-700 dark:text-slate-300 dark:hover:text-white font-bold text-xs sm:text-sm transition-all"
           >
             Close
           </button>

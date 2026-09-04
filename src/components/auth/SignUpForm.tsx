@@ -166,7 +166,7 @@ export const SignUpForm: React.FC<SignUpFormProps> = React.memo(
               Creating Account...
             </>
           ) : (
-            'Register Account 🚀'
+            'Create new account'
           )}
         </button>
 

@@ -50,16 +50,16 @@ export const QuestionCard: React.FC<QuestionCardProps> = React.memo(
     return (
       <div className="w-full flex flex-col gap-4 py-3">
         {/* Sub-Header Toolbar */}
-        <div className="flex flex-wrap items-center justify-between gap-2 bg-slate-900/90 border border-slate-800 p-3 rounded-xl">
-          <div className="flex items-center gap-3 text-xs font-semibold text-slate-300">
+        <div className="flex flex-wrap items-center justify-between gap-2 bg-slate-100 border border-slate-200 text-slate-700 dark:bg-slate-900 dark:border-slate-800 dark:text-slate-300 p-3 rounded-xl">
+          <div className="flex items-center gap-3 text-xs font-semibold text-slate-600 dark:text-slate-300">
             <span className="flex items-center gap-1.5">
-              <span className="w-2 h-2 rounded-full bg-emerald-400"></span>
-              Answered: <b className="text-white font-bold">{answeredCount}</b>/{totalQuestions}
+              <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
+              Answered: <b className="text-slate-900 dark:text-white font-bold">{answeredCount}</b>/{totalQuestions}
             </span>
-            <span className="text-slate-600">|</span>
+            <span className="text-slate-300 dark:text-slate-600">|</span>
             <span className="flex items-center gap-1.5">
-              <span className="w-2 h-2 rounded-full bg-amber-400"></span>
-              Marked: <b className="text-white font-bold">{reviewCount}</b>
+              <span className="w-2 h-2 rounded-full bg-amber-500"></span>
+              Marked: <b className="text-slate-900 dark:text-white font-bold">{reviewCount}</b>
             </span>
           </div>
 
@@ -69,7 +69,7 @@ export const QuestionCard: React.FC<QuestionCardProps> = React.memo(
               <button
                 type="button"
                 onClick={onPrevSection}
-                className="text-[11px] font-bold px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition-all"
+                className="text-[11px] font-bold px-2.5 py-1 rounded-lg bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 dark:text-slate-300 dark:border-slate-700 transition-all shadow-sm"
                 title="Jump to previous section"
               >
                 « Prev Section
@@ -78,7 +78,7 @@ export const QuestionCard: React.FC<QuestionCardProps> = React.memo(
             <button
               type="button"
               onClick={onJumpToNextSection}
-              className="text-[11px] font-bold px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition-all"
+              className="text-[11px] font-bold px-2.5 py-1 rounded-lg bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 dark:text-slate-300 dark:border-slate-700 transition-all shadow-sm"
               title="Jump to next section"
             >
               Next Section »
@@ -86,7 +86,7 @@ export const QuestionCard: React.FC<QuestionCardProps> = React.memo(
             <button
               type="button"
               onClick={onOpenOverview}
-              className="text-xs font-bold text-indigo-300 hover:text-white bg-indigo-950/60 hover:bg-indigo-900/80 px-3 py-1 rounded-lg border border-indigo-500/30 transition-all flex items-center gap-1"
+              className="text-xs font-bold text-indigo-700 hover:text-indigo-900 bg-indigo-50 hover:bg-indigo-100 border border-indigo-200 dark:text-indigo-300 dark:hover:text-white dark:bg-indigo-950/60 dark:hover:bg-indigo-900/80 dark:border-indigo-500/30 px-3 py-1 rounded-lg transition-all flex items-center gap-1"
             >
               <span>📊</span> Grid Overview
             </button>
@@ -94,15 +94,15 @@ export const QuestionCard: React.FC<QuestionCardProps> = React.memo(
         </div>
 
         {/* Question Container Card */}
-        <div className="glass-panel p-4 sm:p-7 rounded-2xl border border-slate-700/80 shadow-2xl relative text-left">
+        <div className="bg-white border border-slate-200 shadow-sm text-slate-900 dark:bg-slate-900 dark:border-slate-800 dark:text-white p-4 sm:p-7 rounded-2xl relative text-left">
           {/* Header Row: Index & Active Section Header */}
-          <div className="flex flex-wrap items-center justify-between gap-2 mb-4 sm:mb-6 pb-3 border-b border-slate-800">
+          <div className="flex flex-wrap items-center justify-between gap-2 mb-4 sm:mb-6 pb-3 border-b border-slate-200 dark:border-slate-800">
             <div className="flex items-center gap-2 flex-wrap">
-              <span className="text-[11px] sm:text-xs font-bold text-indigo-400 bg-indigo-500/10 px-2.5 sm:px-3 py-1 rounded-full border border-indigo-500/20 uppercase tracking-wider">
+              <span className="text-[11px] sm:text-xs font-bold text-indigo-700 bg-indigo-50 border border-indigo-200 dark:text-indigo-400 dark:bg-indigo-500/10 dark:border-indigo-500/20 px-2.5 sm:px-3 py-1 rounded-full uppercase tracking-wider">
                 Question {questionIndex + 1} of {totalQuestions}
               </span>
-              <span className="text-[11px] sm:text-xs font-extrabold text-emerald-300 bg-emerald-950/60 px-3 sm:px-3.5 py-1 rounded-full border border-emerald-500/30 uppercase tracking-wider flex items-center gap-1.5 shadow-sm">
-                <span className="w-2 h-2 rounded-full bg-emerald-400"></span>
+              <span className="text-[11px] sm:text-xs font-extrabold text-emerald-800 bg-emerald-50 border border-emerald-200 dark:text-emerald-300 dark:bg-emerald-950/60 dark:border-emerald-500/30 px-3 sm:px-3.5 py-1 rounded-full uppercase tracking-wider flex items-center gap-1.5 shadow-sm">
+                <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
                 Current Section: {officialSectionTitle}
               </span>
             </div>
@@ -111,8 +111,8 @@ export const QuestionCard: React.FC<QuestionCardProps> = React.memo(
               onClick={onToggleReview}
               className={`flex items-center gap-1.5 text-[11px] sm:text-xs font-bold px-3 py-1 sm:py-1.5 rounded-full border transition-all ${
                 isReview
-                  ? 'border-amber-500 text-amber-300 bg-amber-950/40 shadow-glow-amber'
-                  : 'border-slate-700 text-slate-400 hover:text-white hover:border-slate-500 bg-slate-900/60'
+                  ? 'border-amber-300 text-amber-800 bg-amber-50 shadow-sm dark:border-amber-500 dark:text-amber-300 dark:bg-amber-950/40 dark:shadow-glow-amber'
+                  : 'border-slate-200 text-slate-600 hover:text-slate-900 hover:border-slate-300 bg-slate-50 dark:border-slate-700 dark:text-slate-400 dark:hover:text-white dark:hover:border-slate-500 dark:bg-slate-900/60'
               }`}
             >
               <span>{isReview ? '★ Marked' : '☆ Mark for Review'}</span>
@@ -122,7 +122,7 @@ export const QuestionCard: React.FC<QuestionCardProps> = React.memo(
           {/* Animated Question Body */}
           <div key={questionIndex} className="animate-page-enter">
             {/* Question Text */}
-            <div className="text-base sm:text-xl md:text-2xl font-bold mb-5 sm:mb-8 text-white leading-relaxed">
+            <div className="text-base sm:text-xl md:text-2xl font-bold mb-5 sm:mb-8 text-slate-900 dark:text-white leading-relaxed">
               <MathText text={question.q} />
             </div>
 
@@ -137,26 +137,26 @@ export const QuestionCard: React.FC<QuestionCardProps> = React.memo(
                   <div
                     key={idx}
                     onClick={() => onSelectOption(idx)}
-                    className={`flex items-center gap-3 sm:gap-4 p-3 sm:p-4 rounded-xl border-2 cursor-pointer transition-all duration-350 ease-soothing active:scale-[0.99] ${
+                    className={`flex items-center gap-3 sm:gap-4 p-3 sm:p-4 rounded-xl border cursor-pointer transition-all duration-350 ease-soothing active:scale-[0.99] ${
                       isSelected
-                        ? 'border-emerald-400 bg-emerald-950/60 shadow-[0_0_22px_rgba(16,185,129,0.4)]'
+                        ? 'bg-blue-50/80 border-blue-500 text-blue-900 ring-1 ring-blue-500 dark:bg-blue-950/40 dark:border-blue-500 dark:text-blue-100'
                         : isFocused
-                        ? 'border-indigo-400/90 bg-indigo-950/30 shadow-[0_0_15px_rgba(99,102,241,0.25)]'
-                        : 'border-slate-800 bg-slate-900/60 hover:bg-slate-850 hover:border-slate-700'
+                        ? 'bg-indigo-50/80 border-indigo-500 text-indigo-900 ring-1 ring-indigo-500 dark:bg-indigo-950/40 dark:border-indigo-500 dark:text-indigo-100'
+                        : 'bg-white hover:bg-slate-50 border border-slate-200 text-slate-800 shadow-sm dark:bg-slate-900/80 dark:hover:bg-slate-800/80 dark:border-slate-800 dark:text-slate-200'
                     }`}
                   >
                     <div
                       className={`w-7 h-7 sm:w-9 sm:h-9 rounded-lg sm:rounded-xl flex items-center justify-center font-extrabold text-xs sm:text-sm shrink-0 transition-all duration-350 ease-soothing ${
                         isSelected
-                          ? 'bg-gradient-to-br from-emerald-400 to-teal-500 text-slate-950 shadow-md scale-105 border border-emerald-300'
+                          ? 'bg-blue-600 text-white shadow-md scale-105 border border-blue-500'
                           : isFocused
-                          ? 'bg-indigo-600 text-white border border-indigo-400 scale-105'
-                          : 'bg-slate-800 text-slate-300 border border-slate-700'
+                          ? 'bg-indigo-600 text-white border border-indigo-500 scale-105'
+                          : 'bg-slate-100 text-slate-700 border border-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:border-slate-700'
                       }`}
                     >
                       {letter}
                     </div>
-                    <span className={`text-sm sm:text-base font-medium transition-colors duration-300 ${isSelected ? 'text-white font-bold' : isFocused ? 'text-white font-semibold' : 'text-slate-200'}`}>
+                    <span className={`text-sm sm:text-base font-medium transition-colors duration-300 ${isSelected ? 'text-blue-900 font-bold dark:text-blue-100' : isFocused ? 'text-indigo-950 font-semibold dark:text-indigo-100' : 'text-slate-800 dark:text-slate-200'}`}>
                       <MathText text={opt} inline />
                     </span>
                   </div>
@@ -167,11 +167,11 @@ export const QuestionCard: React.FC<QuestionCardProps> = React.memo(
         </div>
 
         {/* Navigation Buttons Footer */}
-        <div className="flex justify-between items-center border-t border-slate-800 pt-6 mt-4">
+        <div className="flex justify-between items-center border-t border-slate-200 dark:border-slate-800 pt-6 mt-4">
           {questionIndex > 0 ? (
             <button
               onClick={onPrev}
-              className="px-5 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-xl font-bold text-sm transition-all border border-slate-700"
+              className="px-5 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 dark:text-slate-200 dark:border-slate-700 rounded-xl font-bold text-sm transition-all"
             >
               ← Previous
             </button>

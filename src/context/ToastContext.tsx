@@ -43,14 +43,14 @@ export const ToastProvider: React.FC<{ children: React.ReactNode }> = ({ childre
           <div
             key={toast.id}
             onClick={() => removeToast(toast.id)}
-            className={`pointer-events-auto cursor-pointer p-4 rounded-2xl border shadow-xl backdrop-blur-xl flex items-center justify-between gap-3 animate-page-enter transition-all transform hover:scale-[1.02] ${
+            className={`pointer-events-auto cursor-pointer p-4 rounded-2xl border shadow-lg backdrop-blur-xl flex items-center justify-between gap-3 animate-page-enter transition-all transform hover:scale-[1.02] ${
               toast.type === 'success'
-                ? 'bg-emerald-950/90 border-emerald-500/50 text-emerald-200 shadow-emerald-950/50'
+                ? 'bg-white text-slate-900 border-emerald-300 shadow-emerald-500/10 dark:bg-emerald-950/90 dark:border-emerald-500/50 dark:text-emerald-200 dark:shadow-emerald-950/50'
                 : toast.type === 'error'
-                ? 'bg-rose-950/90 border-rose-500/50 text-rose-200 shadow-rose-950/50'
+                ? 'bg-white text-slate-900 border-rose-300 shadow-rose-500/10 dark:bg-rose-950/90 dark:border-rose-500/50 dark:text-rose-200 dark:shadow-rose-950/50'
                 : toast.type === 'warning'
-                ? 'bg-amber-950/90 border-amber-500/50 text-amber-200 shadow-amber-950/50'
-                : 'bg-indigo-950/90 border-indigo-500/50 text-indigo-200 shadow-indigo-950/50'
+                ? 'bg-white text-slate-900 border-amber-300 shadow-amber-500/10 dark:bg-amber-950/90 dark:border-amber-500/50 dark:text-amber-200 dark:shadow-amber-950/50'
+                : 'bg-white text-slate-900 border-slate-200 shadow-slate-900/5 dark:bg-slate-900 dark:text-white dark:border-slate-800 dark:shadow-indigo-950/50'
             }`}
           >
             <div className="flex items-center gap-3">
@@ -64,7 +64,7 @@ export const ToastProvider: React.FC<{ children: React.ReactNode }> = ({ childre
             </div>
             <button
               type="button"
-              className="text-slate-400 hover:text-white text-xs font-bold p-1 transition-colors"
+              className="text-slate-400 hover:text-slate-700 dark:hover:text-white text-xs font-bold p-1 transition-colors"
               aria-label="Close notification"
             >
               ✕

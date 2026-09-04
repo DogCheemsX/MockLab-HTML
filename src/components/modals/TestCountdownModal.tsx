@@ -50,33 +50,33 @@ export const TestCountdownModal: React.FC<TestCountdownModalProps> = ({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/90 backdrop-blur-2xl animate-backdrop-enter select-none"
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-100/95 dark:bg-[#070b14]/90 backdrop-blur-md animate-backdrop-enter select-none"
       role="dialog"
       aria-modal="true"
       aria-labelledby="countdown-title"
     >
-      <div className="w-full max-w-md glass-panel rounded-3xl p-6 sm:p-8 shadow-2xl border-2 border-indigo-500/40 relative overflow-hidden text-center flex flex-col items-center gap-5 animate-modal-enter">
+      <div className="w-full max-w-md bg-white text-slate-900 border border-slate-200 shadow-xl dark:bg-slate-900 dark:border-slate-800 dark:text-white rounded-3xl p-6 sm:p-8 relative overflow-hidden text-center flex flex-col items-center gap-5 animate-modal-enter">
         {/* Glow Effects */}
-        <div className="absolute -top-20 -left-20 w-48 h-48 bg-indigo-500/20 rounded-full blur-3xl pointer-events-none"></div>
-        <div className="absolute -bottom-20 -right-20 w-48 h-48 bg-emerald-500/20 rounded-full blur-3xl pointer-events-none"></div>
+        <div className="absolute -top-20 -left-20 w-48 h-48 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none"></div>
+        <div className="absolute -bottom-20 -right-20 w-48 h-48 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
 
         {step === 'confirm' ? (
           <>
             {/* Heading */}
             <div className="space-y-1">
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-[11px] font-black uppercase tracking-widest shadow-sm">
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 dark:bg-emerald-500/10 dark:text-emerald-400 dark:border-emerald-500/20 text-[11px] font-black uppercase tracking-widest shadow-sm">
                 EXAM CONFIRMATION
               </span>
-              <h2 id="countdown-title" className="text-2xl sm:text-3xl font-black font-display text-white tracking-tight">
+              <h2 id="countdown-title" className="text-2xl sm:text-3xl font-black font-display text-slate-900 dark:text-white tracking-tight">
                 Are You Ready?
               </h2>
             </div>
 
             <div className="w-full space-y-2 my-1">
-              <div className="px-4 py-3 rounded-2xl bg-slate-900/90 border border-slate-800 text-indigo-300 font-extrabold text-xs sm:text-sm truncate shadow-inner">
+              <div className="px-4 py-3 rounded-2xl bg-slate-100 text-slate-900 border border-slate-200 font-semibold dark:bg-slate-800 dark:text-slate-100 dark:border-slate-700 text-xs sm:text-sm truncate shadow-inner">
                 {testTitle}
               </div>
-              <p className="text-xs text-slate-300 font-medium leading-relaxed">
+              <p className="text-xs text-slate-600 dark:text-slate-400 font-medium leading-relaxed">
                 Grab your rough sheet & pen before starting. Timer will begin as soon as your paper loads!
               </p>
             </div>
@@ -94,7 +94,7 @@ export const TestCountdownModal: React.FC<TestCountdownModalProps> = ({
               <button
                 type="button"
                 onClick={onClose}
-                className="w-full sm:w-auto bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white font-bold text-xs sm:text-sm py-3.5 px-5 rounded-xl border border-slate-700 transition-all"
+                className="w-full sm:w-auto bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:border-slate-700 font-bold text-xs sm:text-sm py-3.5 px-5 rounded-xl transition-all"
               >
                 No, Not Yet 😅
               </button>
@@ -104,11 +104,11 @@ export const TestCountdownModal: React.FC<TestCountdownModalProps> = ({
           <>
             {/* Heading */}
             <div className="space-y-1">
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 text-[11px] font-black uppercase tracking-widest shadow-sm">
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 dark:bg-emerald-500/10 dark:text-emerald-400 dark:border-emerald-500/20 text-[11px] font-black uppercase tracking-widest shadow-sm">
                 GET READY
               </span>
-              <h2 id="countdown-title" className="text-2xl sm:text-3xl font-black font-display text-white tracking-tight">
-                Starting Test<span className="inline-block animate-pulse text-indigo-400">...</span>
+              <h2 id="countdown-title" className="text-2xl sm:text-3xl font-black font-display text-slate-900 dark:text-white tracking-tight">
+                Starting Test<span className="inline-block animate-pulse text-indigo-600 dark:text-indigo-400">...</span>
               </h2>
             </div>
 
@@ -119,32 +119,30 @@ export const TestCountdownModal: React.FC<TestCountdownModalProps> = ({
                   cx="60"
                   cy="60"
                   r="52"
-                  className="text-slate-800"
+                  className="stroke-slate-200 dark:stroke-slate-800"
                   strokeWidth="8"
-                  stroke="currentColor"
                   fill="transparent"
                 />
                 <circle
                   cx="60"
                   cy="60"
                   r="52"
-                  className="text-indigo-500 transition-all duration-1000 ease-linear"
+                  className="stroke-blue-600 dark:stroke-blue-500 transition-all duration-1000 ease-linear"
                   strokeWidth="8"
                   strokeDasharray="327"
                   strokeDashoffset={strokeDashoffset}
                   strokeLinecap="round"
-                  stroke="currentColor"
                   fill="transparent"
                 />
               </svg>
 
               <div className="absolute inset-0 flex items-center justify-center">
                 {count > 0 ? (
-                  <span key={count} className="text-6xl font-black font-display text-transparent bg-clip-text bg-gradient-to-br from-indigo-300 via-white to-emerald-300 animate-pulse drop-shadow-md">
+                  <span key={count} className="text-6xl font-black font-display text-slate-900 dark:text-white animate-pulse drop-shadow-sm">
                     {count}
                   </span>
                 ) : (
-                  <span className="text-3xl font-black font-display text-emerald-400 animate-bounce">
+                  <span className="text-3xl font-black font-display text-emerald-600 dark:text-emerald-400 animate-bounce">
                     GO!
                   </span>
                 )}
@@ -153,10 +151,10 @@ export const TestCountdownModal: React.FC<TestCountdownModalProps> = ({
 
             {/* Test Name Badge */}
             <div className="w-full space-y-2">
-              <div className="px-4 py-2.5 rounded-2xl bg-slate-900/90 border border-slate-800 text-slate-200 font-bold text-xs sm:text-sm truncate shadow-inner">
+              <div className="px-4 py-2.5 rounded-2xl bg-slate-100 text-slate-900 border border-slate-200 font-semibold dark:bg-slate-800 dark:text-slate-100 dark:border-slate-700 text-xs sm:text-sm truncate shadow-inner">
                 {testTitle}
               </div>
-              <p className="text-[11px] text-slate-400 font-medium leading-relaxed">
+              <p className="text-[11px] text-slate-600 dark:text-slate-400 font-medium leading-relaxed">
                 Your exam session and question timer will begin immediately.
               </p>
             </div>

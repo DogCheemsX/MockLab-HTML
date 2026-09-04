@@ -13,7 +13,8 @@ export function getOfficialSectionTitle(typeId?: string, rawSubject?: string): s
   if (typeId.startsWith('nat-')) {
     if (lower === 'english' || lower.includes('verbal')) return 'Verbal Ability';
     if (lower.includes('analytical')) return 'Analytical Reasoning';
-    if (lower.includes('quantitative') || lower === 'math' || lower === 'mathematics') return 'Quantitative Reasoning';
+    if (lower.includes('quantitative') || lower.includes('quant')) return 'Quantitative Reasoning';
+    if (lower.includes('math')) return 'Mathematics';
     if (lower.includes('physic')) return 'Physics';
     if (lower.includes('chemist')) return 'Chemistry';
     if (lower.includes('biolog')) return 'Biology';
@@ -34,19 +35,19 @@ export function getOfficialSectionTitle(typeId?: string, rawSubject?: string): s
     if (lower.includes('physic')) return 'Section (III) Physics';
     if (lower.includes('chemist')) return 'Section (IV) Chemistry';
     if (lower.includes('computer') || lower === 'cs') return 'Section (IV) Computer Science';
-    if (lower.includes('statist')) return 'Section (IV) Statistics & Data Analysis';
+    if (lower.includes('statist') || lower.includes('quant')) return 'Section (IV) Statistics & Data Analysis';
   }
 
   // 3. AIR University streams (air-eng, air-med, air-ics, air-com, air-gen, air-art)
   if (typeId.startsWith('air-')) {
     if (lower.includes('english') || lower.includes('verbal')) return 'English';
     if (lower.includes('analytical') || lower.includes('logic')) return 'Analytical / Logical';
+    if (lower.includes('statist')) return 'Statistics';
     if (lower.includes('math') || lower.includes('quant')) return 'Mathematics';
     if (lower.includes('physic')) return 'Physics';
     if (lower.includes('chemist')) return 'Chemistry';
     if (lower.includes('computer') || lower === 'cs') return 'Computer Science';
     if (lower.includes('biolog')) return 'Biology';
-    if (lower.includes('statist')) return 'Statistics';
     if (lower.includes('economic')) return 'Economics';
     if (lower.includes('account')) return 'Accounting';
     if (lower.includes('commerc')) return 'Commerce';

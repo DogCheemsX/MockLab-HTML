@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { User } from 'firebase/auth';
 import { UserProfile } from '../../types/auth';
 import { ADMIN_EMAIL, SUPPORT_WHATSAPP_URL } from '../../constants/config';
+import { useTheme } from '../../context/ThemeContext';
 
 
 interface IntroScreenProps {
@@ -12,8 +13,9 @@ interface IntroScreenProps {
   onOpenSettings?: () => void;
 }
 
-export const IntroScreen: React.FC<IntroScreenProps> = React.memo(({ user, userData, onLogout, onOpenSettings }) => {
+export const IntroScreen: React.FC<IntroScreenProps> = React.memo(({ user, userData, onLogout }) => {
   const navigate = useNavigate();
+  const { theme } = useTheme();
   const isAdmin = user?.email === ADMIN_EMAIL;
   const isPremium = userData?.isPremium;
 
@@ -38,22 +40,22 @@ export const IntroScreen: React.FC<IntroScreenProps> = React.memo(({ user, userD
           <div className="relative mb-4 sm:mb-6">
             <div className="absolute -inset-4 bg-indigo-500/15 rounded-full blur-2xl pointer-events-none"></div>
             <img
-              src="MockLab.png"
+              src={theme === 'light' ? '/MockLab-light.png' : '/MockLab.png'}
               alt="MockLab Logo"
               className="relative w-32 sm:w-52 h-auto drop-shadow-[0_15px_30px_rgba(99,102,241,0.3)] lg:mx-0 mx-auto transition-transform hover:scale-105 duration-300"
             />
           </div>
 
-          <h1 className="text-2xl sm:text-4xl lg:text-5xl font-black font-display tracking-tight text-white mb-3 leading-tight">
-            Master Your University <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-purple-300 to-emerald-400">Entry Tests</span>
+          <h1 className="text-2xl sm:text-4xl lg:text-5xl font-black font-display tracking-tight text-slate-900 dark:text-white mb-3 leading-tight">
+            Master Your <span className="bg-gradient-to-r from-blue-700 via-indigo-600 to-emerald-600 dark:from-blue-400 dark:via-purple-400 dark:to-emerald-400 bg-clip-text text-transparent">University Entry Tests</span>
           </h1>
 
-          <p className="text-xs sm:text-base text-slate-300 mb-5 max-w-xl font-normal leading-relaxed">
-            Timed exam simulations, instant score reports, and full length past papers tailored for <strong className="text-indigo-300 font-semibold">NTS NAT, PIEAS, CUST, Air University</strong>, <strong className="text-indigo-300 font-semibold">Bahria</strong>, and more!
+          <p className="text-xs sm:text-base text-slate-600 dark:text-slate-400 mb-5 max-w-xl font-normal leading-relaxed">
+            Timed exam simulations, instant score reports, and full length past papers tailored for <strong className="text-indigo-600 dark:text-indigo-300 font-semibold">NTS NAT, PIEAS, CUST, Air University</strong>, <strong className="text-indigo-600 dark:text-indigo-300 font-semibold">Bahria</strong>, and more!
           </p>
 
           {/* Account Status Pill */}
-          <div className="glass-panel rounded-2xl px-5 py-3 mb-6 flex flex-wrap items-center justify-between gap-4 w-full max-w-md shadow-lg border border-slate-700/60">
+          <div className="bg-white border border-slate-200/80 shadow-sm dark:bg-slate-900/60 dark:border-slate-800 dark:shadow-none rounded-2xl px-5 py-3 mb-6 flex flex-wrap items-center justify-between gap-4 w-full max-w-md">
             <div className="flex items-center gap-3 text-left">
               {photo ? (
                 <img
@@ -62,64 +64,53 @@ export const IntroScreen: React.FC<IntroScreenProps> = React.memo(({ user, userD
                   className="w-9 h-9 rounded-xl object-cover border border-indigo-500/40 shadow-sm shrink-0"
                 />
               ) : (
-                <div className={`w-9 h-9 rounded-xl flex items-center justify-center font-bold text-sm shrink-0 ${isPremium ? 'bg-amber-500/20 text-amber-300 border border-amber-500/30' : 'bg-indigo-500/20 text-indigo-300 border border-indigo-500/30'}`}>
+                <div className={`w-9 h-9 rounded-xl flex items-center justify-center font-bold text-sm shrink-0 ${isPremium ? 'bg-amber-50 text-amber-700 border border-amber-200 dark:bg-amber-500/20 dark:text-amber-300 dark:border-amber-500/30' : 'bg-indigo-50 text-indigo-700 border border-indigo-200 dark:bg-indigo-500/20 dark:text-indigo-300 dark:border-indigo-500/30'}`}>
                   🎓
                 </div>
               )}
               <div>
-                <p className="text-xs text-slate-400 uppercase tracking-wider font-semibold">Student Account</p>
-                <p className="text-sm font-bold text-white flex items-center gap-1.5">
+                <p className="text-xs text-slate-500 dark:text-slate-400 uppercase tracking-wider font-semibold">Student Account</p>
+                <p className="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-1.5">
                   {userData?.name || 'Student'}
                   {isPremium ? (
-                    <span className="text-[10px] px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 font-bold border border-amber-500/30">
+                    <span className="text-[10px] px-2 py-0.5 rounded-full bg-amber-50 text-amber-700 border border-amber-200 dark:bg-amber-500/20 dark:text-amber-300 font-bold dark:border-amber-500/30">
                       PRO
                     </span>
                   ) : (
-                    <span className="text-[10px] px-2 py-0.5 rounded-full bg-slate-700 text-slate-300 font-medium">
+                    <span className="text-[10px] px-2 py-0.5 rounded-full bg-slate-100 text-slate-700 border border-slate-200 dark:bg-slate-700 dark:text-slate-300 font-medium">
                       Free
                     </span>
                   )}
                 </p>
               </div>
             </div>
-            <div className="flex items-center gap-2">
-              {onOpenSettings && (
-                <button
-                  type="button"
-                  onClick={onOpenSettings}
-                  className="text-xs font-semibold text-slate-300 hover:text-white px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700 transition-all flex items-center gap-1 focus-visible:ring-2 focus-visible:ring-indigo-400"
-                >
-                  <span>⚙️</span> Settings
-                </button>
-              )}
-              <button
-                type="button"
-                onClick={onLogout}
-                className="text-xs font-semibold text-rose-400 hover:text-rose-300 px-3 py-1.5 rounded-lg bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/20 transition-all"
-              >
-                Sign Out
-              </button>
-            </div>
+            <button
+              type="button"
+              onClick={onLogout}
+              className="text-xs font-extrabold text-rose-700 dark:text-rose-400 hover:text-rose-800 dark:hover:text-rose-300 px-4 py-2 rounded-xl bg-rose-50 hover:bg-rose-100 dark:bg-rose-500/10 dark:hover:bg-rose-500/20 border border-rose-200 dark:border-rose-500/30 transition-all shadow-sm active:scale-95 shrink-0"
+            >
+              Sign Out
+            </button>
           </div>
 
           {/* Promotional University Logos Carousel Bar */}
-          <div className="w-full max-w-md mb-6 glass-card p-3 rounded-2xl border border-slate-800/80 bg-slate-900/40">
-            <div className="flex items-center justify-between gap-2">
-              <span className="text-[10px] font-extrabold uppercase tracking-widest text-indigo-400">
+          <div className="w-full max-w-md mb-6 p-3.5 sm:p-4 rounded-2xl bg-white border border-slate-200/80 shadow-sm dark:bg-slate-900/40 dark:border-slate-800/80 dark:shadow-none">
+            <div className="flex items-center justify-between gap-2 mb-1">
+              <span className="text-[10px] sm:text-xs font-extrabold uppercase tracking-widest text-blue-700 dark:text-indigo-400">
                 Official Patterns
               </span>
-              <span className="text-[11px] font-bold text-amber-300 bg-amber-500/15 px-2.5 py-0.5 rounded-full border border-amber-500/30">
+              <span className="text-[11px] font-bold text-blue-700 bg-blue-50 border border-blue-200 dark:text-amber-300 dark:bg-amber-500/15 dark:border-amber-500/30 px-2.5 py-0.5 rounded-full">
                 + and more!
               </span>
             </div>
-            <div className="flex items-center justify-between gap-2 mt-2.5 overflow-x-auto pb-1 no-scrollbar">
+            <div className="flex items-center justify-between gap-2.5 mt-2.5 overflow-x-auto pb-1 no-scrollbar">
               {PROMO_LOGOS.map((u, idx) => (
                 <div
                   key={idx}
-                  className="w-9 h-9 rounded-xl p-1 bg-white/95 border border-slate-700/80 shadow-md shrink-0 flex items-center justify-center transition-transform hover:scale-110"
+                  className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl p-1.5 bg-white border border-slate-200 dark:border-slate-700/80 shadow-sm shrink-0 flex items-center justify-center transition-transform hover:scale-110"
                   title={u.name}
                 >
-                  <img src={u.logo} alt={u.name} className="w-full h-full object-contain rounded" />
+                  <img src={u.logo} alt={u.name} className="w-full h-full object-contain rounded-xl" />
                 </div>
               ))}
             </div>
@@ -130,7 +121,7 @@ export const IntroScreen: React.FC<IntroScreenProps> = React.memo(({ user, userD
             {isAdmin && (
               <button
                 onClick={() => navigate('/admin')}
-                className="w-full bg-gradient-to-r from-rose-900/80 to-red-800/80 hover:from-rose-800 hover:to-red-700 text-rose-100 font-bold text-base py-3.5 px-6 rounded-xl border border-rose-500/40 shadow-lg transition-all flex items-center justify-center gap-2"
+                className="w-full bg-rose-50 text-rose-700 border border-rose-200 hover:bg-rose-100 dark:bg-rose-950/40 dark:border-rose-800 dark:text-rose-300 font-bold text-base py-3.5 px-6 rounded-xl shadow-sm transition-all flex items-center justify-center gap-2"
               >
                 Admin Control Console
               </button>
@@ -138,7 +129,7 @@ export const IntroScreen: React.FC<IntroScreenProps> = React.memo(({ user, userD
 
             <button
               onClick={() => navigate('/select-university')}
-              className="w-full bg-gradient-to-r from-indigo-600 via-indigo-500 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-extrabold text-lg py-4 px-8 rounded-xl shadow-glow-indigo transition-all transform hover:-translate-y-0.5 active:translate-y-0 flex items-center justify-center gap-3 border border-indigo-400/30"
+              className="w-full bg-gradient-to-r from-indigo-600 via-indigo-500 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-extrabold text-lg py-4 px-8 rounded-xl shadow-md dark:shadow-glow-indigo transition-all transform hover:-translate-y-0.5 active:translate-y-0 flex items-center justify-center gap-3 border border-indigo-400/30"
             >
               <span>Enter Portal →</span>
             </button>
@@ -147,7 +138,7 @@ export const IntroScreen: React.FC<IntroScreenProps> = React.memo(({ user, userD
               href={SUPPORT_WHATSAPP_URL}
               target="_blank"
               rel="noreferrer"
-              className="w-full bg-gradient-to-r from-emerald-600/20 via-emerald-500/20 to-teal-600/20 hover:from-emerald-600/30 hover:to-teal-600/30 text-emerald-300 font-extrabold text-sm py-3.5 px-5 rounded-xl border border-emerald-500/40 shadow-lg transition-all transform hover:-translate-y-0.5 active:translate-y-0 flex items-center justify-center gap-2.5"
+              className="w-full bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200 dark:bg-emerald-600/20 dark:hover:bg-emerald-600/30 dark:text-emerald-300 dark:border-emerald-500/40 font-extrabold text-sm py-3.5 px-5 rounded-xl shadow-sm transition-all transform hover:-translate-y-0.5 active:translate-y-0 flex items-center justify-center gap-2.5"
             >
 
               <img src="whatsapp.png" alt="WhatsApp" className="w-5 h-5 object-contain shrink-0" />
@@ -156,39 +147,47 @@ export const IntroScreen: React.FC<IntroScreenProps> = React.memo(({ user, userD
           </div>
         </div>
 
-        {/* Right Column: Feature Cards Grid */}
-        <div className="lg:col-span-5 flex flex-col gap-4">
-          <div className="glass-panel p-6 rounded-3xl border border-slate-800/80 flex flex-col items-start bg-slate-900/40 shadow-lg space-y-2 text-left">
-            <div className="w-10 h-10 rounded-xl bg-indigo-500/20 text-indigo-300 flex items-center justify-center font-bold text-lg border border-indigo-500/30 mb-1">
-              ⏱️
-            </div>
-            <span className="text-xs font-extrabold text-indigo-400 uppercase tracking-widest">Real-Time Timer</span>
-            <h3 className="text-lg font-black text-white">Official Exam Countdown</h3>
-            <p className="text-xs text-slate-300 leading-relaxed">
-              Simulate actual exam time limits with live section timers and critical time warnings.
-            </p>
-          </div>
+        {/* Right Column: Step-Progress Roadmap Timeline */}
+        <div className="lg:col-span-5 flex flex-col justify-center">
+          <div className="bg-white border border-slate-200/80 shadow-sm dark:bg-slate-900/60 dark:border-slate-800 dark:shadow-none p-7 sm:p-9 rounded-3xl text-left relative overflow-hidden">
+            <h3 className="text-xs sm:text-sm font-extrabold text-blue-700 dark:text-indigo-400 uppercase tracking-widest mb-8">
+              How It Works
+            </h3>
 
-          <div className="glass-panel p-6 rounded-3xl border border-slate-800/80 flex flex-col items-start bg-slate-900/40 shadow-lg space-y-2 text-left">
-            <div className="w-10 h-10 rounded-xl bg-emerald-500/20 text-emerald-300 flex items-center justify-center font-bold text-lg border border-emerald-500/30 mb-1">
-              📊
-            </div>
-            <span className="text-xs font-extrabold text-emerald-400 uppercase tracking-widest">Instant Scoring</span>
-            <h3 className="text-lg font-black text-white">Detailed Performance Analytics</h3>
-            <p className="text-xs text-slate-300 leading-relaxed">
-              Get detailed score reports, percentage breakdowns, and subject-wise accuracy metrics immediately.
-            </p>
-          </div>
+            <div className="relative flex flex-col gap-8 sm:gap-9">
+              {/* Interconnecting vertical guideline */}
+              <div className="absolute left-[21.5px] top-5 bottom-5 w-0.5 bg-slate-200 dark:bg-slate-800" />
 
-          <div className="glass-panel p-6 rounded-3xl border border-slate-800/80 flex flex-col items-start bg-slate-900/40 shadow-lg space-y-2 text-left">
-            <div className="w-10 h-10 rounded-xl bg-amber-500/20 text-amber-300 flex items-center justify-center font-bold text-lg border border-amber-500/30 mb-1">
-              📚
+              {/* Step 1 */}
+              <div className="relative flex items-center gap-5 z-10">
+                <div className="w-11 h-11 rounded-full bg-blue-50 text-blue-700 border border-blue-200 dark:bg-blue-500/15 dark:text-blue-400 dark:border-blue-500/30 shadow-sm flex items-center justify-center font-black text-base sm:text-lg shrink-0">
+                  1
+                </div>
+                <h4 className="text-lg sm:text-xl font-extrabold text-slate-900 dark:text-white tracking-tight">
+                  Choose University
+                </h4>
+              </div>
+
+              {/* Step 2 */}
+              <div className="relative flex items-center gap-5 z-10">
+                <div className="w-11 h-11 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 dark:bg-emerald-500/15 dark:text-emerald-400 dark:border-emerald-500/30 shadow-sm flex items-center justify-center font-black text-base sm:text-lg shrink-0">
+                  2
+                </div>
+                <h4 className="text-lg sm:text-xl font-extrabold text-slate-900 dark:text-white tracking-tight">
+                  Pick Test Subject
+                </h4>
+              </div>
+
+              {/* Step 3 */}
+              <div className="relative flex items-center gap-5 z-10">
+                <div className="w-11 h-11 rounded-full bg-amber-50 text-amber-800 border border-amber-200 dark:bg-amber-500/15 dark:text-amber-300 dark:border-amber-500/30 shadow-sm flex items-center justify-center font-black text-base sm:text-lg shrink-0">
+                  3
+                </div>
+                <h4 className="text-lg sm:text-xl font-extrabold text-slate-900 dark:text-white tracking-tight">
+                  Go!
+                </h4>
+              </div>
             </div>
-            <span className="text-xs font-extrabold text-amber-400 uppercase tracking-widest">Curated MCQs</span>
-            <h3 className="text-lg font-black text-white">Full Length Past Papers</h3>
-            <p className="text-xs text-slate-300 leading-relaxed">
-              Access ingested question pools spanning English, Maths, Physics, Chemistry, Biology, Analytical, and CS.
-            </p>
           </div>
         </div>
       </div>

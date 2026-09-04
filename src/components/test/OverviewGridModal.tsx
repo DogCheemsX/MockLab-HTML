@@ -16,30 +16,30 @@ export const OverviewGridModal: React.FC<OverviewGridModalProps> = React.memo(
     if (!isOpen) return null;
 
     return (
-      <div className="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 flex flex-col items-center justify-center p-4 animate-backdrop-enter">
-        <div className="glass-panel rounded-3xl p-6 sm:p-8 w-full max-w-3xl max-h-[85vh] overflow-y-auto border border-slate-700/80 shadow-2xl relative animate-modal-enter">
-          <div className="flex justify-between items-center mb-6 border-b border-slate-800 pb-4">
+      <div className="fixed inset-0 bg-slate-900/60 dark:bg-slate-950/80 backdrop-blur-md z-50 flex flex-col items-center justify-center p-4 animate-backdrop-enter">
+        <div className="bg-white border border-slate-200 shadow-2xl dark:bg-slate-900 dark:border-slate-700/80 rounded-3xl p-6 sm:p-8 w-full max-w-3xl max-h-[85vh] overflow-y-auto relative animate-modal-enter">
+          <div className="flex justify-between items-center mb-6 border-b border-slate-200 dark:border-slate-800 pb-4">
             <div>
-              <h2 className="text-2xl font-extrabold text-white">Question Navigator Grid</h2>
-              <p className="text-xs text-slate-400">Click any question number to jump directly</p>
+              <h2 className="text-2xl font-extrabold text-slate-900 dark:text-white">Question Navigator Grid</h2>
+              <p className="text-xs text-slate-500 dark:text-slate-400">Click any question number to jump directly</p>
             </div>
             <button
               onClick={onClose}
-              className="text-slate-400 hover:text-white font-bold text-sm bg-slate-800 hover:bg-slate-700 px-3 py-1.5 rounded-lg border border-slate-700 transition-colors"
+              className="text-slate-600 hover:text-slate-900 font-bold text-sm bg-slate-100 hover:bg-slate-200 border border-slate-200 dark:text-slate-400 dark:hover:text-white dark:bg-slate-800 dark:hover:bg-slate-700 dark:border-slate-700 px-3 py-1.5 rounded-lg transition-colors"
             >
               ✕ Close
             </button>
           </div>
 
-          <div className="flex flex-wrap gap-4 mb-6 text-xs font-semibold justify-center bg-slate-900/60 p-3 rounded-2xl border border-slate-800">
-            <span className="flex items-center gap-1.5 text-emerald-400">
+          <div className="flex flex-wrap gap-4 mb-6 text-xs font-semibold justify-center bg-slate-50 border border-slate-200 dark:bg-slate-900/60 dark:border-slate-800 p-3 rounded-2xl">
+            <span className="flex items-center gap-1.5 text-emerald-700 dark:text-emerald-400">
               <span className="w-3 h-3 bg-emerald-500 rounded-md"></span> Answered ({Object.keys(userAnswers).length})
             </span>
-            <span className="flex items-center gap-1.5 text-amber-400">
+            <span className="flex items-center gap-1.5 text-amber-700 dark:text-amber-400">
               <span className="w-3 h-3 bg-amber-500 rounded-md"></span> Marked ({Object.values(reviewStatus).filter(Boolean).length})
             </span>
-            <span className="flex items-center gap-1.5 text-slate-400">
-              <span className="w-3 h-3 bg-slate-700 rounded-md"></span> Remaining ({totalQuestions - Object.keys(userAnswers).length})
+            <span className="flex items-center gap-1.5 text-slate-600 dark:text-slate-400">
+              <span className="w-3 h-3 bg-slate-300 dark:bg-slate-700 rounded-md"></span> Remaining ({totalQuestions - Object.keys(userAnswers).length})
             </span>
           </div>
 
@@ -52,15 +52,15 @@ export const OverviewGridModal: React.FC<OverviewGridModalProps> = React.memo(
               let styleClasses = 'w-full aspect-square rounded-xl font-extrabold text-xs sm:text-sm flex items-center justify-center transition-all border ';
 
               if (isReviewed) {
-                styleClasses += 'bg-amber-500/20 text-amber-300 border-amber-500/50 shadow-glow-amber';
+                styleClasses += 'bg-amber-50 text-amber-800 border-amber-300 dark:bg-amber-500/20 dark:text-amber-300 dark:border-amber-500/50 shadow-sm';
               } else if (isAnswered) {
-                styleClasses += 'bg-emerald-500/20 text-emerald-300 border-emerald-500/50 shadow-glow-emerald';
+                styleClasses += 'bg-emerald-50 text-emerald-800 border-emerald-300 dark:bg-emerald-500/20 dark:text-emerald-300 dark:border-emerald-500/50 shadow-sm';
               } else {
-                styleClasses += 'bg-slate-900 text-slate-400 border-slate-800 hover:bg-slate-800 hover:text-white';
+                styleClasses += 'bg-slate-50 text-slate-600 border-slate-200 hover:bg-slate-100 hover:text-slate-900 dark:bg-slate-900 dark:text-slate-400 dark:border-slate-800 dark:hover:bg-slate-800 dark:hover:text-white';
               }
 
               if (isCurrent) {
-                styleClasses += ' ring-2 ring-indigo-400 ring-offset-2 ring-offset-slate-950 scale-105';
+                styleClasses += ' ring-2 ring-indigo-500 ring-offset-2 ring-offset-white dark:ring-offset-slate-950 scale-105';
               }
 
               return (
