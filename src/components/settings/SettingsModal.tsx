@@ -202,7 +202,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, o
       aria-labelledby="settings-title"
     >
       <div
-        className={`w-full max-w-xl bg-white border border-slate-200/80 shadow-2xl dark:bg-slate-900 dark:border-slate-700/80 rounded-3xl p-6 sm:p-8 relative overflow-hidden my-auto text-left ${
+        className={`w-full max-w-xl bg-white border border-slate-200/80 shadow-2xl dark:bg-slate-900 dark:border-slate-700/80 rounded-3xl p-5 sm:p-8 relative my-auto max-h-[88vh] sm:max-h-[90vh] overflow-y-auto text-left ${
           isClosing ? 'animate-modal-exit' : 'animate-modal-enter'
         }`}
         onClick={(e) => e.stopPropagation()}

@@ -27,11 +27,11 @@ export const PremiumModal: React.FC<PremiumModalProps> = React.memo(({ isOpen, o
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 dark:bg-slate-950/80 backdrop-blur-md animate-fade-in"
+      className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-900/60 dark:bg-slate-950/80 backdrop-blur-md animate-backdrop-enter overflow-y-auto"
       onClick={onClose}
     >
       <div
-        className="w-full max-w-lg bg-white dark:bg-slate-900 border-2 border-amber-300 shadow-xl dark:bg-gradient-to-br dark:from-amber-950/30 dark:via-slate-900/95 dark:to-purple-950/30 dark:border-amber-500/50 dark:shadow-glow-amber rounded-3xl p-6 sm:p-8 relative overflow-hidden text-left transition-all duration-300 ease-out transform animate-page-enter"
+        className="w-full max-w-lg my-auto max-h-[88vh] sm:max-h-[90vh] overflow-y-auto bg-white dark:bg-slate-900 border-2 border-amber-300 shadow-xl dark:bg-gradient-to-br dark:from-amber-950/30 dark:via-slate-900/95 dark:to-purple-950/30 dark:border-amber-500/50 dark:shadow-glow-amber rounded-3xl p-5 sm:p-8 relative text-left transition-all duration-300 ease-out transform animate-modal-enter"
         onClick={(e) => e.stopPropagation()}
         role="dialog"
         aria-modal="true"
@@ -150,6 +150,11 @@ export const PremiumModal: React.FC<PremiumModalProps> = React.memo(({ isOpen, o
           <img src="/whatsapp.png" alt="WhatsApp" className="w-5 h-5 object-contain shrink-0" />
           <span>Confirm Payment on WhatsApp</span>
         </a>
+
+        {/* Disclaimer Note */}
+        <p className="text-[10px] sm:text-[11px] text-slate-500 dark:text-slate-400 text-center leading-tight mt-3 font-medium">
+          Independent prep simulator modeled on official syllabus outlines. Not affiliated with any official testing agency.
+        </p>
       </div>
     </div>
   );

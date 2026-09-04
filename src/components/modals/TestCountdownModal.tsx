@@ -50,12 +50,12 @@ export const TestCountdownModal: React.FC<TestCountdownModalProps> = ({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-100/95 dark:bg-[#070b14]/90 backdrop-blur-md animate-backdrop-enter select-none"
+      className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-100/95 dark:bg-[#070b14]/90 backdrop-blur-md animate-backdrop-enter select-none overflow-y-auto"
       role="dialog"
       aria-modal="true"
       aria-labelledby="countdown-title"
     >
-      <div className="w-full max-w-md bg-white text-slate-900 border border-slate-200 shadow-xl dark:bg-slate-900 dark:border-slate-800 dark:text-white rounded-3xl p-6 sm:p-8 relative overflow-hidden text-center flex flex-col items-center gap-5 animate-modal-enter">
+      <div className="w-full max-w-md my-auto max-h-[88vh] sm:max-h-[90vh] overflow-y-auto bg-white text-slate-900 border border-slate-200 shadow-xl dark:bg-slate-900 dark:border-slate-800 dark:text-white rounded-3xl p-5 sm:p-8 relative text-center flex flex-col items-center gap-5 animate-modal-enter">
         {/* Glow Effects */}
         <div className="absolute -top-20 -left-20 w-48 h-48 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none"></div>
         <div className="absolute -bottom-20 -right-20 w-48 h-48 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>

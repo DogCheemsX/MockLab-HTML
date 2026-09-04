@@ -12,6 +12,8 @@ import { BackToTopButton } from './components/common/BackToTopButton';
 import { ThemeToggle } from './components/common/ThemeToggle';
 import { SettingsModal } from './components/settings/SettingsModal';
 
+import { ScrollToTop } from './components/common/ScrollToTop';
+
 // Common Components
 import { LoadingSpinner } from './components/common/LoadingSpinner';
 import { ErrorBoundary } from './components/common/ErrorBoundary';
@@ -26,6 +28,8 @@ import { ActiveTestScreen } from './features/test-runner/ActiveTestScreen';
 import { TestResultScreen } from './features/results/TestResultScreen';
 import { UniPathMatcherScreen } from './features/unipath/UniPathMatcherScreen';
 
+import { ReviewModal } from './components/modals/ReviewModal';
+
 // Lazy-loaded Admin Screen
 const AdminScreen = lazy(() => import('./features/admin/AdminScreen'));
 
@@ -35,6 +39,7 @@ export const App: React.FC = () => {
   const location = useLocation();
 
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const [isReviewOpen, setIsReviewOpen] = useState(false);
 
   const handleLogout = useCallback(() => {
     signOut(auth);
@@ -53,6 +58,7 @@ export const App: React.FC = () => {
       <ThemeProvider>
         <ToastProvider>
           <ErrorBoundary>
+            <ScrollToTop />
             <div className="w-full min-h-screen flex flex-col items-center justify-between p-3 sm:p-6 lg:p-8 bg-slate-50 text-slate-900 dark:bg-[#070b14] dark:text-white transition-colors duration-300">
 
               <ThemeToggle onOpenSettings={undefined} />
@@ -68,16 +74,26 @@ export const App: React.FC = () => {
               </main>
 
               <footer className="w-full text-center py-5 text-xs text-slate-500 dark:text-slate-400 font-medium border-t border-slate-200/80 dark:border-slate-800/60 mt-8 flex flex-col items-center justify-center gap-3">
-                <a
-                  href={SUPPORT_WHATSAPP_URL}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="inline-flex items-center gap-2.5 px-5 py-2.5 rounded-full bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 text-emerald-800 dark:bg-emerald-600/20 dark:hover:bg-emerald-600/30 dark:border-emerald-500/40 dark:text-emerald-300 font-bold text-xs sm:text-sm shadow-sm dark:shadow-lg backdrop-blur-md transition-all transform hover:scale-105 active:scale-95"
-                >
+                <div className="flex flex-wrap items-center justify-center gap-3">
+                  <a
+                    href={SUPPORT_WHATSAPP_URL}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex items-center gap-2.5 px-5 py-2.5 rounded-full bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 text-emerald-800 dark:bg-emerald-600/20 dark:hover:bg-emerald-600/30 dark:border-emerald-500/40 dark:text-emerald-300 font-bold text-xs sm:text-sm shadow-sm dark:shadow-lg backdrop-blur-md transition-all transform hover:scale-105 active:scale-95"
+                  >
 
-                  <img src="whatsapp.png" alt="WhatsApp" className="w-5 h-5 object-contain shrink-0" />
-                  <span>Have any doubts? Message us on WhatsApp!</span>
-                </a>
+                    <img src="whatsapp.png" alt="WhatsApp" className="w-5 h-5 object-contain shrink-0" />
+                    <span>Have any doubts? Message us on WhatsApp!</span>
+                  </a>
+
+                  <button
+                    type="button"
+                    onClick={() => setIsReviewOpen(true)}
+                    className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-purple-50 hover:bg-purple-100 border border-purple-200 text-purple-800 dark:bg-purple-600/20 dark:hover:bg-purple-600/30 dark:border-purple-500/40 dark:text-purple-300 font-bold text-xs sm:text-sm shadow-sm dark:shadow-lg backdrop-blur-md transition-all transform hover:scale-105 active:scale-95 cursor-pointer"
+                  >
+                    <span>⭐ Leave a Review</span>
+                  </button>
+                </div>
                 <p>© {new Date().getFullYear()} MockLab Entry Test Prep • Designed for Pakistani University Aspirants</p>
               </footer>
 
@@ -86,6 +102,12 @@ export const App: React.FC = () => {
                 isOpen={isSettingsOpen}
                 onClose={() => setIsSettingsOpen(false)}
                 onLogout={handleLogout}
+              />
+              <ReviewModal
+                isOpen={isReviewOpen}
+                onClose={() => setIsReviewOpen(false)}
+                user={user}
+                userData={userData}
               />
             </div>
           </ErrorBoundary>
@@ -100,6 +122,7 @@ export const App: React.FC = () => {
     <ThemeProvider>
       <ToastProvider>
         <ErrorBoundary>
+          <ScrollToTop />
           <div className="w-full min-h-screen flex flex-col items-center justify-between p-3 sm:p-6 lg:p-8 bg-slate-50 text-slate-900 dark:bg-[#070b14] dark:text-white transition-colors duration-300">
 
               <ThemeToggle user={user} userData={userData} onOpenSettings={() => setIsSettingsOpen(true)} />
@@ -183,8 +206,18 @@ export const App: React.FC = () => {
                   </svg>
                   <span>Follow u/MockLabPK on Reddit</span>
                 </a>
+                <button
+                  type="button"
+                  onClick={() => setIsReviewOpen(true)}
+                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-purple-50 hover:bg-purple-100 border border-purple-200 text-purple-800 dark:bg-purple-600/20 dark:hover:bg-purple-600/30 dark:border-purple-500/40 dark:text-purple-300 font-bold text-xs sm:text-sm shadow-sm dark:shadow-lg backdrop-blur-md transition-all transform hover:scale-105 active:scale-95 cursor-pointer"
+                >
+                  <span>⭐ Leave a Review</span>
+                </button>
               </div>
               <p>© {new Date().getFullYear()} MockLab Entry Test Prep • Designed for Pakistani University Aspirants</p>
+              <p className="text-[11px] text-slate-500 dark:text-slate-400 max-w-2xl mx-auto text-center leading-relaxed mt-4">
+                MockLab is an independent educational prep platform and is not affiliated with, endorsed by, or connected to NTS, PIEAS, COMSATS, or any other university or testing body. All registered trademarks and test patterns belong to their respective institutions.
+              </p>
             </footer>
 
 
@@ -193,6 +226,12 @@ export const App: React.FC = () => {
               isOpen={isSettingsOpen}
               onClose={() => setIsSettingsOpen(false)}
               onLogout={handleLogout}
+            />
+            <ReviewModal
+              isOpen={isReviewOpen}
+              onClose={() => setIsReviewOpen(false)}
+              user={user}
+              userData={userData}
             />
           </div>
         </ErrorBoundary>

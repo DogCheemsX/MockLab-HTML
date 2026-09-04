@@ -61,6 +61,20 @@ export const ActiveTestScreen: React.FC<ActiveTestScreenProps> = React.memo(({ t
 
   const { timeLeft, startTimer, stopTimer } = useTimer(handleTimeUp);
 
+  // Instant Scroll to Top helper for Question Navigation
+  const scrollToTopInstant = React.useCallback(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+    const screenTest = document.getElementById('screen-test');
+    if (screenTest) screenTest.scrollTop = 0;
+  }, []);
+
+  // Ensure scroll position resets to top on every question change
+  useEffect(() => {
+    scrollToTopInstant();
+  }, [currentQIndex, scrollToTopInstant]);
+
   // Sync URL query param `?q=N` with `currentQIndex`
   useEffect(() => {
     const qParam = searchParams.get('q');
@@ -70,35 +84,39 @@ export const ActiveTestScreen: React.FC<ActiveTestScreenProps> = React.memo(({ t
         const targetIndex = qNum - 1;
         if (targetIndex !== currentQIndex) {
           jumpToQuestion(targetIndex);
+          scrollToTopInstant();
         }
       }
     }
-  }, [searchParams, activeQuestions.length, currentQIndex, jumpToQuestion]);
+  }, [searchParams, activeQuestions.length, currentQIndex, jumpToQuestion, scrollToTopInstant]);
 
   // Sync state change back to `?q=N` URL parameter
   const handleJump = React.useCallback(
     (index: number) => {
       jumpToQuestion(index);
+      scrollToTopInstant();
       setSearchParams({ q: (index + 1).toString() });
     },
-    [jumpToQuestion, setSearchParams]
+    [jumpToQuestion, setSearchParams, scrollToTopInstant]
   );
 
   const handleNext = React.useCallback(() => {
     if (currentQIndex < activeQuestions.length - 1) {
       const nextIdx = currentQIndex + 1;
       nextQuestion();
+      scrollToTopInstant();
       setSearchParams({ q: (nextIdx + 1).toString() });
     }
-  }, [currentQIndex, activeQuestions.length, nextQuestion, setSearchParams]);
+  }, [currentQIndex, activeQuestions.length, nextQuestion, setSearchParams, scrollToTopInstant]);
 
   const handlePrev = React.useCallback(() => {
     if (currentQIndex > 0) {
       const prevIdx = currentQIndex - 1;
       prevQuestion();
+      scrollToTopInstant();
       setSearchParams({ q: (prevIdx + 1).toString() });
     }
-  }, [currentQIndex, prevQuestion, setSearchParams]);
+  }, [currentQIndex, prevQuestion, setSearchParams, scrollToTopInstant]);
 
   const typeId = storedSession?.typeId;
 
@@ -118,13 +136,15 @@ export const ActiveTestScreen: React.FC<ActiveTestScreenProps> = React.memo(({ t
 
     if (targetIndex !== -1) {
       jumpToQuestion(targetIndex);
+      scrollToTopInstant();
       setSearchParams({ q: (targetIndex + 1).toString() });
     } else {
       // Circular wrap around to index 0 (Question 1)
       jumpToQuestion(0);
+      scrollToTopInstant();
       setSearchParams({ q: '1' });
     }
-  }, [currentQIndex, activeQuestions, typeId, jumpToQuestion, setSearchParams]);
+  }, [currentQIndex, activeQuestions, typeId, jumpToQuestion, setSearchParams, scrollToTopInstant]);
 
   // Circular Prev Section Handler: Wraps automatically from first section to start of final section
   const handlePrevSection = React.useCallback(() => {
@@ -150,6 +170,7 @@ export const ActiveTestScreen: React.FC<ActiveTestScreenProps> = React.memo(({ t
 
     if (targetIndex !== -1) {
       jumpToQuestion(targetIndex);
+      scrollToTopInstant();
       setSearchParams({ q: (targetIndex + 1).toString() });
     } else {
       // Circular wrap around to start of final section block
@@ -163,9 +184,10 @@ export const ActiveTestScreen: React.FC<ActiveTestScreenProps> = React.memo(({ t
         startOfLastBlock--;
       }
       jumpToQuestion(startOfLastBlock);
+      scrollToTopInstant();
       setSearchParams({ q: (startOfLastBlock + 1).toString() });
     }
-  }, [currentQIndex, activeQuestions, typeId, jumpToQuestion, setSearchParams]);
+  }, [currentQIndex, activeQuestions, typeId, jumpToQuestion, setSearchParams, scrollToTopInstant]);
 
   const [focusedOptionIndex, setFocusedOptionIndex] = React.useState<number>(0);
 

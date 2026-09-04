@@ -2,13 +2,14 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getAllUsers, updateUserPremiumStatus } from '../../services/userService';
 import { getAllTestResults, TestResultRecord } from '../../services/testResultService';
+import { getAllReviews, ReviewRecord } from '../../services/reviewService';
 import { AdminUserRecord } from '../../types/auth';
 import { UserListItem } from '../../components/admin/UserListItem';
 import { getUserInitials } from '../../utils/formatters';
 
 export const AdminScreen: React.FC = React.memo(() => {
   const navigate = useNavigate();
-  const [activeView, setActiveView] = useState<'students' | 'leaderboard'>('students');
+  const [activeView, setActiveView] = useState<'students' | 'leaderboard' | 'reviews'>('students');
 
   // Students Database State
   const [users, setUsers] = useState<AdminUserRecord[]>([]);
@@ -22,6 +23,12 @@ export const AdminScreen: React.FC = React.memo(() => {
   const [resultSearchTerm, setResultSearchTerm] = useState<string>('');
   const [selectedTestFilter, setSelectedTestFilter] = useState<string>('ALL');
   const [expandedRecordId, setExpandedRecordId] = useState<string | null>(null);
+
+  // Private Student Reviews State
+  const [reviews, setReviews] = useState<ReviewRecord[]>([]);
+  const [loadingReviews, setLoadingReviews] = useState<boolean>(false);
+  const [reviewSearchTerm, setReviewSearchTerm] = useState<string>('');
+  const [selectedStarFilter, setSelectedStarFilter] = useState<number | 'ALL'>('ALL');
 
   const fetchUsers = async () => {
     setLoadingUsers(true);
@@ -48,9 +55,22 @@ export const AdminScreen: React.FC = React.memo(() => {
     }
   };
 
+  const fetchReviews = async () => {
+    setLoadingReviews(true);
+    try {
+      const records = await getAllReviews();
+      setReviews(records);
+    } catch (err: any) {
+      console.error('Error fetching reviews:', err);
+    } finally {
+      setLoadingReviews(false);
+    }
+  };
+
   useEffect(() => {
     fetchUsers();
     fetchTestResults();
+    fetchReviews();
   }, []);
 
   const handleToggleStatus = async (uid: string, currentStatus: boolean) => {
@@ -114,6 +134,31 @@ export const AdminScreen: React.FC = React.memo(() => {
     return list;
   }, [testResults, selectedTestFilter, resultSearchTerm]);
 
+  // Filter Reviews
+  const filteredReviews = useMemo(() => {
+    let list = [...reviews];
+    if (selectedStarFilter !== 'ALL') {
+      list = list.filter((r) => r.rating === selectedStarFilter);
+    }
+    if (reviewSearchTerm.trim()) {
+      const term = reviewSearchTerm.toLowerCase();
+      list = list.filter(
+        (r) =>
+          (r.userName && r.userName.toLowerCase().includes(term)) ||
+          (r.userEmail && r.userEmail.toLowerCase().includes(term)) ||
+          (r.userPhone && r.userPhone.includes(term)) ||
+          (r.comment && r.comment.toLowerCase().includes(term))
+      );
+    }
+    return list;
+  }, [reviews, selectedStarFilter, reviewSearchTerm]);
+
+  const avgRating = useMemo(() => {
+    if (reviews.length === 0) return '5.0';
+    const sum = reviews.reduce((acc, r) => acc + r.rating, 0);
+    return (sum / reviews.length).toFixed(1);
+  }, [reviews]);
+
   const premiumCount = useMemo(() => users.filter((u) => u.isPremium).length, [users]);
   const freeCount = users.length - premiumCount;
 
@@ -138,16 +183,16 @@ export const AdminScreen: React.FC = React.memo(() => {
           Admin Management Console
         </h1>
         <p className="text-xs sm:text-sm text-slate-400 max-w-lg mx-auto">
-          Manage registered accounts, grant PRO access, and view student test performance on MockLab Ranked.
+          Manage registered accounts, grant PRO access, view leaderboard, and read private student reviews.
         </p>
       </div>
 
       {/* View Switcher Navigation Buttons */}
-      <div className="flex items-center justify-center gap-3 w-full max-w-md mb-8 p-1.5 bg-slate-950/90 rounded-2xl border border-slate-800 shadow-lg">
+      <div className="flex items-center justify-center gap-2 sm:gap-3 w-full max-w-lg mb-8 p-1.5 bg-slate-950/90 rounded-2xl border border-slate-800 shadow-lg">
         <button
           type="button"
           onClick={() => setActiveView('students')}
-          className={`flex-1 py-2.5 px-4 rounded-xl font-bold text-xs sm:text-sm transition-all flex items-center justify-center gap-2 ${
+          className={`flex-1 py-2.5 px-3 rounded-xl font-bold text-xs sm:text-sm transition-all flex items-center justify-center gap-1.5 ${
             activeView === 'students'
               ? 'bg-indigo-600 text-white shadow-glow-indigo'
               : 'text-slate-400 hover:text-white'
@@ -162,13 +207,28 @@ export const AdminScreen: React.FC = React.memo(() => {
             setActiveView('leaderboard');
             fetchTestResults();
           }}
-          className={`flex-1 py-2.5 px-4 rounded-xl font-extrabold text-xs sm:text-sm transition-all flex items-center justify-center gap-2 ${
+          className={`flex-1 py-2.5 px-3 rounded-xl font-extrabold text-xs sm:text-sm transition-all flex items-center justify-center gap-1.5 ${
             activeView === 'leaderboard'
               ? 'bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 text-slate-950 shadow-glow-amber'
               : 'bg-amber-500/15 text-amber-300 border border-amber-500/30 hover:bg-amber-500/30'
           }`}
         >
-          <span>🏆</span> Ranked MockLab
+          <span>🏆</span> Ranked
+        </button>
+
+        <button
+          type="button"
+          onClick={() => {
+            setActiveView('reviews');
+            fetchReviews();
+          }}
+          className={`flex-1 py-2.5 px-3 rounded-xl font-extrabold text-xs sm:text-sm transition-all flex items-center justify-center gap-1.5 ${
+            activeView === 'reviews'
+              ? 'bg-purple-600 text-white shadow-glow-purple'
+              : 'bg-purple-500/15 text-purple-300 border border-purple-500/30 hover:bg-purple-500/30'
+          }`}
+        >
+          <span>⭐</span> Reviews ({reviews.length})
         </button>
       </div>
 
@@ -433,6 +493,139 @@ export const AdminScreen: React.FC = React.memo(() => {
                         )}
                       </div>
                     )}
+                  </div>
+                );
+              })
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* Private Student Reviews View */}
+      {activeView === 'reviews' && (
+        <div className="w-full glass-panel rounded-3xl p-6 shadow-glass border border-purple-500/40 bg-slate-900/90 text-left">
+          {/* Header & Controls */}
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6 pb-4 border-b border-slate-800">
+            <div>
+              <div className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-purple-500/20 text-purple-300 border border-purple-500/40 text-[10px] font-black uppercase tracking-widest mb-1">
+                🔒 CONFIDENTIAL STUDENT FEEDBACK
+              </div>
+              <h2 className="text-xl font-black font-display text-white">
+                Private Student Reviews ({reviews.length})
+              </h2>
+              <p className="text-xs text-slate-400">
+                Average Rating: <b className="text-amber-400 font-black">{avgRating} / 5.0 ★</b> • Only visible to Admin
+              </p>
+            </div>
+
+            {/* Filter Controls */}
+            <div className="flex flex-col sm:flex-row items-center gap-3">
+              {/* Star Rating Filter */}
+              <select
+                value={selectedStarFilter}
+                onChange={(e) => {
+                  const val = e.target.value;
+                  setSelectedStarFilter(val === 'ALL' ? 'ALL' : parseInt(val, 10));
+                }}
+                className="w-full sm:w-auto bg-slate-950 border border-purple-500/40 rounded-xl px-3 py-2 text-xs font-bold text-purple-300 focus:outline-none focus:ring-2 focus:ring-purple-500/30"
+              >
+                <option value="ALL">All Star Ratings ({reviews.length})</option>
+                <option value="5">5 Stars 🌟</option>
+                <option value="4">4 Stars 👍</option>
+                <option value="3">3 Stars 👌</option>
+                <option value="2">2 Stars 😐</option>
+                <option value="1">1 Star 👎</option>
+              </select>
+
+              {/* Search Bar */}
+              <input
+                type="text"
+                placeholder="Search reviewer or review text..."
+                value={reviewSearchTerm}
+                onChange={(e) => setReviewSearchTerm(e.target.value)}
+                className="w-full sm:w-56 bg-slate-950 border border-slate-700 rounded-xl px-3.5 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-purple-500"
+              />
+            </div>
+          </div>
+
+          {/* Reviews List */}
+          <div className="space-y-3.5 max-h-[60vh] overflow-y-auto pr-1">
+            {loadingReviews ? (
+              <div className="text-center py-12 text-slate-400 font-medium">Loading private review database...</div>
+            ) : filteredReviews.length === 0 ? (
+              <div className="text-center py-12 text-slate-400 font-medium">
+                No private student reviews submitted matching your criteria yet.
+              </div>
+            ) : (
+              filteredReviews.map((rev) => {
+                const recId = rev.id || `rev-${Math.random()}`;
+                const cleanPhone = (rev.userPhone || '').replace(/\D/g, '');
+                const formattedPhone = cleanPhone.startsWith('0') ? '92' + cleanPhone.slice(1) : cleanPhone;
+                const waUrl = cleanPhone ? `https://wa.me/${formattedPhone}?text=${encodeURIComponent(`Hi ${rev.userName}! Thanks for submitting your review on MockLab!`)}` : '#';
+
+                return (
+                  <div
+                    key={recId}
+                    className="p-4 rounded-2xl bg-slate-950/80 border border-slate-800 hover:border-purple-500/40 transition-all flex flex-col gap-3 text-left"
+                  >
+                    <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 w-full">
+                      {/* Reviewer PFP & Details */}
+                      <div className="flex items-center gap-3">
+                        {rev.userPhotoURL ? (
+                          <img
+                            src={rev.userPhotoURL}
+                            alt={rev.userName}
+                            className="w-10 h-10 rounded-2xl object-cover border border-purple-400/40 shadow-sm shrink-0"
+                          />
+                        ) : (
+                          <div className="w-10 h-10 rounded-2xl bg-purple-900/60 text-purple-200 border border-purple-500/40 font-black flex items-center justify-center text-xs shrink-0 shadow-sm">
+                            {getUserInitials(rev.userName)}
+                          </div>
+                        )}
+
+                        <div>
+                          <h3 className="font-extrabold text-white text-base flex items-center gap-2">
+                            <span>{rev.userName}</span>
+                            <span className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-purple-500/20 text-purple-300 border border-purple-500/30">
+                              {rev.userEmail || 'Student'}
+                            </span>
+                          </h3>
+                          <div className="flex items-center gap-3 mt-0.5 text-xs text-slate-400">
+                            {rev.userPhone && rev.userPhone !== 'No Phone' ? (
+                              <a
+                                href={waUrl}
+                                target="_blank"
+                                rel="noreferrer"
+                                className="inline-flex items-center gap-1 font-mono text-emerald-400 hover:text-emerald-300 font-bold hover:underline"
+                                title="Message reviewer on WhatsApp"
+                              >
+                                <span>💬</span> {rev.userPhone}
+                              </a>
+                            ) : (
+                              <span className="font-mono text-slate-500">💬 No Phone</span>
+                            )}
+                            <span>•</span>
+                            <span className="font-medium text-slate-400">{rev.dateString}</span>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Rating Stars Badge */}
+                      <div className="flex items-center gap-1 bg-amber-500/15 border border-amber-500/30 px-3 py-1.5 rounded-xl shrink-0">
+                        <span className="text-amber-400 font-black text-sm">
+                          {'★'.repeat(rev.rating)}
+                        </span>
+                        <span className="text-slate-600 dark:text-slate-600 font-black text-sm">
+                          {'★'.repeat(5 - rev.rating)}
+                        </span>
+                        <span className="text-xs font-black text-amber-300 ml-1.5">{rev.rating}.0</span>
+                      </div>
+                    </div>
+
+                    {/* Review Comment Text */}
+                    <div className="bg-slate-900 p-3.5 rounded-xl border border-slate-800/80 text-xs sm:text-sm text-slate-200 leading-relaxed font-medium">
+                      "{rev.comment}"
+                    </div>
                   </div>
                 );
               })

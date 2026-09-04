@@ -1,0 +1,21 @@
+{
+  "name": "MockLab - FLPs for Pakistani Universities",
+  "short_name": "MockLab",
+  "description": "Master your university entrance tests with timed exam simulations, instant score reports, and full-length past papers for NTS NAT, PIEAS, CUST, Air, Bahria, and more!",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#070b14",
+  "theme_color": "#070b14",
+  "icons": [
+    {
+      "src": "/favicon.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/favicon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

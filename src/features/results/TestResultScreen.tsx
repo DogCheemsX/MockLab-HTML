@@ -8,15 +8,18 @@ import { saveTestResult } from '../../services/testResultService';
 import { getScoreMessage, formatDurationHHMMSS } from '../../utils/formatters';
 import { getOfficialSectionTitle } from '../../utils/sectionUtils';
 
+import { ReviewModal } from '../../components/modals/ReviewModal';
+
 interface TestResultScreenProps {
   testSession: UseTestSessionReturn;
 }
 
 export const TestResultScreen: React.FC<TestResultScreenProps> = React.memo(({ testSession }) => {
   const navigate = useNavigate();
-  const { userData } = useAuth();
+  const { userData, user } = useAuth();
   const { score, userAnswers, storedSession, clearSession } = testSession;
   const savedRef = useRef(false);
+  const [isReviewOpen, setIsReviewOpen] = React.useState(false);
 
   const finalScore = score || storedSession?.score || 0;
   const totalQuestions = storedSession?.activeQuestions?.length || 0;
@@ -229,15 +232,30 @@ export const TestResultScreen: React.FC<TestResultScreenProps> = React.memo(({ t
             >
               <span>🎯</span> Take Another Full Length Past Paper
             </button>
-            <button
-              onClick={handleGoDashboard}
-              className="w-full bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 dark:text-slate-200 dark:border-slate-700 font-bold text-sm py-3.5 px-6 rounded-2xl transition-colors"
-            >
-              ← Return to Dashboard
-            </button>
+            <div className="grid grid-cols-2 gap-3">
+              <button
+                onClick={handleGoDashboard}
+                className="w-full bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 dark:text-slate-200 dark:border-slate-700 font-bold text-xs sm:text-sm py-3.5 px-4 rounded-2xl transition-colors truncate"
+              >
+                ← Return to Dashboard
+              </button>
+              <button
+                onClick={() => setIsReviewOpen(true)}
+                className="w-full bg-purple-50 hover:bg-purple-100 text-purple-800 border border-purple-200 dark:bg-purple-600/20 dark:hover:bg-purple-600/30 dark:text-purple-300 dark:border-purple-500/40 font-bold text-xs sm:text-sm py-3.5 px-4 rounded-2xl transition-colors truncate"
+              >
+                ⭐ Leave a Review
+              </button>
+            </div>
           </div>
         </div>
       </div>
+
+      <ReviewModal
+        isOpen={isReviewOpen}
+        onClose={() => setIsReviewOpen(false)}
+        user={user}
+        userData={userData}
+      />
     </div>
   );
 });

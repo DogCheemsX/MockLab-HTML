@@ -11,11 +11,11 @@ export const ExitConfirmModal: React.FC<ExitConfirmModalProps> = React.memo(({ i
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 dark:bg-slate-950/80 backdrop-blur-md animate-fade-in"
+      className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-900/60 dark:bg-slate-950/80 backdrop-blur-md animate-backdrop-enter overflow-y-auto"
       onClick={onCancel}
     >
       <div
-        className="w-full max-w-md bg-white dark:bg-slate-900 border-2 border-rose-200 shadow-xl dark:bg-gradient-to-br dark:from-rose-950/30 dark:via-slate-900/95 dark:to-slate-950/90 dark:border-rose-500/40 rounded-3xl p-6 sm:p-8 relative overflow-hidden text-center transition-all duration-300 ease-out transform animate-page-enter"
+        className="w-full max-w-md my-auto max-h-[88vh] sm:max-h-[90vh] overflow-y-auto bg-white dark:bg-slate-900 border-2 border-rose-200 shadow-xl dark:bg-gradient-to-br dark:from-rose-950/30 dark:via-slate-900/95 dark:to-slate-950/90 dark:border-rose-500/40 rounded-3xl p-5 sm:p-8 relative text-center transition-all duration-300 ease-out transform animate-modal-enter"
         onClick={(e) => e.stopPropagation()}
         role="dialog"
         aria-modal="true"

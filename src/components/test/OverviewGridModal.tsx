@@ -16,8 +16,8 @@ export const OverviewGridModal: React.FC<OverviewGridModalProps> = React.memo(
     if (!isOpen) return null;
 
     return (
-      <div className="fixed inset-0 bg-slate-900/60 dark:bg-slate-950/80 backdrop-blur-md z-50 flex flex-col items-center justify-center p-4 animate-backdrop-enter">
-        <div className="bg-white border border-slate-200 shadow-2xl dark:bg-slate-900 dark:border-slate-700/80 rounded-3xl p-6 sm:p-8 w-full max-w-3xl max-h-[85vh] overflow-y-auto relative animate-modal-enter">
+      <div className="fixed inset-0 bg-slate-900/60 dark:bg-slate-950/80 backdrop-blur-md z-50 flex items-center justify-center p-3 sm:p-4 animate-backdrop-enter overflow-y-auto">
+        <div className="bg-white border border-slate-200 shadow-2xl dark:bg-slate-900 dark:border-slate-700/80 rounded-3xl p-5 sm:p-8 w-full max-w-3xl my-auto max-h-[88vh] sm:max-h-[90vh] overflow-y-auto relative animate-modal-enter">
           <div className="flex justify-between items-center mb-6 border-b border-slate-200 dark:border-slate-800 pb-4">
             <div>
               <h2 className="text-2xl font-extrabold text-slate-900 dark:text-white">Question Navigator Grid</h2>
