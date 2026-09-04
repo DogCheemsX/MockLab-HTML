@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { formatTime } from '../../utils/formatters';
 
 interface TestHeaderProps {
@@ -11,6 +11,35 @@ interface TestHeaderProps {
 export const TestHeader: React.FC<TestHeaderProps> = React.memo(({ timeLeft, testTitle, onExit, onSubmit }) => {
   const isWarning = timeLeft <= 600; // <= 10 mins
   const isCritical = timeLeft <= 300; // <= 5 mins
+  const [isFullscreen, setIsFullscreen] = useState(!!document.fullscreenElement);
+
+  useEffect(() => {
+    const handleFSChange = () => {
+      setIsFullscreen(!!document.fullscreenElement);
+    };
+    document.addEventListener('fullscreenchange', handleFSChange);
+    document.addEventListener('webkitfullscreenchange', handleFSChange);
+    return () => {
+      document.removeEventListener('fullscreenchange', handleFSChange);
+      document.removeEventListener('webkitfullscreenchange', handleFSChange);
+    };
+  }, []);
+
+  const toggleFullscreen = () => {
+    if (!document.fullscreenElement) {
+      if (document.documentElement.requestFullscreen) {
+        document.documentElement.requestFullscreen().catch(() => {});
+      } else if ((document.documentElement as any).webkitRequestFullscreen) {
+        (document.documentElement as any).webkitRequestFullscreen();
+      }
+    } else {
+      if (document.exitFullscreen) {
+        document.exitFullscreen().catch(() => {});
+      } else if ((document as any).webkitExitFullscreen) {
+        (document as any).webkitExitFullscreen();
+      }
+    }
+  };
 
   return (
     <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 bg-white border border-slate-200 shadow-sm text-slate-800 dark:bg-slate-900 dark:border-slate-800 dark:text-slate-200 p-4 rounded-t-2xl relative z-10">
@@ -48,6 +77,29 @@ export const TestHeader: React.FC<TestHeaderProps> = React.memo(({ timeLeft, tes
 
         {/* Action Controls */}
         <div className="flex items-center gap-2">
+          <button
+            type="button"
+            onClick={toggleFullscreen}
+            className="px-3 py-1.5 rounded-xl text-xs font-bold text-indigo-700 bg-indigo-50 hover:bg-indigo-100 border border-indigo-200 dark:text-indigo-300 dark:bg-indigo-950/40 dark:hover:bg-indigo-900/60 dark:border-indigo-500/40 transition-all shadow-sm flex items-center gap-1.5"
+            title={isFullscreen ? "Exit Fullscreen Mode" : "Enter Fullscreen Mode"}
+          >
+            {isFullscreen ? (
+              <>
+                <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 9L4 4m0 0l4 0m-4 0l0 4m11 5l5 5m0 0l-4 0m4 0l0-4M9 15l-5 5m0 0l4 0m-4 0l0-4m11-11l5-5m0 0l-4 0m4 0l0 4" />
+                </svg>
+                <span className="hidden sm:inline">Exit Fullscreen</span>
+              </>
+            ) : (
+              <>
+                <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
+                </svg>
+                <span className="hidden sm:inline">Fullscreen</span>
+              </>
+            )}
+          </button>
+
           {onExit && (
             <button
               type="button"
@@ -75,3 +127,4 @@ export const TestHeader: React.FC<TestHeaderProps> = React.memo(({ timeLeft, tes
 });
 
 TestHeader.displayName = 'TestHeader';
+

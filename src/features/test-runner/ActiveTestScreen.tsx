@@ -33,12 +33,31 @@ export const ActiveTestScreen: React.FC<ActiveTestScreenProps> = React.memo(({ t
     calculateFinalScore
   } = testSession;
 
+  // Helper to safely exit browser fullscreen mode if active
+  const exitFullscreenIfActive = React.useCallback(() => {
+    if (document.fullscreenElement) {
+      if (document.exitFullscreen) {
+        document.exitFullscreen().catch(() => {});
+      } else if ((document as any).webkitExitFullscreen) {
+        (document as any).webkitExitFullscreen();
+      }
+    }
+  }, []);
+
+  // Exit fullscreen on component unmount (e.g. navigation away)
+  useEffect(() => {
+    return () => {
+      exitFullscreenIfActive();
+    };
+  }, [exitFullscreenIfActive]);
+
   // Handle countdown time up
   const handleTimeUp = React.useCallback(() => {
     alert('Time is up! Submitting your test.');
+    exitFullscreenIfActive();
     calculateFinalScore();
     navigate('/results');
-  }, [calculateFinalScore, navigate]);
+  }, [calculateFinalScore, navigate, exitFullscreenIfActive]);
 
   const { timeLeft, startTimer, stopTimer } = useTimer(handleTimeUp);
 
@@ -212,10 +231,11 @@ export const ActiveTestScreen: React.FC<ActiveTestScreenProps> = React.memo(({ t
   // Confirm Exit Handler
   const handleConfirmExit = React.useCallback(() => {
     setIsExitModalOpen(false);
+    exitFullscreenIfActive();
     stopTimer();
     clearSession();
     navigate('/select-university');
-  }, [stopTimer, clearSession, navigate]);
+  }, [stopTimer, clearSession, navigate, exitFullscreenIfActive]);
 
   // Submit Test Handler
   const handleSubmitClick = React.useCallback(() => {
@@ -225,10 +245,11 @@ export const ActiveTestScreen: React.FC<ActiveTestScreenProps> = React.memo(({ t
         return;
       }
     }
+    exitFullscreenIfActive();
     stopTimer();
     calculateFinalScore();
     navigate('/results');
-  }, [activeQuestions.length, userAnswers, stopTimer, calculateFinalScore, navigate]);
+  }, [activeQuestions.length, userAnswers, stopTimer, calculateFinalScore, navigate, exitFullscreenIfActive]);
 
   // Start / Resume timer on session mount
   useEffect(() => {
