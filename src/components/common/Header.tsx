@@ -15,22 +15,22 @@ export const Header: React.FC = React.memo(() => {
   return (
     <div className="flex flex-col items-center lg:items-start text-center lg:text-left mb-6">
       {/* Promotional University Logos Pill Bar */}
-      <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-900/80 border border-slate-800 text-xs font-semibold text-slate-300 mb-5 shadow-lg backdrop-blur-md">
-        <span className="text-[10px] font-extrabold uppercase tracking-widest text-indigo-400">
+      <div className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-slate-900/80 border border-slate-800 text-xs font-semibold text-slate-300 mb-5 shadow-lg backdrop-blur-md">
+        <span className="text-[10px] sm:text-xs font-extrabold uppercase tracking-widest text-indigo-400">
           Official Test Banks:
         </span>
-        <div className="flex items-center gap-1.5">
+        <div className="flex items-center gap-2">
           {LOGOS.map((u, idx) => (
             <div
               key={idx}
-              className="w-6 h-6 rounded-md p-0.5 bg-white/95 border border-slate-700/80 shadow-sm shrink-0 flex items-center justify-center"
+              className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl p-1 bg-white/95 border border-slate-700/80 shadow-sm shrink-0 flex items-center justify-center transition-transform hover:scale-110"
               title={u.name}
             >
-              <img src={u.logo} alt={u.name} className="w-full h-full object-contain rounded" />
+              <img src={u.logo} alt={u.name} className="w-full h-full object-contain rounded-lg" />
             </div>
           ))}
         </div>
-        <span className="text-[10px] font-bold text-amber-300 bg-amber-500/20 px-2 py-0.5 rounded-full border border-amber-500/30">
+        <span className="text-[10px] sm:text-xs font-bold text-amber-300 bg-amber-500/20 px-2.5 py-1 rounded-full border border-amber-500/30">
           + and more!
         </span>
       </div>
@@ -43,7 +43,7 @@ export const Header: React.FC = React.memo(() => {
       />
 
 
-      <p className="text-slate-300 font-medium text-sm sm:text-base max-w-md leading-relaxed">
+      <p className="text-slate-700 dark:text-slate-300 font-medium text-sm sm:text-base max-w-md leading-relaxed">
         Pakistan's 1st all in one university entrance test platform
       </p>
     </div>

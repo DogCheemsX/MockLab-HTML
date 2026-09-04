@@ -42,15 +42,39 @@ export interface UseTestSessionReturn {
   restoreSession: () => StoredSession | null;
 }
 
+export function getStoredSession(): StoredSession | null {
+  try {
+    const local = localStorage.getItem(SESSION_STORAGE_KEY);
+    if (local) return JSON.parse(local);
+    const session = sessionStorage.getItem(SESSION_STORAGE_KEY);
+    if (session) return JSON.parse(session);
+  } catch (e) {
+    console.error('Error reading active session from storage:', e);
+  }
+  return null;
+}
+
+export function saveStoredSession(data: StoredSession): void {
+  try {
+    const serialized = JSON.stringify(data);
+    localStorage.setItem(SESSION_STORAGE_KEY, serialized);
+    sessionStorage.setItem(SESSION_STORAGE_KEY, serialized);
+  } catch (e) {
+    console.error('Error saving active session to storage:', e);
+  }
+}
+
+export function removeStoredSession(): void {
+  try {
+    localStorage.removeItem(SESSION_STORAGE_KEY);
+    sessionStorage.removeItem(SESSION_STORAGE_KEY);
+  } catch (e) {
+    console.error('Error clearing active session from storage:', e);
+  }
+}
+
 export function useTestSession(): UseTestSessionReturn {
-  const [storedSession, setStoredSession] = useState<StoredSession | null>(() => {
-    try {
-      const item = sessionStorage.getItem(SESSION_STORAGE_KEY);
-      return item ? JSON.parse(item) : null;
-    } catch (e) {
-      return null;
-    }
-  });
+  const [storedSession, setStoredSession] = useState<StoredSession | null>(getStoredSession);
 
   const [activeQuestions, setActiveQuestions] = useState<Question[]>(
     () => storedSession?.activeQuestions || []
@@ -68,7 +92,7 @@ export function useTestSession(): UseTestSessionReturn {
     () => storedSession?.score || 0
   );
 
-  // Sync to sessionStorage on changes if an active session exists
+  // Sync to localStorage & sessionStorage on changes if an active session exists
   useEffect(() => {
     if (storedSession && activeQuestions.length > 0) {
       const updated: StoredSession = {
@@ -79,7 +103,7 @@ export function useTestSession(): UseTestSessionReturn {
         reviewStatus,
         score
       };
-      sessionStorage.setItem(SESSION_STORAGE_KEY, JSON.stringify(updated));
+      saveStoredSession(updated);
     }
   }, [activeQuestions, currentQIndex, userAnswers, reviewStatus, score, storedSession]);
 
@@ -105,7 +129,7 @@ export function useTestSession(): UseTestSessionReturn {
         completed: false
       };
 
-      sessionStorage.setItem(SESSION_STORAGE_KEY, JSON.stringify(newSession));
+      saveStoredSession(newSession);
       setStoredSession(newSession);
       setActiveQuestions(questions);
       setCurrentQIndex(0);
@@ -118,20 +142,15 @@ export function useTestSession(): UseTestSessionReturn {
   );
 
   const restoreSession = useCallback((): StoredSession | null => {
-    try {
-      const item = sessionStorage.getItem(SESSION_STORAGE_KEY);
-      if (item) {
-        const parsed: StoredSession = JSON.parse(item);
-        setStoredSession(parsed);
-        setActiveQuestions(parsed.activeQuestions || []);
-        setCurrentQIndex(parsed.currentQIndex || 0);
-        setUserAnswers(parsed.userAnswers || {});
-        setReviewStatus(parsed.reviewStatus || {});
-        setScore(parsed.score || 0);
-        return parsed;
-      }
-    } catch (e) {
-      console.error('Failed to restore test session:', e);
+    const parsed = getStoredSession();
+    if (parsed) {
+      setStoredSession(parsed);
+      setActiveQuestions(parsed.activeQuestions || []);
+      setCurrentQIndex(parsed.currentQIndex || 0);
+      setUserAnswers(parsed.userAnswers || {});
+      setReviewStatus(parsed.reviewStatus || {});
+      setScore(parsed.score || 0);
+      return parsed;
     }
     return null;
   }, []);
@@ -207,7 +226,7 @@ export function useTestSession(): UseTestSessionReturn {
         score: finalScore,
         completed: true
       };
-      sessionStorage.setItem(SESSION_STORAGE_KEY, JSON.stringify(completedSession));
+      saveStoredSession(completedSession);
       setStoredSession(completedSession);
     }
 
@@ -215,7 +234,7 @@ export function useTestSession(): UseTestSessionReturn {
   }, [activeQuestions, userAnswers, storedSession]);
 
   const clearSession = useCallback(() => {
-    sessionStorage.removeItem(SESSION_STORAGE_KEY);
+    removeStoredSession();
     setStoredSession(null);
     setActiveQuestions([]);
     setCurrentQIndex(0);

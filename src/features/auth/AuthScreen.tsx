@@ -173,7 +173,7 @@ export const AuthScreen: React.FC = () => {
                   {mode === 'login'
                     ? 'Enter your credentials to access test series'
                     : mode === 'signup'
-                    ? 'Sign up to start practicing NTS NAT & University MCQs'
+                    ? 'Sign up to start practicing University MCQs'
                     : 'Enter your email address to receive an automated password reset link'}
                 </p>
               </div>

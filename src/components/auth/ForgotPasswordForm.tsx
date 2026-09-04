@@ -61,21 +61,21 @@ export const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = React.memo(
       <form onSubmit={handleSubmit} className="space-y-4">
         {/* Success Feedback Banner */}
         {successMessage && (
-          <div className="p-4 rounded-2xl bg-emerald-950/60 border border-emerald-500/50 text-emerald-300 text-xs font-medium flex items-start gap-3 animate-page-enter shadow-lg text-left">
-            <svg className="w-5 h-5 text-emerald-400 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div className="p-4 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-800 dark:bg-emerald-950/60 dark:border-emerald-500/50 dark:text-emerald-300 text-xs font-medium flex items-start gap-3 animate-page-enter shadow-lg text-left">
+            <svg className="w-5 h-5 text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
             <div className="flex flex-col gap-1">
-              <span className="font-extrabold text-white text-xs sm:text-sm">Password Reset Email Sent! ✉️</span>
-              <span className="leading-relaxed text-emerald-200">{successMessage}</span>
+              <span className="font-extrabold text-slate-900 dark:text-white text-xs sm:text-sm">Password Reset Email Sent! ✉️</span>
+              <span className="leading-relaxed text-emerald-800 dark:text-emerald-200">{successMessage}</span>
             </div>
           </div>
         )}
 
         {/* Error Feedback Banner */}
         {activeError && !successMessage && (
-          <div className="p-3.5 rounded-xl bg-red-950/40 border border-red-500/40 text-red-300 text-xs font-semibold flex items-center gap-2.5 animate-page-enter shadow-sm">
-            <svg className="w-4 h-4 text-red-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div className="p-3.5 rounded-xl bg-red-50 border border-red-200 text-red-800 dark:bg-red-950/40 dark:border-red-500/40 dark:text-red-300 text-xs font-semibold flex items-center gap-2.5 animate-page-enter shadow-sm">
+            <svg className="w-4 h-4 text-red-500 dark:text-red-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
             <span>{activeError}</span>
@@ -83,7 +83,7 @@ export const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = React.memo(
         )}
 
         <div>
-          <label className="block text-xs font-semibold text-slate-300 mb-1.5 uppercase tracking-wider">
+          <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5 uppercase tracking-wider">
             Email Address
           </label>
           <div className="relative">
@@ -92,10 +92,10 @@ export const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = React.memo(
               placeholder="student@example.com"
               value={email}
               onChange={handleEmailChange}
-              className={`w-full bg-slate-900/90 border rounded-xl px-4 py-3 text-white placeholder-slate-500 focus:outline-none transition-all text-sm font-medium ${
+              className={`w-full bg-slate-50 border rounded-xl px-4 py-3 text-slate-900 placeholder-slate-400 dark:bg-slate-900/90 dark:text-white dark:placeholder-slate-500 focus:outline-none transition-all text-sm font-medium ${
                 fieldHasError || activeError
                   ? 'border-red-500/60 ring-1 ring-red-500/40 focus:border-red-500'
-                  : 'border-slate-700 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500'
+                  : 'border-slate-200 dark:border-slate-700 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500'
               }`}
             />
           </div>
@@ -119,14 +119,14 @@ export const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = React.memo(
           )}
         </button>
 
-        <p className="text-xs text-slate-400 mt-3 text-center leading-relaxed">
+        <p className="text-xs text-slate-600 dark:text-slate-400 mt-3 text-center leading-relaxed font-medium">
           Please check your Spam or Junk folder if the email doesn't appear in your inbox within 1–2 minutes.
         </p>
 
         <button
           type="button"
           onClick={onBackToLogin}
-          className="w-full bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-xs py-3 rounded-xl transition-colors border border-slate-700 flex items-center justify-center gap-1.5 mt-2"
+          className="w-full bg-slate-100 hover:bg-slate-200 text-slate-700 border-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 dark:text-slate-300 font-bold text-xs py-3 rounded-xl transition-colors border dark:border-slate-700 flex items-center justify-center gap-1.5 mt-2"
         >
           ← Back to Login
         </button>

@@ -226,8 +226,8 @@ export const TestInfoScreen: React.FC<TestInfoScreenProps> = React.memo(({ testS
                 onClick={handleStartFreshSimulation}
                 className={`px-5 py-3.5 rounded-2xl font-black text-xs sm:text-sm tracking-wide shadow-md transition-all transform hover:scale-105 active:scale-95 shrink-0 flex items-center justify-center gap-2 border ${
                   isUserPremium
-                    ? 'bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 hover:from-amber-400 hover:to-orange-400 text-slate-950 border-amber-300/60 font-black'
-                    : 'bg-gradient-to-r from-amber-500 to-orange-500 text-slate-950 border-amber-400/50'
+                    ? 'bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 hover:from-amber-300 hover:to-yellow-300 text-slate-950 border-amber-200 font-black'
+                    : 'bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 hover:from-amber-300 hover:to-yellow-300 text-slate-950 border-amber-200'
                 }`}
               >
                 <span>{isUserPremium ? '🚀 LAUNCH FRESH PAST PAPER' : '🔒 UNLOCK UNLIMITED PAPERS'}</span>
@@ -326,10 +326,10 @@ export const TestInfoScreen: React.FC<TestInfoScreenProps> = React.memo(({ testS
                       }}
                       className={`text-xs font-black py-3 px-5 rounded-xl transition-all shadow-md flex items-center gap-1.5 ${
                         isLocked
-                          ? 'bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-500 hover:to-orange-500 text-slate-950 border border-amber-400/40'
+                          ? 'bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 hover:from-amber-300 hover:to-yellow-300 text-slate-950 border border-amber-200 shadow-sm transform hover:scale-105 active:scale-95'
                           : isFree
                           ? 'bg-gradient-to-r from-emerald-500 via-teal-500 to-emerald-600 hover:from-emerald-400 hover:to-teal-400 text-slate-950 border border-emerald-300 shadow-sm transform hover:scale-105 active:scale-95'
-                          : 'bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 text-slate-950 border border-amber-300/60 shadow-sm'
+                          : 'bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 hover:from-amber-300 hover:to-yellow-300 text-slate-950 border border-amber-200 shadow-sm transform hover:scale-105 active:scale-95'
                       }`}
                     >
                       <span>{buttonText}</span>

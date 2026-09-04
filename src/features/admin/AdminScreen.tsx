@@ -291,22 +291,17 @@ export const AdminScreen: React.FC = React.memo(() => {
                     (u.email && result.userEmail && u.email.toLowerCase() === result.userEmail.toLowerCase())
                 );
 
-                const aliUser =
-                  users.find((u) => u.name && u.name.toLowerCase().includes('ali ahsan')) ||
-                  users.find((u) => u.name && u.name.toLowerCase().startsWith('ali')) ||
-                  users.find((u) => u.name && u.name.toLowerCase().includes('ali'));
-
                 const displayName =
                   result.userName && result.userName !== 'Student' && result.userName !== 'Anonymous Student'
                     ? result.userName
-                    : matchingUser?.name || aliUser?.name || 'Ali Ahsan';
+                    : matchingUser?.name || 'Student';
 
                 const displayPhone =
                   result.userPhone && result.userPhone !== 'No Phone'
                     ? result.userPhone
-                    : matchingUser?.whatsapp || aliUser?.whatsapp || '03305939277';
+                    : matchingUser?.whatsapp || 'No Phone';
 
-                const displayPhoto = result.userPhotoURL || matchingUser?.photoURL || aliUser?.photoURL || '';
+                const displayPhoto = result.userPhotoURL || matchingUser?.photoURL || '';
 
                 // Format phone URL for direct WhatsApp message
                 const cleanPhone = displayPhone.replace(/\D/g, '');

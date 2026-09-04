@@ -140,7 +140,7 @@ export const SelectTypeScreen: React.FC<SelectTypeScreenProps> = React.memo(({ u
 
               <button
                 onClick={() => setIsPremiumModalOpen(true)}
-                className="w-full text-xs sm:text-sm font-black py-3.5 px-4 rounded-xl bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 hover:from-amber-400 hover:to-orange-400 text-slate-950 transition-all shadow-md text-center border border-amber-300/60"
+                className="w-full text-xs sm:text-sm font-black py-3.5 px-4 rounded-xl bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 hover:from-amber-300 hover:to-yellow-300 text-slate-950 transition-all shadow-md text-center border border-amber-200"
               >
                 Get Premium Pass (PKR 500)
               </button>

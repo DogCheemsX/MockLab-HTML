@@ -65,8 +65,8 @@ export const SignUpForm: React.FC<SignUpFormProps> = React.memo(
       <form onSubmit={handleSubmit} className="space-y-3.5">
         {/* Inline Error Feedback Banner */}
         {activeError && (
-          <div className="p-3.5 rounded-xl bg-red-950/40 border border-red-500/40 text-red-300 text-xs font-semibold flex items-center gap-2.5 animate-page-enter shadow-sm">
-            <svg className="w-4 h-4 text-red-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div className="p-3.5 rounded-xl bg-red-50 border border-red-200 text-red-800 dark:bg-red-950/40 dark:border-red-500/40 dark:text-red-300 text-xs font-semibold flex items-center gap-2.5 animate-page-enter shadow-sm">
+            <svg className="w-4 h-4 text-red-500 dark:text-red-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
             <span>{activeError}</span>
@@ -74,68 +74,68 @@ export const SignUpForm: React.FC<SignUpFormProps> = React.memo(
         )}
 
         <div>
-          <label className="block text-xs font-semibold text-slate-300 mb-1 uppercase tracking-wider">Full Name</label>
+          <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1 uppercase tracking-wider">Full Name</label>
           <input
             type="text"
             placeholder="Muhammad Ali"
             value={name}
             onChange={handleInputChange(setName, 'name')}
-            className={`w-full bg-slate-900/90 border rounded-xl px-4 py-2.5 text-white placeholder-slate-500 focus:outline-none transition-all text-sm font-medium ${
+            className={`w-full bg-slate-50 border rounded-xl px-4 py-2.5 text-slate-900 placeholder-slate-400 dark:bg-slate-900/90 dark:text-white dark:placeholder-slate-500 focus:outline-none transition-all text-sm font-medium ${
               fieldErrors.name
                 ? 'border-red-500/60 ring-1 ring-red-500/40 focus:border-red-500'
-                : 'border-slate-700 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500'
+                : 'border-slate-200 dark:border-slate-700 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500'
             }`}
           />
         </div>
 
         <div>
-          <label className="block text-xs font-semibold text-slate-300 mb-1 uppercase tracking-wider">Email Address</label>
+          <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1 uppercase tracking-wider">Email Address</label>
           <input
             type="email"
             placeholder="student@gmail.com"
             value={email}
             onChange={handleInputChange(setEmail, 'email')}
-            className={`w-full bg-slate-900/90 border rounded-xl px-4 py-2.5 text-white placeholder-slate-500 focus:outline-none transition-all text-sm font-medium ${
+            className={`w-full bg-slate-50 border rounded-xl px-4 py-2.5 text-slate-900 placeholder-slate-400 dark:bg-slate-900/90 dark:text-white dark:placeholder-slate-500 focus:outline-none transition-all text-sm font-medium ${
               fieldErrors.email || (activeError && activeError.includes('email'))
                 ? 'border-red-500/60 ring-1 ring-red-500/40 focus:border-red-500'
-                : 'border-slate-700 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500'
+                : 'border-slate-200 dark:border-slate-700 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500'
             }`}
           />
         </div>
 
         <div>
-          <label className="block text-xs font-semibold text-slate-300 mb-1 uppercase tracking-wider">WhatsApp Number</label>
+          <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1 uppercase tracking-wider">WhatsApp Number</label>
           <input
             type="text"
             placeholder="0300 1234567"
             value={whatsapp}
             onChange={handleInputChange(setWhatsapp, 'whatsapp')}
-            className={`w-full bg-slate-900/90 border rounded-xl px-4 py-2.5 text-white placeholder-slate-500 focus:outline-none transition-all text-sm font-medium ${
+            className={`w-full bg-slate-50 border rounded-xl px-4 py-2.5 text-slate-900 placeholder-slate-400 dark:bg-slate-900/90 dark:text-white dark:placeholder-slate-500 focus:outline-none transition-all text-sm font-medium ${
               fieldErrors.whatsapp
                 ? 'border-red-500/60 ring-1 ring-red-500/40 focus:border-red-500'
-                : 'border-slate-700 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500'
+                : 'border-slate-200 dark:border-slate-700 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500'
             }`}
           />
         </div>
 
         <div>
-          <label className="block text-xs font-semibold text-slate-300 mb-1 uppercase tracking-wider">Password</label>
+          <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1 uppercase tracking-wider">Password</label>
           <div className="relative">
             <input
               type={showPassword ? 'text' : 'password'}
               placeholder="Min 6 characters"
               value={password}
               onChange={handleInputChange(setPassword, 'password')}
-              className={`w-full bg-slate-900/90 border rounded-xl pl-4 pr-11 py-2.5 text-white placeholder-slate-500 focus:outline-none transition-all text-sm font-medium ${
+              className={`w-full bg-slate-50 border rounded-xl pl-4 pr-11 py-2.5 text-slate-900 placeholder-slate-400 dark:bg-slate-900/90 dark:text-white dark:placeholder-slate-500 focus:outline-none transition-all text-sm font-medium ${
                 fieldErrors.password
                   ? 'border-red-500/60 ring-1 ring-red-500/40 focus:border-red-500'
-                  : 'border-slate-700 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500'
+                  : 'border-slate-200 dark:border-slate-700 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500'
               }`}
             />
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-200 transition-colors p-1"
+              className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 transition-colors p-1"
               title={showPassword ? 'Hide password' : 'Show password'}
             >
               {showPassword ? (
@@ -170,11 +170,11 @@ export const SignUpForm: React.FC<SignUpFormProps> = React.memo(
           )}
         </button>
 
-        <p className="text-center text-xs text-slate-400 mt-5 font-medium">
+        <p className="text-center text-xs text-slate-600 dark:text-slate-400 mt-5 font-medium">
           Already have an account?{' '}
           <span
             onClick={onSwitchToLogin}
-            className="text-indigo-400 font-bold cursor-pointer hover:text-indigo-300 transition-colors"
+            className="text-indigo-600 dark:text-indigo-400 font-bold cursor-pointer hover:text-indigo-800 dark:hover:text-indigo-300 transition-colors"
           >
             Sign In
           </span>
