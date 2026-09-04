@@ -363,6 +363,9 @@ export const TestInfoScreen: React.FC<TestInfoScreenProps> = React.memo(({ testS
                     <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed font-medium">
                       Upgrade to PRO to unlock Unlimited On-Demand Past Papers with instant score evaluation & explanations!
                     </p>
+                    <p className="text-[11px] text-emerald-700 dark:text-emerald-300 font-bold mt-1 flex items-center gap-1">
+                      <span>🛡️</span> Technical issue or not satisfied? Full refund within 24 hours via WhatsApp.
+                    </p>
                   </div>
                 </div>
 

@@ -125,6 +125,21 @@ export const PremiumModal: React.FC<PremiumModalProps> = React.memo(({ isOpen, o
           </div>
         </div>
 
+        {/* 100% Refund Trust Guarantee Badge */}
+        <div className="p-3.5 rounded-2xl bg-emerald-50/90 dark:bg-emerald-950/40 border border-emerald-200/90 dark:border-emerald-500/30 flex items-center gap-3 text-left mb-5 shadow-sm">
+          <div className="w-9 h-9 rounded-xl bg-emerald-500 text-slate-950 flex items-center justify-center text-lg shrink-0 shadow-sm">
+            🛡️
+          </div>
+          <div>
+            <p className="text-xs font-black text-emerald-950 dark:text-emerald-300">
+              100% Risk-Free Money-Back Guarantee
+            </p>
+            <p className="text-[11px] text-emerald-800 dark:text-emerald-200 font-medium leading-tight mt-0.5">
+              Technical issue or not satisfied? Full refund within 24 hours via WhatsApp.
+            </p>
+          </div>
+        </div>
+
         {/* Action Button */}
         <a
           href={whatsappPaymentUrl}

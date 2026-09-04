@@ -133,9 +133,13 @@ export const SelectTypeScreen: React.FC<SelectTypeScreenProps> = React.memo(({ u
                 <h3 className="text-base font-extrabold text-slate-900 dark:text-white mb-1">
                   Unlock Unlimited Past Papers
                 </h3>
-                <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+                <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed mb-2">
                   Start practicing right away. Upgrade to Premium Pass before the discount ends to unlock unlimited past papers for all fields.
                 </p>
+                <div className="flex items-center gap-2 p-2 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200/80 dark:border-emerald-500/30 text-[11px] font-bold text-emerald-800 dark:text-emerald-300">
+                  <span>🛡️</span>
+                  <span>Technical issue or not satisfied? Full refund within 24 hours via WhatsApp.</span>
+                </div>
               </div>
 
               <button
