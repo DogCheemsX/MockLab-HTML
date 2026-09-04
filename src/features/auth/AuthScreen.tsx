@@ -94,38 +94,37 @@ export const AuthScreen: React.FC = () => {
         <div className="lg:col-span-6 flex flex-col items-center lg:items-start text-center lg:text-left">
           <Header />
 
-          {/* No Sign-Up Required: UniPath Matcher Feature Card */}
+          {/* UniPath Matcher Feature Card - Coming Soon */}
           <div className="w-full max-w-md mt-4">
             <button
               onClick={() => navigate('/unipath')}
-              className="w-full relative overflow-hidden rounded-2xl p-5 sm:p-6 text-left flex items-center justify-between group border-2 border-emerald-300 bg-white shadow-sm hover:shadow-md hover:border-emerald-500 dark:bg-gradient-to-r dark:from-emerald-950/80 dark:via-emerald-900/50 dark:to-teal-950/80 dark:border-emerald-500/50 dark:shadow-[0_0_25px_rgba(16,185,129,0.25)] dark:hover:shadow-[0_0_35px_rgba(16,185,129,0.4)] dark:hover:border-emerald-400 transition-all duration-300 transform hover:-translate-y-0.5"
+              className="w-full relative overflow-hidden rounded-2xl p-5 sm:p-6 text-left flex items-center justify-between group border-2 border-amber-300/80 bg-white shadow-sm hover:shadow-md hover:border-amber-400 dark:bg-gradient-to-r dark:from-amber-950/40 dark:via-slate-900/90 dark:to-amber-950/30 dark:border-amber-500/40 transition-all duration-300 transform hover:-translate-y-0.5"
             >
               {/* Decorative background glow */}
-              <div className="absolute top-0 right-0 -mt-6 -mr-6 w-32 h-32 bg-emerald-500/10 rounded-full blur-2xl pointer-events-none"></div>
+              <div className="absolute top-0 right-0 -mt-6 -mr-6 w-32 h-32 bg-amber-500/10 rounded-full blur-2xl pointer-events-none"></div>
 
               <div className="flex items-center gap-4 relative z-10">
-                <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-emerald-50 text-emerald-700 border-2 border-emerald-200 dark:bg-emerald-500/20 dark:text-emerald-300 dark:border-emerald-400/40 flex items-center justify-center font-bold text-2xl sm:text-3xl shrink-0 shadow-sm group-hover:scale-110 group-hover:rotate-6 transition-all duration-300">
+                <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-amber-50 text-amber-700 border-2 border-amber-200 dark:bg-amber-500/20 dark:text-amber-300 dark:border-amber-400/40 flex items-center justify-center font-bold text-2xl sm:text-3xl shrink-0 shadow-sm">
                   🎯
                 </div>
                 <div>
                   <div className="flex items-center gap-2 mb-1">
-                    <span className="inline-flex items-center gap-1.5 text-[11px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200 dark:bg-emerald-500/30 dark:text-emerald-300 dark:border-emerald-400/40 shadow-sm">
-                      <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                      NO SIGN-UP REQUIRED
+                    <span className="inline-flex items-center gap-1.5 text-[10px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-900 border border-amber-300 dark:bg-amber-500/30 dark:text-amber-300 dark:border-amber-400/40 shadow-sm">
+                      <span className="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span>
+                      COMING SOON
                     </span>
                   </div>
-                  <h3 className="font-black text-slate-900 dark:text-white text-base sm:text-lg group-hover:text-emerald-700 dark:group-hover:text-emerald-300 transition-colors leading-tight">
-                    Check Eligible Universities for You
+                  <h3 className="font-black text-slate-900 dark:text-white text-base sm:text-lg leading-tight">
+                    Check Eligible Universities
                   </h3>
                 </div>
               </div>
 
-              <div className="relative z-10 hidden sm:flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-emerald-600 dark:bg-emerald-500 text-white dark:text-slate-950 font-extrabold text-xs sm:text-sm shadow-sm group-hover:bg-emerald-500 dark:group-hover:bg-emerald-400 group-hover:scale-105 transition-all shrink-0 ml-3">
-                <span>Check Now</span>
-                <span className="text-base font-bold transition-transform group-hover:translate-x-1">→</span>
+              <div className="relative z-10 hidden sm:flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-amber-500/20 text-amber-800 dark:text-amber-300 font-extrabold text-xs border border-amber-400/30 shrink-0 ml-3">
+                <span>Coming Soon ⏳</span>
               </div>
-              <div className="relative z-10 sm:hidden w-9 h-9 rounded-xl bg-emerald-600 dark:bg-emerald-500 text-white dark:text-slate-950 font-extrabold flex items-center justify-center text-base shadow-sm group-hover:bg-emerald-500 dark:group-hover:bg-emerald-400 shrink-0 ml-2">
-                →
+              <div className="relative z-10 sm:hidden w-9 h-9 rounded-xl bg-amber-500/20 text-amber-800 dark:text-amber-300 font-extrabold flex items-center justify-center text-base shrink-0 ml-2 border border-amber-400/30">
+                ⏳
               </div>
             </button>
           </div>
