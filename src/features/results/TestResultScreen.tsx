@@ -16,7 +16,7 @@ interface TestResultScreenProps {
 
 export const TestResultScreen: React.FC<TestResultScreenProps> = React.memo(({ testSession }) => {
   const navigate = useNavigate();
-  const { userData, user } = useAuth();
+  const { userData, user, loading: authLoading } = useAuth();
   const { score, userAnswers, storedSession, clearSession } = testSession;
   const savedRef = useRef(false);
   const [isReviewOpen, setIsReviewOpen] = React.useState(false);
@@ -61,36 +61,31 @@ export const TestResultScreen: React.FC<TestResultScreenProps> = React.memo(({ t
 
   // Auto-save student score to Firestore database once per test attempt
   useEffect(() => {
-    if (!storedSession || totalQuestions === 0 || savedRef.current) return;
+    if (!storedSession || totalQuestions === 0 || savedRef.current || authLoading) return;
     savedRef.current = true;
 
     const performSave = async () => {
-      let studentName = 'Student';
-      let studentPhone = 'No Phone';
-      let studentEmail = '';
-      let studentPhoto = '';
-      let uid = 'guest-user';
+      const currentUser = auth.currentUser || user;
+      const uid = currentUser?.uid || user?.uid || 'guest-user';
 
-      const currentUser = auth.currentUser;
-      if (currentUser) {
-        uid = currentUser.uid;
-        studentEmail = currentUser.email || '';
-        studentPhoto = currentUser.photoURL || '';
-        studentName = currentUser.displayName || studentEmail.split('@')[0] || studentName;
-        studentPhone = currentUser.phoneNumber || studentPhone;
+      let studentName = userData?.name || currentUser?.displayName || currentUser?.email?.split('@')[0] || 'Student';
+      let studentPhone = userData?.whatsapp || currentUser?.phoneNumber || 'No Phone';
+      let studentEmail = userData?.email || currentUser?.email || '';
+      let studentPhoto = userData?.photoURL || currentUser?.photoURL || '';
 
-        const profile = await getUserProfile(uid);
-        if (profile) {
-          studentName = profile.name || studentName;
-          studentPhone = profile.whatsapp || studentPhone;
-          studentPhoto = profile.photoURL || studentPhoto;
-          studentEmail = profile.email || studentEmail;
+      // Asynchronous fallback lookup if name or phone is missing
+      if ((studentName === 'Student' || studentPhone === 'No Phone') && uid !== 'guest-user') {
+        try {
+          const profile = await getUserProfile(uid);
+          if (profile) {
+            if (profile.name) studentName = profile.name;
+            if (profile.whatsapp) studentPhone = profile.whatsapp;
+            if (profile.email) studentEmail = profile.email;
+            if (profile.photoURL) studentPhoto = profile.photoURL;
+          }
+        } catch (err) {
+          console.warn('Could not fetch user profile for test result save:', err);
         }
-      } else if (userData) {
-        studentName = userData.name || studentName;
-        studentPhone = userData.whatsapp || studentPhone;
-        studentEmail = userData.email || studentEmail;
-        studentPhoto = userData.photoURL || studentPhoto;
       }
 
       const elapsedSeconds = storedSession?.startTime
@@ -117,7 +112,7 @@ export const TestResultScreen: React.FC<TestResultScreenProps> = React.memo(({ t
     };
 
     performSave();
-  }, [userData, storedSession, totalQuestions, finalScore, percentage, testName, subjectBreakdown]);
+  }, [user, userData, authLoading, storedSession, totalQuestions, finalScore, percentage, testName, subjectBreakdown]);
 
   if (!storedSession && totalQuestions === 0) {
     return <Navigate to="/select-university" replace />;

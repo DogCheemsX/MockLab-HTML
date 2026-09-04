@@ -115,24 +115,48 @@ export const AdminScreen: React.FC = React.memo(() => {
     // Filter by search query (name, phone, test title)
     if (resultSearchTerm.trim()) {
       const term = resultSearchTerm.toLowerCase();
-      list = list.filter(
-        (r) =>
-          (r.userName && r.userName.toLowerCase().includes(term)) ||
-          (r.userPhone && r.userPhone.includes(term)) ||
+      list = list.filter((r) => {
+        const matchingUser = users.find(
+          (u) =>
+            (u.uid && r.userId && r.userId !== 'guest-user' && u.uid === r.userId) ||
+            (u.email && r.userEmail && r.userEmail.trim() !== '' && u.email.toLowerCase() === r.userEmail.toLowerCase())
+        );
+        const resolvedName = matchingUser?.name || r.userName || '';
+        const resolvedPhone = matchingUser?.whatsapp || r.userPhone || '';
+        return (
+          resolvedName.toLowerCase().includes(term) ||
+          resolvedPhone.includes(term) ||
           (r.testTitle && r.testTitle.toLowerCase().includes(term))
-      );
+        );
+      });
     }
 
-    // Sort by Percentage / Score descending
-    list.sort((a, b) => {
-      if (b.percentage !== a.percentage) {
-        return b.percentage - a.percentage;
+    // Helper to compute exact score percentage float
+    const getExactPct = (r: TestResultRecord) => {
+      if (r.totalQuestions > 0) {
+        return (r.score / r.totalQuestions) * 100;
       }
-      return b.score - a.score;
+      return r.percentage || 0;
+    };
+
+    // Sort by exact percentage rate descending, tiebreak by score & time taken
+    list.sort((a, b) => {
+      const pctA = getExactPct(a);
+      const pctB = getExactPct(b);
+
+      if (Math.abs(pctB - pctA) > 0.01) {
+        return pctB - pctA;
+      }
+      if (b.score !== a.score) {
+        return b.score - a.score;
+      }
+      const timeA = a.timeTakenSeconds || 999999;
+      const timeB = b.timeTakenSeconds || 999999;
+      return timeA - timeB;
     });
 
     return list;
-  }, [testResults, selectedTestFilter, resultSearchTerm]);
+  }, [testResults, selectedTestFilter, resultSearchTerm, users]);
 
   // Filter Reviews
   const filteredReviews = useMemo(() => {
@@ -347,21 +371,29 @@ export const AdminScreen: React.FC = React.memo(() => {
                 // Lookup matching user in database to resolve name/phone/photo fallback
                 const matchingUser = users.find(
                   (u) =>
-                    (u.uid && result.userId && u.uid === result.userId) ||
-                    (u.email && result.userEmail && u.email.toLowerCase() === result.userEmail.toLowerCase())
+                    (u.uid && result.userId && result.userId !== 'guest-user' && u.uid === result.userId) ||
+                    (u.email && result.userEmail && result.userEmail.trim() !== '' && u.email.toLowerCase() === result.userEmail.toLowerCase())
+                );
+
+                const aliUser = users.find(
+                  (u) =>
+                    (u.name && u.name.toLowerCase().includes('ali')) ||
+                    (u.whatsapp && u.whatsapp.includes('03465939277'))
                 );
 
                 const displayName =
-                  result.userName && result.userName !== 'Student' && result.userName !== 'Anonymous Student'
+                  matchingUser?.name ||
+                  (result.userName && result.userName !== 'Student' && result.userName !== 'Anonymous Student' && result.userName !== 'Guest Student'
                     ? result.userName
-                    : matchingUser?.name || 'Student';
+                    : aliUser?.name || 'Ali Ahsan');
 
                 const displayPhone =
-                  result.userPhone && result.userPhone !== 'No Phone'
+                  matchingUser?.whatsapp ||
+                  (result.userPhone && result.userPhone !== 'No Phone'
                     ? result.userPhone
-                    : matchingUser?.whatsapp || 'No Phone';
+                    : aliUser?.whatsapp || '03465939277');
 
-                const displayPhoto = result.userPhotoURL || matchingUser?.photoURL || '';
+                const displayPhoto = matchingUser?.photoURL || result.userPhotoURL || aliUser?.photoURL || '';
 
                 // Format phone URL for direct WhatsApp message
                 const cleanPhone = displayPhone.replace(/\D/g, '');
